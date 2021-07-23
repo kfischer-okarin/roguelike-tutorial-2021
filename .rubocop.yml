@@ -24,3 +24,4 @@ Naming/MethodParameterName:
 Style/GlobalVars:
   AllowedVariables:
     - $gtk
+    - $terminal
