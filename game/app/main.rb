@@ -3,6 +3,8 @@ require 'lib/engine.rb'
 require 'app/input_event_handler.rb'
 require 'app/entity.rb'
 require 'app/game.rb'
+require 'app/tiles.rb'
+require 'app/game_map.rb'
 
 def tick(args)
   setup(args) if args.tick_count.zero?
