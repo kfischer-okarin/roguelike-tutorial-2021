@@ -23,6 +23,7 @@ Naming/MethodParameterName:
     - dx
     - dy
     - fg
+    - bg
 
 Style/GlobalVars:
   AllowedVariables:
