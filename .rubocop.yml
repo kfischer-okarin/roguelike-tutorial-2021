@@ -18,6 +18,8 @@ Naming/MethodParameterName:
   AllowedNames:
     - x
     - y
+    - w
+    - h
 
 Style/GlobalVars:
   AllowedVariables:
