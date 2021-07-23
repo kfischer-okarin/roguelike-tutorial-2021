@@ -1,6 +1,6 @@
 # Quits the game
 module EscapeAction
-  def self.execute(_args)
+  def self.execute(_entities)
     $gtk.request_quit
   end
 end
@@ -12,7 +12,7 @@ class MovementAction
     @dy = dy
   end
 
-  def execute(args)
-    Entity.move(args.state.player, dx: @dx, dy: @dy)
+  def execute(entities)
+    Entity.move(entities.player, dx: @dx, dy: @dy)
   end
 end
