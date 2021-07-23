@@ -20,6 +20,8 @@ Naming/MethodParameterName:
     - y
     - w
     - h
+    - dx
+    - dy
 
 Style/GlobalVars:
   AllowedVariables:
