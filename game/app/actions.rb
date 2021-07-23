@@ -13,7 +13,6 @@ class MovementAction
   end
 
   def execute(args)
-    args.state.player_x += @dx
-    args.state.player_y += @dy
+    Entity.move(args.state.player, dx: @dx, dy: @dy)
   end
 end

@@ -1,12 +1,15 @@
 require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
+require 'app/entity.rb'
 
 def tick(args)
   setup(args) if args.tick_count.zero?
 
   $terminal.clear
-  $terminal.print(x: args.state.player_x, y: args.state.player_y, string: '@')
+  args.state.entities.each do |entity|
+    $terminal.print(x: entity.x, y: entity.y, string: entity.char, fg: entity.color)
+  end
   $terminal.render(args)
   render_framerate(args)
 
@@ -18,11 +21,16 @@ def setup(args)
   screen_width = 80  # 80 * 16 = 1280
   screen_height = 45 # 45 * 16 = 720
 
-  args.state.player_x = screen_width.idiv(2)
-  args.state.player_y = screen_height.idiv(2)
+  args.state.player = build_entity(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
+  npc = build_entity(x: screen_width.idiv(2) - 5, y: screen_height.idiv(2), char: '@', color: [255, 255, 0])
+  args.state.entities = [args.state.player, npc]
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
+end
+
+def build_entity(x:, y:, char:, color:)
+  $state.new_entity_strict(:entity, x: x, y: y, char: char, color: color)
 end
 
 def render_framerate(args)

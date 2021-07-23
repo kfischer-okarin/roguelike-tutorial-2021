@@ -28,3 +28,4 @@ Style/GlobalVars:
   AllowedVariables:
     - $gtk
     - $terminal
+    - $state
