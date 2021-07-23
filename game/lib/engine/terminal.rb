@@ -91,6 +91,8 @@ module Engine
                                  nil, nil, nil, nil, # source_x, source_y, source_w, source_h
                                  1 # blendmode_enum
         end
+        next if cell.char == ' '
+
         ffi_draw.draw_sprite_4 cell.x, cell.y, tile_w, tile_h,
                                path,
                                nil, # angle
