@@ -13,7 +13,7 @@ class GameMap
     x.positive? && x < @width && y.positive? && y < @height
   end
 
-  def render(terminal)
-    terminal.cell_tiles[0...@width, 5] = @tiles
+  def render(terminal, offset_y: nil)
+    terminal.cell_tiles[0...@width, offset_y || 0] = @tiles
   end
 end

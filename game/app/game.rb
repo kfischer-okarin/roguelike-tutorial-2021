@@ -1,7 +1,8 @@
 class Game
-  def initialize(entities:, input_event_handler:, player:)
+  def initialize(entities:, input_event_handler:, game_map:, player:)
     @entities = entities
     @input_event_handler = input_event_handler
+    @game_map = game_map
     @player = player
   end
 
@@ -16,8 +17,9 @@ class Game
 
   def render(terminal)
     terminal.clear
+    @game_map.render(terminal, offset_y: 5)
     @entities.each do |entity|
-      terminal.print(x: entity.x, y: entity.y, string: entity.char, fg: entity.color)
+      terminal.print(x: entity.x, y: entity.y + 5, string: entity.char, fg: entity.color)
     end
     terminal.render
   end

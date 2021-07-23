@@ -23,15 +23,20 @@ def setup(args)
   screen_width = 80  # 80 * 16 = 1280
   screen_height = 45 # 45 * 16 = 720
 
+  map_width = 80
+  map_height = 40
+
   Entities.gtk_state = args.state
   args.state.player = Entities.build(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
   npc = Entities.build(x: screen_width.idiv(2) - 5, y: screen_height.idiv(2), char: '@', color: [255, 255, 0])
   args.state.entities = [args.state.player, npc]
 
+  game_map = GameMap.new(width: map_width, height: map_height)
+
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
 
-  $game = Game.new(entities: Entities, input_event_handler: InputEventHandler, player: nil)
+  $game = Game.new(entities: Entities, input_event_handler: InputEventHandler, game_map: game_map, player: nil)
 end
 
 def render_framerate(args)
