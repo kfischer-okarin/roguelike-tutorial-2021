@@ -13,4 +13,12 @@ class Game
       action.execute(@entities)
     end
   end
+
+  def render(terminal)
+    terminal.clear
+    @entities.each do |entity|
+      terminal.print(x: entity.x, y: entity.y, string: entity.char, fg: entity.color)
+    end
+    terminal.render
+  end
 end
