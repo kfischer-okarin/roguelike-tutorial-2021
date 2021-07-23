@@ -29,3 +29,4 @@ Style/GlobalVars:
     - $gtk
     - $terminal
     - $state
+    - $game

@@ -2,6 +2,7 @@ require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
 require 'app/entity.rb'
+require 'app/game.rb'
 
 def tick(args)
   setup(args) if args.tick_count.zero?
@@ -13,7 +14,7 @@ def tick(args)
   $terminal.render(args)
   render_framerate(args)
 
-  handle_input(args)
+  $game.handle_input_events(args, process_input(args.inputs))
 end
 
 def setup(args)
@@ -27,6 +28,8 @@ def setup(args)
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
+
+  $game = Game.new(entities: [], input_event_handler: InputEventHandler, player: nil)
 end
 
 def build_entity(x:, y:, char:, color:)
@@ -35,16 +38,6 @@ end
 
 def render_framerate(args)
   args.outputs.primitives << [0, 720, $gtk.current_framerate.to_i.to_s, 255, 255, 255].label
-end
-
-def handle_input(args)
-  events = process_input(args.inputs)
-  events.each do |event|
-    action = InputEventHandler.dispatch_action_for(event)
-    next unless action
-
-    action.execute(args)
-  end
 end
 
 def process_input(gtk_inputs)
