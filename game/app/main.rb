@@ -7,11 +7,12 @@ require 'app/game.rb'
 def tick(args)
   setup(args) if args.tick_count.zero?
 
+  $terminal.gtk_outputs = args.outputs
   $terminal.clear
   args.state.entities.each do |entity|
     $terminal.print(x: entity.x, y: entity.y, string: entity.char, fg: entity.color)
   end
-  $terminal.render(args)
+  $terminal.render
   render_framerate(args)
 
   $game.handle_input_events(args, process_input(args.inputs))

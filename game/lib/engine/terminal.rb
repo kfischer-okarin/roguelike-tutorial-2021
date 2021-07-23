@@ -1,6 +1,8 @@
 module Engine
   # Simulated terminal for rendering the tiles
   class Terminal
+    attr_accessor :gtk_outputs
+
     attr_reader :w, :h, :tileset
 
     def initialize(w, h, tileset:)
@@ -21,9 +23,9 @@ module Engine
       fn.each_send @buffer, RenderedCell, :clear
     end
 
-    def render(args)
-      args.outputs.background_color = [0, 0, 0]
-      args.outputs.primitives << self
+    def render
+      @gtk_outputs.background_color = [0, 0, 0]
+      @gtk_outputs.primitives << self
     end
 
     def primitive_marker
