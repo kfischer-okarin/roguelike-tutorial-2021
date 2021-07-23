@@ -10,7 +10,7 @@ class GameMap
   end
 
   def in_bounds?(x, y)
-    x.positive? && x < @width && y.positive? && y < @height
+    x >= 0 && x < @width && y >= 0 && y < @height
   end
 
   def walkable?(x, y)

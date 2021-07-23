@@ -1,7 +1,7 @@
 # Quits the game
 module EscapeAction
-  def self.execute(_entities)
-    $gtk.request_quit
+  def self.perform(game, _entity)
+    game.quit
   end
 end
 
@@ -12,10 +12,14 @@ class MovementAction
     @dy = dy
   end
 
-  def execute(entities)
-    player = entities.player
-    return unless $game.game_map.walkable?(player.x + @dx, player.y + @dy)
+  def perform(game, entity)
+    game_map = game.game_map
+    dest_x = entity.x + @dx
+    dest_y = entity.y + @dy
 
-    Entity.move(player, dx: @dx, dy: @dy)
+    return unless game_map.in_bounds?(dest_x, dest_y)
+    return unless game_map.walkable?(dest_x, dest_y)
+
+    Entity.move(entity, dx: @dx, dy: @dy)
   end
 end

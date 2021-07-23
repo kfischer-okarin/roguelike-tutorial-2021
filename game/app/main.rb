@@ -37,7 +37,7 @@ def setup(args)
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
 
-  $game = Game.new(entities: Entities, input_event_handler: InputEventHandler, game_map: game_map, player: nil)
+  $game = Game.new(entities: Entities, input_event_handler: InputEventHandler, game_map: game_map, player: args.state.player)
 end
 
 def render_framerate(args)

@@ -13,7 +13,7 @@ class Game
       action = @input_event_handler.dispatch_action_for(event)
       next unless action
 
-      action.execute(@entities)
+      action.perform(self, @player)
     end
   end
 
