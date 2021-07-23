@@ -5,6 +5,7 @@ require 'app/input_event_handler.rb'
 def tick(args)
   setup(args) if args.tick_count.zero?
 
+  $terminal.clear
   $terminal.print(x: args.state.player_x, y: args.state.player_y, string: '@')
   $terminal.render(args)
   render_framerate(args)
