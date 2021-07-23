@@ -1,3 +1,5 @@
+require 'lib/engine/terminal/tile.rb'
+
 module Engine
   # Simulated terminal for rendering the tiles
   class Terminal
@@ -18,6 +20,53 @@ module Engine
       cell = @buffer[y * @w + x]
       cell.char = string
       cell.color = fg
+    end
+
+    def cell_tiles
+      CellTilesAccessor.new(@buffer, w: @w)
+    end
+
+    class CellTilesAccessor
+      attr_reader :array, :w
+
+      def initialize(array, w:)
+        @w = w
+        @array = array
+      end
+
+      def []=(x_range, y, value)
+        x = x_range.begin
+        w = x_range.end - x_range.begin + (x_range.exclude_end? ? 0 : 1)
+        block_assignment = BlockAssignment.new(self, x: x, y: y, w: w)
+        fn.each_with_index_send(value, block_assignment, :assign)
+      end
+
+      class BlockAssignment
+        def initialize(accessor, x:, y:, w:)
+          @accessor = accessor
+          @x = x
+          @y = y
+          @w = w
+          @target_start_index = y * accessor.w + x
+        end
+
+        def assign(value, index)
+          target_x = index % @w
+          target_y = index.idiv(@w)
+          target_index = @target_start_index + target_y * @w + target_x
+          cell = @accessor.array[target_index]
+          cell.char = value.char
+          cell.color = value.fg
+          cell.background_color = value.bg
+        end
+      end
+    end
+
+    def set_cell_tile(cell_tile, index)
+      cell = @buffer[index]
+      cell.char = cell_tile.char
+      cell.color = cell_tile.fg
+      cell.background_color = cell_tile.bg
     end
 
     def clear
