@@ -13,6 +13,9 @@ class MovementAction
   end
 
   def execute(entities)
-    Entity.move(entities.player, dx: @dx, dy: @dy)
+    player = entities.player
+    return unless $game.game_map.walkable?(player.x + @dx, player.y + @dy)
+
+    Entity.move(player, dx: @dx, dy: @dy)
   end
 end

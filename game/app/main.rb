@@ -3,6 +3,7 @@ require 'lib/engine.rb'
 require 'app/input_event_handler.rb'
 require 'app/entity.rb'
 require 'app/game.rb'
+require 'app/game_tile.rb'
 require 'app/tiles.rb'
 require 'app/game_map.rb'
 

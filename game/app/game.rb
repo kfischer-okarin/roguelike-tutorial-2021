@@ -1,4 +1,6 @@
 class Game
+  attr_reader :game_map
+
   def initialize(entities:, input_event_handler:, game_map:, player:)
     @entities = entities
     @input_event_handler = input_event_handler
