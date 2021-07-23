@@ -11,8 +11,10 @@ module Engine
       @buffer = Array.new(w * h) { |index| RenderedCell.new(self, index) }
     end
 
-    def print(x:, y:, string:)
-      @buffer[y * @w + x].char = string
+    def print(x:, y:, string:, fg: nil)
+      cell = @buffer[y * @w + x]
+      cell.char = string
+      cell.color = fg
     end
 
     def clear
@@ -29,12 +31,16 @@ module Engine
     end
 
     class RenderedCell
-      attr_reader :x, :y
+      attr_reader :x, :y, :r, :g, :b
       attr_accessor :char
 
       def initialize(terminal, index)
         @x = (index % terminal.w) * terminal.tileset.tile_w
         @y = index.idiv(terminal.w) * terminal.tileset.tile_h
+      end
+
+      def color=(color)
+        @r, @g, @b = color || [nil, nil, nil]
       end
 
       def self.clear(cell)
@@ -59,7 +65,7 @@ module Engine
         ffi_draw.draw_sprite_4 cell.x, cell.y, tile_w, tile_h,
                                path,
                                nil, # angle
-                               nil, nil, nil, nil, # a, r, g, b
+                               nil, cell.r, cell.g, cell.b, # a, r, g, b
                                nil, nil, nil, nil, # tile_x, tile_y, tile_w, tile_h
                                nil, nil, # flip_horizontally, flip_vertically
                                nil, nil, # angle_anchor_x, angle_anchor_y
