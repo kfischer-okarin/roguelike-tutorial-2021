@@ -10,5 +10,9 @@ module Procgen
     def inner_rect
       [@x + 1, @y + 1, @w - 2, @h - 2]
     end
+
+    def center
+      [@x + @w.idiv(2), @y + @h.idiv(2)]
+    end
   end
 end

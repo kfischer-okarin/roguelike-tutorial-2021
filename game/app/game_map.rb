@@ -11,6 +11,11 @@ class GameMap
     calc_rendered_tiles
   end
 
+  def set_tile(x, y, tile)
+    @tiles[x, y] = tile
+    calc_rendered_tiles
+  end
+
   def fill_rect(rect, tile)
     @tiles.fill_rect(rect, tile)
     calc_rendered_tiles

@@ -9,7 +9,17 @@ module Procgen
 
         dungeon.fill_rect(room1.inner_rect, Tiles.floor)
         dungeon.fill_rect(room2.inner_rect, Tiles.floor)
+
+        tunnel_between(room2.center, room1.center).each do |x, y|
+          dungeon.set_tile(x, y, Tiles.floor)
+        end
       }
+    end
+
+    def tunnel_between(start_point, end_point)
+      corner = rand < 0.5 ? [end_point.x, start_point.y] : [start_point.x, end_point.y]
+
+      Engine::LineOfSight.bresenham(start_point, corner) + Engine::LineOfSight.bresenham(corner, end_point)
     end
   end
 end
