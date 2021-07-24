@@ -1,12 +1,18 @@
 class GameTile
-  attr_reader :tile
+  attr_reader :light, :dark
 
-  def initialize(walkable:, tile:)
+  def initialize(walkable:, transparent:, light:, dark:)
     @walkable = walkable
-    @tile = tile
+    @transparent = transparent
+    @light = light
+    @dark = dark
   end
 
   def walkable?
     @walkable
+  end
+
+  def transparent?
+    @transparent
   end
 end

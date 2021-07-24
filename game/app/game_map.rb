@@ -37,6 +37,6 @@ class GameMap
   private
 
   def calc_rendered_tiles
-    @rendered_tiles = Array2D.new(@width, @height, @tiles.data.map(&:tile))
+    @rendered_tiles = Array2D.new(@width, @height, @tiles.data.map(&:dark))
   end
 end

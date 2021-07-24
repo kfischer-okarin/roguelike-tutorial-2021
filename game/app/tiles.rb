@@ -1,18 +1,27 @@
 module Tiles
-  def self.new_tile(name, char:, fg:, bg:, walkable:)
+  def self.new_tile(name, dark:, light:, walkable:, transparent:)
     @tiles ||= {}
     eval <<-RUBY
       def self.#{name}
-        @tiles[#{name.inspect}] ||= build_game_tile char: #{char.inspect}, fg: #{fg.inspect}, bg: #{bg.inspect}, walkable: #{walkable}
+        @tiles[#{name.inspect}] ||= build_game_tile dark: #{dark.inspect}, light: #{light.inspect}, walkable: #{walkable}, transparent: #{transparent}
       end
     RUBY
   end
 
-  def self.build_game_tile(char:, fg:, bg:, walkable:)
-    tile = Engine::Terminal::Tile.new(char, fg: fg, bg: bg)
-    GameTile.new(walkable: walkable, tile: tile)
+  def self.build_game_tile(dark:, light:, walkable:, transparent:)
+    dark = Engine::Terminal::Tile.new(dark[:char], fg: dark[:fg], bg: dark[:bg])
+    light = Engine::Terminal::Tile.new(light[:char], fg: light[:fg], bg: light[:bg])
+    GameTile.new(walkable: walkable, transparent: transparent, dark: dark, light: light)
   end
 
-  new_tile :floor, char: ' ', fg: [255, 255, 255], bg: [50, 50, 150], walkable: true
-  new_tile :wall, char: ' ', fg: [255, 255, 255], bg: [0, 0, 100], walkable: false
+  new_tile :floor,
+           dark: { char: ' ', fg: [255, 255, 255], bg: [50, 50, 150] },
+           light: { char: ' ', fg: [255, 255, 255], bg: [200, 180, 50] },
+           walkable: true,
+           transparent: true
+  new_tile :wall,
+           dark: { char: ' ', fg: [255, 255, 255], bg: [0, 0, 100] },
+           light: { char: ' ', fg: [255, 255, 255], bg: [130, 110, 50] },
+           walkable: false,
+           transparent: false
 end
