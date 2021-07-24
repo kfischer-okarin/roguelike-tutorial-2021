@@ -12,18 +12,22 @@ module Engine
       @h = h
       @tileset = tileset
 
-      @buffer = Array.new(w * h) { |index| RenderedCell.new(self, index) }
+      @buffer = Array2D.new(
+        Array.new(w * h) { |index| RenderedCell.new(self, index) },
+        w: w,
+        h: h
+      )
       @prepared = false
     end
 
     def print(x:, y:, string:, fg: nil)
-      cell = @buffer[y * @w + x]
+      cell = @buffer[x, y]
       cell.char = string
       cell.color = fg
     end
 
     def cell_tiles
-      CellTilesAccessor.new(@buffer, w: @w)
+      CellTilesAccessor.new(@buffer.data, w: @w)
     end
 
     class CellTilesAccessor
@@ -63,7 +67,7 @@ module Engine
     end
 
     def clear
-      fn.each_send @buffer, RenderedCell, :clear
+      fn.each_send @buffer.data, RenderedCell, :clear
     end
 
     def render
@@ -114,7 +118,7 @@ module Engine
       tile_w = tileset.tile_w
       tile_h = tileset.tile_h
       index = 0
-      buffer = @buffer
+      buffer = @buffer.data
       buffer_size = buffer.size
       while index < buffer_size
         cell = buffer[index]
