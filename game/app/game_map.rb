@@ -4,11 +4,7 @@ class GameMap
   def initialize(width:, height:)
     @width = width
     @height = height
-    @tiles = Array2D.new(
-      Array.new(width * height) { Tiles.wall },
-      w: width,
-      h: height
-    )
+    @tiles = Array2D.new(width, height) { Tiles.wall }
 
     calc_rendered_tiles
   end
@@ -38,10 +34,6 @@ class GameMap
   private
 
   def calc_rendered_tiles
-    @rendered_tiles = Array2D.new(
-      @tiles.data.map(&:tile),
-      w: @width,
-      h: @height
-    )
+    @rendered_tiles = Array2D.new(@width, @height, @tiles.data.map(&:tile))
   end
 end

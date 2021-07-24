@@ -12,11 +12,7 @@ module Engine
       @h = h
       @tileset = tileset
 
-      @buffer = Array2D.new(
-        Array.new(w * h) { |index| RenderedCell.new(self, index) },
-        w: w,
-        h: h
-      )
+      @buffer = Array2D.new(w, h) { |index| RenderedCell.new(self, index) }
       @prepared = false
     end
 

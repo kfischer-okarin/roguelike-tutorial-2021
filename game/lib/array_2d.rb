@@ -1,8 +1,8 @@
 class Array2D
   attr_reader :data, :w, :h
 
-  def initialize(data, w:, h:)
-    @data = data
+  def initialize(w, h, data = nil, &block)
+    @data = data || Array.new(w * h, &block)
     @w = w
     @h = h
   end
