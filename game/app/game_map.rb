@@ -30,6 +30,10 @@ class GameMap
     @tiles[x, y]&.walkable?
   end
 
+  def visible?(x, y)
+    @visible[x, y]
+  end
+
   def render(terminal, offset_y: nil)
     terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
   end
@@ -37,6 +41,24 @@ class GameMap
   private
 
   def calc_rendered_tiles
-    @rendered_tiles = Array2D.new(@width, @height, @tiles.data.map(&:dark))
+    shroud = Engine::Terminal::Tile.new(' ', fg: [255, 255, 255], bg: nil)
+    @rendered_tiles = Array2D.new(@width, @height, [].tap { |result|
+      tiles = @tiles.data
+      visible = @visible.data
+      explored = @explored.data
+      index = 0
+      size = tiles.size
+      while index < size
+        tile = tiles[index]
+        result << if visible[index]
+                    tile.light
+                  elsif explored[index]
+                    tile.dark
+                  else
+                    shroud
+                  end
+        index += 1
+      end
+    })
   end
 end

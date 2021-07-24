@@ -21,6 +21,8 @@ class Game
     terminal.clear
     @game_map.render(terminal, offset_y: 5)
     @entities.each do |entity|
+      next unless @game_map.visible?(entity.x, entity.y)
+
       terminal.print(x: entity.x, y: entity.y + 5, string: entity.char, fg: entity.color)
     end
     terminal.render
