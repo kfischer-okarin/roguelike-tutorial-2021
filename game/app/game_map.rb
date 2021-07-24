@@ -6,6 +6,9 @@ class GameMap
     @height = height
     @tiles = Array2D.new(width, height) { Tiles.wall }
 
+    @visible = Array2D.new(width, height) { false }
+    @explored = Array2D.new(width, height) { false }
+
     calc_rendered_tiles
   end
 
