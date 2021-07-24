@@ -6,6 +6,7 @@ require 'app/entity.rb'
 require 'app/game.rb'
 require 'app/game_tile.rb'
 require 'app/tiles.rb'
+require 'app/procgen.rb'
 require 'app/game_map.rb'
 
 def tick(args)
@@ -33,7 +34,7 @@ def setup(args)
   npc = Entities.build(x: screen_width.idiv(2) - 5, y: screen_height.idiv(2), char: '@', color: [255, 255, 0])
   args.state.entities = [args.state.player, npc]
 
-  game_map = GameMap.new(width: map_width, height: map_height)
+  game_map = Procgen.generate_dungeon(map_width, map_height)
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)

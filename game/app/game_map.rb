@@ -3,20 +3,17 @@ class GameMap
     @width = width
     @height = height
     @tiles = Array2D.new(
-      Array.new(width * height) { Tiles.floor },
+      Array.new(width * height) { Tiles.wall },
       w: width,
       h: height
     )
-    @tiles[30, 22] = Tiles.wall
-    @tiles[31, 22] = Tiles.wall
-    @tiles[32, 22] = Tiles.wall
-    @tiles[33, 22] = Tiles.wall
 
-    @rendered_tiles = Array2D.new(
-      @tiles.data.map(&:tile),
-      w: width,
-      h: height
-    )
+    calc_rendered_tiles
+  end
+
+  def fill_rect(rect, tile)
+    @tiles.fill_rect(rect, tile)
+    calc_rendered_tiles
   end
 
   def in_bounds?(x, y)
@@ -29,5 +26,15 @@ class GameMap
 
   def render(terminal, offset_y: nil)
     terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
+  end
+
+  private
+
+  def calc_rendered_tiles
+    @rendered_tiles = Array2D.new(
+      @tiles.data.map(&:tile),
+      w: @width,
+      h: @height
+    )
   end
 end
