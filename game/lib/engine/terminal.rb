@@ -62,13 +62,6 @@ module Engine
       end
     end
 
-    def set_cell_tile(cell_tile, index)
-      cell = @buffer[index]
-      cell.char = cell_tile.char
-      cell.color = cell_tile.fg
-      cell.background_color = cell_tile.bg
-    end
-
     def clear
       fn.each_send @buffer, RenderedCell, :clear
     end
