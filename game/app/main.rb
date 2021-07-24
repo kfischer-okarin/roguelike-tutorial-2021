@@ -29,12 +29,23 @@ def setup(args)
   map_width = 80
   map_height = 40
 
+  room_max_size = 10
+  room_min_size = 6
+  max_rooms = 30
+
   Entities.gtk_state = args.state
   args.state.player = Entities.build(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
   npc = Entities.build(x: screen_width.idiv(2) - 5, y: screen_height.idiv(2), char: '@', color: [255, 255, 0])
   args.state.entities = [args.state.player, npc]
 
-  game_map = Procgen.generate_dungeon(map_width, map_height)
+  game_map = Procgen.generate_dungeon(
+    map_width: map_width,
+    map_height: map_height,
+    max_rooms: max_rooms,
+    room_min_size: room_min_size,
+    room_max_size: room_max_size,
+    player: args.state.player
+  )
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)

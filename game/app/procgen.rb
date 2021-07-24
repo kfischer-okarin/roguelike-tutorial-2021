@@ -2,16 +2,31 @@ require 'app/procgen/rectangular_room.rb'
 
 module Procgen
   class << self
-    def generate_dungeon(map_width, map_height)
+    def generate_dungeon(max_rooms:, room_min_size:, room_max_size:, map_width:, map_height:, player:)
       GameMap.new(width: map_width, height: map_height).tap { |dungeon|
-        room1 = RectangularRoom.new(x: 20, y: 15, width: 10, height: 15)
-        room2 = RectangularRoom.new(x: 35, y: 15, width: 10, height: 15)
+        rooms = []
+        room_sizes = (room_min_size..room_max_size).to_a
+        max_rooms.times do
+          room_width = room_sizes.sample
+          room_height = room_sizes.sample
 
-        dungeon.fill_rect(room1.inner_rect, Tiles.floor)
-        dungeon.fill_rect(room2.inner_rect, Tiles.floor)
+          x = (rand * (dungeon.width - room_width - 1)).floor
+          y = (rand * (dungeon.height - room_height - 1)).floor
 
-        tunnel_between(room2.center, room1.center).each do |x, y|
-          dungeon.set_tile(x, y, Tiles.floor)
+          new_room = RectangularRoom.new(x, y, room_width, room_height)
+          next if rooms.any? { |room| room.intersects? new_room }
+
+          dungeon.fill_rect(new_room.inner_rect, Tiles.floor)
+
+          if rooms.empty?
+            player.x, player.y = new_room.center
+          else
+            tunnel_between(rooms[-1].center, new_room.center).each do |tunnel_x, tunnel_y|
+              dungeon.set_tile(tunnel_x, tunnel_y, Tiles.floor)
+            end
+          end
+
+          rooms << new_room
         end
       }
     end
