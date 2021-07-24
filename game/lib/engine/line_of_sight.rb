@@ -1,6 +1,4 @@
-
 module Engine
-  # Simulated terminal for rendering the tiles
   module LineOfSight
     class << self
       def bresenham(start_point, end_point)
