@@ -10,4 +10,8 @@ class Array2D
   def [](x, y)
     @data[y * @w + x]
   end
+
+  def []=(x, y, value)
+    @data[y * @w + x] = value
+  end
 end

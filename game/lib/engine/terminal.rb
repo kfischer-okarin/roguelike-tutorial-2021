@@ -26,42 +26,28 @@ module Engine
       cell.color = fg
     end
 
-    def cell_tiles
-      CellTilesAccessor.new(@buffer.data, w: @w)
-    end
+    def assign_tiles(x, y, tile_array_2d)
+      assigned_index = 0
+      assigned_data = tile_array_2d.data
+      assigned_size = assigned_data.size
+      assigned_w = tile_array_2d.w
 
-    class CellTilesAccessor
-      attr_reader :array, :w
+      own_data = @buffer.data
+      own_w = @w
+      own_index = y * own_w + x
+      next_row_index = own_index + assigned_w
 
-      def initialize(array, w:)
-        @w = w
-        @array = array
-      end
-
-      def []=(x_range, y, value)
-        x = x_range.begin
-        w = x_range.end - x_range.begin + (x_range.exclude_end? ? 0 : 1)
-        block_assignment = BlockAssignment.new(self, x: x, y: y, w: w)
-        fn.each_with_index_send(value, block_assignment, :assign)
-      end
-
-      class BlockAssignment
-        def initialize(accessor, x:, y:, w:)
-          @accessor = accessor
-          @x = x
-          @y = y
-          @w = w
-          @target_start_index = y * accessor.w + x
-        end
-
-        def assign(value, index)
-          target_x = index % @w
-          target_y = index.idiv(@w)
-          target_index = @target_start_index + target_y * @w + target_x
-          cell = @accessor.array[target_index]
-          cell.char = value.char
-          cell.color = value.fg
-          cell.background_color = value.bg
+      while assigned_index < assigned_size
+        cell = own_data[own_index]
+        assigned_cell = assigned_data[assigned_index]
+        cell.char = assigned_cell.char
+        cell.color = assigned_cell.fg
+        cell.background_color = assigned_cell.bg
+        assigned_index += 1
+        own_index += 1
+        if own_index >= next_row_index
+          own_index = own_index - assigned_w + own_w
+          next_row_index += own_w
         end
       end
     end

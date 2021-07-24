@@ -2,11 +2,21 @@ class GameMap
   def initialize(width:, height:)
     @width = width
     @height = height
-    @tiles = Array.new(width * height) { Tiles.floor }
-    @tiles[22 * width + 30] = Tiles.wall
-    @tiles[22 * width + 31] = Tiles.wall
-    @tiles[22 * width + 32] = Tiles.wall
-    @tiles[22 * width + 33] = Tiles.wall
+    @tiles = Array2D.new(
+      Array.new(width * height) { Tiles.floor },
+      w: width,
+      h: height
+    )
+    @tiles[30, 22] = Tiles.wall
+    @tiles[31, 22] = Tiles.wall
+    @tiles[32, 22] = Tiles.wall
+    @tiles[33, 22] = Tiles.wall
+
+    @rendered_tiles = Array2D.new(
+      @tiles.data.map(&:tile),
+      w: width,
+      h: height
+    )
   end
 
   def in_bounds?(x, y)
@@ -14,16 +24,10 @@ class GameMap
   end
 
   def walkable?(x, y)
-    cell_at(x, y)&.walkable?
+    @tiles[x, y]&.walkable?
   end
 
   def render(terminal, offset_y: nil)
-    terminal.cell_tiles[0...@width, offset_y || 0] = @tiles.map(&:tile)
-  end
-
-  private
-
-  def cell_at(x, y)
-    @tiles[y * @width + x]
+    terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
   end
 end
