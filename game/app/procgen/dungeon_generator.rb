@@ -1,11 +1,12 @@
 module Procgen
   class DungeonGenerator
     class Parameters
-      attr_reader :max_rooms, :room_size_range
+      attr_reader :max_rooms, :room_size_range, :max_monsters_per_room
 
-      def initialize(max_rooms:, room_size_range:)
+      def initialize(max_rooms:, room_size_range:, max_monsters_per_room:)
         @max_rooms = max_rooms
         @room_size_range = room_size_range
+        @max_monsters_per_room = max_monsters_per_room
       end
     end
 
@@ -39,6 +40,8 @@ module Procgen
       else
         connect_to_previous_room new_room
       end
+
+      place_entities(new_room)
 
       add_room_to_dungeon new_room
     end
@@ -74,6 +77,25 @@ module Procgen
       Procgen.tunnel_between(@rooms[-1].center, room.center).each do |tunnel_x, tunnel_y|
         @result.set_tile(tunnel_x, tunnel_y, Tiles.floor)
       end
+    end
+
+    def place_entities(room)
+      random_number_of_monsters.times do
+        x = room.x + 1 + (rand * (room.w - 2)).floor
+        y = room.y + 1 + (rand * (room.h - 2)).floor
+        next if @result.entity_at?(x, y)
+
+        if rand < 0.8
+          @result.add_entity Entity.build(:mutant_spider, x: x, y: y)
+        else
+          @result.add_entity Entity.build(:cyborg_bearman, x: x, y: y)
+        end
+      end
+    end
+
+    def random_number_of_monsters
+      @possible_monster_numbers ||= (0..@parameters.max_monsters_per_room).to_a
+      @possible_monster_numbers.sample
     end
 
     def add_room_to_dungeon(room)

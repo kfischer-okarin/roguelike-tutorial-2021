@@ -8,12 +8,18 @@ module Engine
       calc_tile_dimensions
     end
 
-    def tile_x(_string)
-      0 # Hardcoded for @
+    TILE_POSITIONS = {
+      '@' => [0, 11].freeze,
+      'B' => [2, 11].freeze,
+      's' => [3, 8].freeze
+    }.freeze
+
+    def tile_x(string)
+      TILE_POSITIONS[string].x * @tile_w
     end
 
-    def tile_y(_string)
-      @tile_h * 11 # Hardcoded for @
+    def tile_y(string)
+      TILE_POSITIONS[string].y * @tile_h
     end
 
     private
