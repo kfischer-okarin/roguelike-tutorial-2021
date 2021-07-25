@@ -29,9 +29,10 @@ def setup(args)
   map_width = 80
   map_height = 40
 
-  room_max_size = 10
-  room_min_size = 6
-  max_rooms = 30
+  procgen_parameters = Procgen::Parameters.new(
+    max_rooms: 10,
+    room_size_range: (6..10)
+  )
 
   Entities.gtk_state = args.state
   args.state.player = Entities.build(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
@@ -39,9 +40,7 @@ def setup(args)
   game_map = Procgen.generate_dungeon(
     map_width: map_width,
     map_height: map_height,
-    max_rooms: max_rooms,
-    room_min_size: room_min_size,
-    room_max_size: room_max_size,
+    parameters: procgen_parameters,
     player: args.state.player
   )
 
