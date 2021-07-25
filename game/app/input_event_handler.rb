@@ -13,19 +13,19 @@ module InputEventHandler
     end
 
     def dispatch_action_for_up
-      MovementAction.new(0, 1)
+      BumpIntoEntityAction.new(0, 1)
     end
 
     def dispatch_action_for_down
-      MovementAction.new(0, -1)
+      BumpIntoEntityAction.new(0, -1)
     end
 
     def dispatch_action_for_left
-      MovementAction.new(-1, 0)
+      BumpIntoEntityAction.new(-1, 0)
     end
 
     def dispatch_action_for_right
-      MovementAction.new(1, 0)
+      BumpIntoEntityAction.new(1, 0)
     end
   end
 end
