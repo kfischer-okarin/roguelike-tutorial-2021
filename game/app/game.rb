@@ -1,10 +1,13 @@
 class Game
-  attr_reader :game_map, :player
+  attr_reader :player, :game_map
 
-  def initialize(input_event_handler:, game_map:, player:)
+  def initialize(input_event_handler:, player:)
     @input_event_handler = input_event_handler
-    @game_map = game_map
     @player = player
+  end
+
+  def game_map=(value)
+    @game_map = value
     update_fov
   end
 

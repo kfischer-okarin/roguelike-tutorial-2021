@@ -26,6 +26,15 @@ def setup(args)
   screen_width = 80  # 80 * 16 = 1280
   screen_height = 45 # 45 * 16 = 720
 
+  tileset = Engine::Tileset.new('Zilk-16x16.png')
+  $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
+
+  Entities.gtk_state = args.state
+  Entities.setup
+  Entities.player = Entity.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
+
+  $game = Game.new(input_event_handler: InputEventHandler, player: args.state.player)
+
   map_width = 80
   map_height = 40
 
@@ -35,21 +44,12 @@ def setup(args)
     max_monsters_per_room: 2
   )
 
-  Entities.gtk_state = args.state
-  args.state.entities = []
-  args.state.player = Entity.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
-
-  game_map = Procgen.generate_dungeon(
+  $game.game_map = Procgen.generate_dungeon(
     map_width: map_width,
     map_height: map_height,
     parameters: procgen_parameters,
-    player: args.state.player
+    player: Entities.player
   )
-
-  tileset = Engine::Tileset.new('Zilk-16x16.png')
-  $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
-
-  $game = Game.new(input_event_handler: InputEventHandler, game_map: game_map, player: args.state.player)
 end
 
 def render_framerate(args)
@@ -73,6 +73,10 @@ module Entities
 
     attr_accessor :gtk_state
 
+    def setup
+      @gtk_state.entities = []
+    end
+
     def add(entity)
       @gtk_state.entities << entity
     end
@@ -83,6 +87,10 @@ module Entities
 
     def player
       @gtk_state.player
+    end
+
+    def player=(value)
+      @gtk_state.player = value
     end
   end
 end
