@@ -24,7 +24,7 @@ module Procgen
     private
 
     def generate
-      Entities.add @player
+      @result.add_entity @player
 
       @parameters.max_rooms.times do
         try_to_generate_room

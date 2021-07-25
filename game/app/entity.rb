@@ -6,7 +6,7 @@ module Entity
     end
 
     def build(type, x:, y:)
-      attributes = { x: x, y: y }.merge!(@prototypes[type] || {})
+      attributes = { x: x, y: y, game_map: nil }.merge!(@prototypes[type] || {})
       $state.new_entity_strict(type, attributes)
     end
 
