@@ -45,6 +45,7 @@ class GameMap
       y: y,
       radius: radius
     )
+    update_explored_tiles
     update_rendered_tiles
   end
 
@@ -52,6 +53,17 @@ class GameMap
 
   def update_transparent_tiles
     @transparent_tiles = Array2D.new(@width, @height, @tiles.data.map(&:transparent?))
+  end
+
+  def update_explored_tiles
+    visible = @visible.data
+    explored = @explored.data
+    visible_size = visible.size
+    index = 0
+    while index < visible_size
+      explored[index] ||= visible[index]
+      index += 1
+    end
   end
 
   def update_rendered_tiles
