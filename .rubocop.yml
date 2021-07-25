@@ -28,5 +28,6 @@ Naming/MethodParameterName:
 Style/GlobalVars:
   AllowedVariables:
     - $gtk
+    - $state
     - $terminal
     - $game

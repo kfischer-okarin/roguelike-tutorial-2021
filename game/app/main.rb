@@ -36,7 +36,7 @@ def setup(args)
 
   Entities.gtk_state = args.state
   args.state.entities = []
-  args.state.player = Entities.build(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
+  args.state.player = Entity.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
 
   game_map = Procgen.generate_dungeon(
     map_width: map_width,
@@ -72,10 +72,6 @@ module Entities
 
     def add(entity)
       @gtk_state.entities << entity
-    end
-
-    def build(x:, y:, char:, color:)
-      @gtk_state.new_entity_strict(:entity, x: x, y: y, char: char, color: color)
     end
 
     def each(&block)
