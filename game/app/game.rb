@@ -6,6 +6,7 @@ class Game
     @input_event_handler = input_event_handler
     @game_map = game_map
     @player = player
+    update_fov
   end
 
   def handle_input_events(input_events)
@@ -14,6 +15,7 @@ class Game
       next unless action
 
       action.perform(self, @player)
+      update_fov
     end
   end
 
@@ -26,5 +28,11 @@ class Game
       terminal.print(x: entity.x, y: entity.y + 5, string: entity.char, fg: entity.color)
     end
     terminal.render
+  end
+
+  private
+
+  def update_fov
+    @game_map.update_fov(x: @player.x, y: @player.y, radius: 8)
   end
 end

@@ -8,10 +8,14 @@ class Array2D
   end
 
   def [](x, y)
+    return nil unless in_bounds?(x, y)
+
     @data[y * @w + x]
   end
 
   def []=(x, y, value)
+    return unless in_bounds?(x, y)
+
     case value
     when Array2D
       assign_array_2d(x, y, value)
@@ -43,7 +47,15 @@ class Array2D
     end
   end
 
+  def fill(value)
+    @data.fill(value)
+  end
+
   private
+
+  def in_bounds?(x, y)
+    x >= 0 && x < @w && y >= 0 && y < @h
+  end
 
   def assign_array_2d(x, y, array_2d)
     assigned_index = 0

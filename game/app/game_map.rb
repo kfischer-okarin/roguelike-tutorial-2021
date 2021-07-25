@@ -9,17 +9,17 @@ class GameMap
     @visible = Array2D.new(width, height) { false }
     @explored = Array2D.new(width, height) { false }
 
-    calc_rendered_tiles
+    update_transparent_tiles
   end
 
   def set_tile(x, y, tile)
     @tiles[x, y] = tile
-    calc_rendered_tiles
+    update_transparent_tiles
   end
 
   def fill_rect(rect, tile)
     @tiles.fill_rect(rect, tile)
-    calc_rendered_tiles
+    update_transparent_tiles
   end
 
   def in_bounds?(x, y)
@@ -38,9 +38,23 @@ class GameMap
     terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
   end
 
+  def update_fov(x:, y: , radius:)
+    @visible = Engine::FieldOfView.calculate_line_of_sight_4e(
+      transparency_map: @transparent_tiles,
+      x: x,
+      y: y,
+      radius: radius
+    )
+    update_rendered_tiles
+  end
+
   private
 
-  def calc_rendered_tiles
+  def update_transparent_tiles
+    @transparent_tiles = Array2D.new(@width, @height, @tiles.data.map(&:transparent?))
+  end
+
+  def update_rendered_tiles
     shroud = Engine::Terminal::Tile.new(' ', fg: [255, 255, 255], bg: nil)
     @rendered_tiles = Array2D.new(@width, @height, [].tap { |result|
       tiles = @tiles.data
