@@ -3,6 +3,7 @@ require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
 require 'app/entity.rb'
+require 'app/entities.rb'
 require 'app/game.rb'
 require 'app/game_tile.rb'
 require 'app/tiles.rb'
@@ -65,34 +66,6 @@ def process_input(gtk_inputs)
     result << { type: :left } if key_down.left
     result << { type: :right } if key_down.right
   }
-end
-
-module Entities
-  class << self
-    include Enumerable
-
-    attr_accessor :gtk_state
-
-    def setup
-      @gtk_state.entities = []
-    end
-
-    def add(entity)
-      @gtk_state.entities << entity
-    end
-
-    def each(&block)
-      @gtk_state.entities.each(&block)
-    end
-
-    def player
-      @gtk_state.player
-    end
-
-    def player=(value)
-      @gtk_state.player = value
-    end
-  end
 end
 
 $gtk.reset
