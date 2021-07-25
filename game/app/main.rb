@@ -35,8 +35,6 @@ def setup(args)
 
   Entities.gtk_state = args.state
   args.state.player = Entities.build(x: screen_width.idiv(2), y: screen_height.idiv(2), char: '@', color: [255, 255, 255])
-  npc = Entities.build(x: screen_width.idiv(2) - 5, y: screen_height.idiv(2), char: '@', color: [255, 255, 0])
-  args.state.entities = [args.state.player, npc]
 
   game_map = Procgen.generate_dungeon(
     map_width: map_width,
@@ -50,7 +48,7 @@ def setup(args)
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
 
-  $game = Game.new(entities: Entities, input_event_handler: InputEventHandler, game_map: game_map, player: args.state.player)
+  $game = Game.new(input_event_handler: InputEventHandler, game_map: game_map, player: args.state.player)
 end
 
 def render_framerate(args)
@@ -71,6 +69,10 @@ end
 module Entities
   class << self
     attr_accessor :gtk_state
+
+    def add(entity)
+      @gtk_state.entities << entity
+    end
 
     def build(x:, y:, char:, color:)
       @gtk_state.new_entity_strict(:entity, x: x, y: y, char: char, color: color)

@@ -1,9 +1,10 @@
 class GameMap
   attr_reader :width, :height
 
-  def initialize(width:, height:)
+  def initialize(width:, height:, entities:)
     @width = width
     @height = height
+    @entities = entities
     @tiles = Array2D.new(width, height) { Tiles.wall }
 
     @visible = Array2D.new(width, height) { false }
@@ -36,6 +37,11 @@ class GameMap
 
   def render(terminal, offset_y: nil)
     terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
+    @entities.each do |entity|
+      next unless visible?(entity.x, entity.y)
+
+      terminal.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)
+    end
   end
 
   def update_fov(x:, y: , radius:)

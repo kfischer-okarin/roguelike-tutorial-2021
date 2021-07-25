@@ -3,7 +3,9 @@ require 'app/procgen/rectangular_room.rb'
 module Procgen
   class << self
     def generate_dungeon(max_rooms:, room_min_size:, room_max_size:, map_width:, map_height:, player:)
-      GameMap.new(width: map_width, height: map_height).tap { |dungeon|
+      Entities.add player
+
+      GameMap.new(width: map_width, height: map_height, entities: Entities).tap { |dungeon|
         rooms = []
         room_sizes = (room_min_size..room_max_size).to_a
         max_rooms.times do
