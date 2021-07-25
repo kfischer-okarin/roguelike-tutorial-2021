@@ -59,6 +59,10 @@ class GameMap
     @entities.any? { |entity| entity.x == x && entity.y == y }
   end
 
+  def blocking_entity_at(x, y)
+    @entities.find { |entity| entity.blocks_movement && entity.x == x && entity.y == y }
+  end
+
   def add_entity(entity)
     @entities.add entity
   end

@@ -19,6 +19,7 @@ class MovementAction
 
     return unless game_map.in_bounds?(dest_x, dest_y)
     return unless game_map.walkable?(dest_x, dest_y)
+    return if game_map.blocking_entity_at(dest_x, dest_y)
 
     Entity.move(entity, dx: @dx, dy: @dy)
   end
