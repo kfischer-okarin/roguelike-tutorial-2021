@@ -1,5 +1,5 @@
 class Game
-  attr_reader :game_map
+  attr_reader :game_map, :player
 
   def initialize(input_event_handler:, game_map:, player:)
     @input_event_handler = input_event_handler
@@ -13,7 +13,7 @@ class Game
       action = @input_event_handler.dispatch_action_for(event)
       next unless action
 
-      action.perform(self, @player)
+      action.perform
       handle_enemy_turns
       update_fov
     end

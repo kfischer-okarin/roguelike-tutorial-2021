@@ -1,35 +1,44 @@
-# Quits the game
-module EscapeAction
-  def self.perform(game, _entity)
-    game.quit
+class Action
+  def initialize(entity)
+    @entity = entity
   end
 end
 
-class ActionWithDirection
-  def initialize(dx, dy)
+# Quits the game
+module EscapeAction
+  def self.perform
+    $game.quit
+  end
+end
+
+class ActionWithDirection < Action
+  def initialize(entity, dx:, dy:)
+    super(entity)
     @dx = dx
     @dy = dy
+  end
+
+  def dest_x
+    @entity.x + @dx
+  end
+
+  def dest_y
+    @entity.y + @dy
   end
 end
 
 class BumpIntoEntityAction < ActionWithDirection
-  def perform(game, entity)
-    dest_x = entity.x + @dx
-    dest_y = entity.y + @dy
-    return MeleeAction.new(@dx, @dy).perform(game, entity) if game.game_map.blocking_entity_at(dest_x, dest_y)
+  def perform
+    return MeleeAction.new(@entity, dx: @dx, dy: @dy).perform if @entity.game_map.blocking_entity_at(dest_x, dest_y)
 
-    MovementAction.new(@dx, @dy).perform(game, entity)
+    MovementAction.new(@entity, dx: @dx, dy: @dy).perform
   end
 end
 
 # Attacks another entity
 class MeleeAction < ActionWithDirection
-  def perform(game, entity)
-    game_map = game.game_map
-    dest_x = entity.x + @dx
-    dest_y = entity.y + @dy
-
-    target = game_map.blocking_entity_at(dest_x, dest_y)
+  def perform
+    target = @entity.game_map.blocking_entity_at(dest_x, dest_y)
     return unless target
 
     puts "You kick the #{target.name}, much to its annoyance!"
@@ -38,14 +47,11 @@ end
 
 # Moves the player
 class MovementAction < ActionWithDirection
-  def perform(game, entity)
-    game_map = game.game_map
-    dest_x = entity.x + @dx
-    dest_y = entity.y + @dy
-
+  def perform
+    game_map = @entity.game_map
     return unless game_map.in_bounds?(dest_x, dest_y)
     return unless game_map.walkable?(dest_x, dest_y)
 
-    Entity.move(entity, dx: @dx, dy: @dy)
+    Entity.move(@entity, dx: @dx, dy: @dy)
   end
 end

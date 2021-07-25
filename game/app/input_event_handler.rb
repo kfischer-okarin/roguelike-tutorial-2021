@@ -13,19 +13,19 @@ module InputEventHandler
     end
 
     def dispatch_action_for_up
-      BumpIntoEntityAction.new(0, 1)
+      BumpIntoEntityAction.new($game.player, dx: 0, dy: 1)
     end
 
     def dispatch_action_for_down
-      BumpIntoEntityAction.new(0, -1)
+      BumpIntoEntityAction.new($game.player, dx: 0, dy: -1)
     end
 
     def dispatch_action_for_left
-      BumpIntoEntityAction.new(-1, 0)
+      BumpIntoEntityAction.new($game.player, dx: -1, dy: 0)
     end
 
     def dispatch_action_for_right
-      BumpIntoEntityAction.new(1, 0)
+      BumpIntoEntityAction.new($game.player, dx: 1, dy: 0)
     end
   end
 end
