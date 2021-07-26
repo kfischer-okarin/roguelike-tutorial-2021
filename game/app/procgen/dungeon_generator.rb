@@ -86,9 +86,9 @@ module Procgen
         next if @result.entity_at?(x, y)
 
         if rand < 0.8
-          @result.add_entity Entity.build(:mutant_spider, x: x, y: y)
+          @result.add_entity EntityPrototypes.build(:mutant_spider, x: x, y: y)
         else
-          @result.add_entity Entity.build(:cyborg_bearman, x: x, y: y)
+          @result.add_entity EntityPrototypes.build(:cyborg_bearman, x: x, y: y)
         end
       end
     end

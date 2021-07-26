@@ -3,6 +3,7 @@ require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
 require 'app/entity.rb'
+require 'app/entity_prototypes.rb'
 require 'app/entities.rb'
 require 'app/game.rb'
 require 'app/game_tile.rb'
@@ -31,7 +32,7 @@ def setup(args)
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
 
   Entities.setup(args.state)
-  Entities.player = Entity.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
+  Entities.player = EntityPrototypes.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
 
   $game = Game.new(input_event_handler: InputEventHandler, player: Entities.player)
 
