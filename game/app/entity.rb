@@ -26,7 +26,7 @@ class DataBackedObject
   end
 end
 
-class EntityObj < DataBackedObject
+class Entity < DataBackedObject
   attr_reader :id
 
   attr_accessor :game_map

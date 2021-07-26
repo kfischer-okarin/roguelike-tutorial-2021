@@ -3,7 +3,7 @@ module EntityPrototypes
     def build(type, x:, y:)
       attributes = { x: x, y: y }.merge!(@prototypes[type] || {})
       entity_data = $state.new_entity_strict(type, attributes)
-      EntityObj.from(entity_data)
+      Entity.from(entity_data)
     end
 
     def define(type, char:, color:, name: nil, blocks_movement: false)
