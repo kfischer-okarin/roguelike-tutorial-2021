@@ -1,4 +1,5 @@
 require 'lib/array_2d.rb'
+require 'lib/data_backed_object.rb'
 require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
