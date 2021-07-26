@@ -20,8 +20,4 @@ class DataBackedObject
     data_reader(*attributes)
     data_writer(*attributes)
   end
-
-  def initialize(data)
-    @data = data
-  end
 end

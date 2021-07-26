@@ -3,6 +3,7 @@ require 'lib/data_backed_object.rb'
 require 'lib/engine.rb'
 
 require 'app/input_event_handler.rb'
+require 'app/components.rb'
 require 'app/entity.rb'
 require 'app/entity_prototypes.rb'
 require 'app/entities.rb'

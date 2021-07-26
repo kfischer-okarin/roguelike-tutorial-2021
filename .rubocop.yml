@@ -25,6 +25,7 @@ Naming/MethodParameterName:
     - fg
     - bg
     - id
+    - hp
 
 Style/GlobalVars:
   AllowedVariables:
