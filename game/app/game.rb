@@ -14,6 +14,7 @@ class Game
       next unless action
 
       action.perform(self, @player)
+      handle_enemy_turns
       update_fov
     end
   end
@@ -25,6 +26,14 @@ class Game
   end
 
   private
+
+  def handle_enemy_turns
+    @game_map.entities.each do |entity|
+      next if entity == @player
+
+      puts "The #{entity.name} wonders when it will get to take a real turn."
+    end
+  end
 
   def update_fov
     @game_map.update_fov(x: @player.x, y: @player.y, radius: 8)

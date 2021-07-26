@@ -1,5 +1,5 @@
 class GameMap
-  attr_reader :width, :height
+  attr_reader :width, :height, :entities
 
   def initialize(width:, height:, entities:)
     @width = width
