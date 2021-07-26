@@ -36,6 +36,13 @@ class Entity < DataBackedObject
     @id = id
   end
 
+  def place(game_map, x:, y:)
+    @game_map = game_map
+    game_map.add_entity self
+    self.x = x
+    self.y = y
+  end
+
   def self.from(data)
     new(data.entity_id, data)
   end
@@ -60,4 +67,3 @@ class Entity < DataBackedObject
     self.y += dy
   end
 end
-

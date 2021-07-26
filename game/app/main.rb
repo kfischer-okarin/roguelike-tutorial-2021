@@ -32,7 +32,7 @@ def setup(args)
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
 
   Entities.setup(args.state)
-  Entities.player = EntityPrototypes.build(:player, x: screen_width.idiv(2), y: screen_height.idiv(2))
+  Entities.player = EntityPrototypes.build(:player)
 
   $game = Game.new(input_event_handler: InputEventHandler, player: Entities.player)
 

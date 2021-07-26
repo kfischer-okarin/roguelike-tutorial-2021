@@ -24,8 +24,6 @@ module Procgen
     private
 
     def generate
-      @result.add_entity @player
-
       @parameters.max_rooms.times do
         try_to_generate_room
       end
@@ -70,7 +68,8 @@ module Procgen
     end
 
     def add_player_to_room(room)
-      @player.x, @player.y = room.center
+      room_center = room.center
+      @player.place(@result, x: room_center.x, y: room_center.y)
     end
 
     def connect_to_previous_room(room)
@@ -85,11 +84,9 @@ module Procgen
         y = room.y + 1 + (rand * (room.h - 2)).floor
         next if @result.entity_at?(x, y)
 
-        if rand < 0.8
-          @result.add_entity EntityPrototypes.build(:mutant_spider, x: x, y: y)
-        else
-          @result.add_entity EntityPrototypes.build(:cyborg_bearman, x: x, y: y)
-        end
+        entity_type = rand < 0.8 ? :mutant_spider : :cyborg_bearman
+
+        EntityPrototypes.build(entity_type).place(@result, x: x, y: y)
       end
     end
 

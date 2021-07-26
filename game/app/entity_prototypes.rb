@@ -1,7 +1,7 @@
 module EntityPrototypes
   class << self
-    def build(type, x:, y:)
-      attributes = { x: x, y: y }.merge!(@prototypes[type] || {})
+    def build(type)
+      attributes = { x: nil, y: nil }.merge!(@prototypes[type] || {})
       entity_data = $state.new_entity_strict(type, attributes)
       Entity.from(entity_data)
     end
