@@ -52,6 +52,6 @@ class MovementAction < ActionWithDirection
     return unless game_map.in_bounds?(dest_x, dest_y)
     return unless game_map.walkable?(dest_x, dest_y)
 
-    Entity.move(@entity, dx: @dx, dy: @dy)
+    @entity.move(@dx, @dy)
   end
 end
