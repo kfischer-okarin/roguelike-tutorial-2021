@@ -31,10 +31,8 @@ class Game
   private
 
   def handle_enemy_turns
-    @game_map.entities.each do |entity|
-      next if entity == @player
-
-      puts "The #{entity.name} wonders when it will get to take a real turn."
+    @game_map.actors.each do |entity|
+      entity.ai.perform_action
     end
   end
 

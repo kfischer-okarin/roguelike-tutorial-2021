@@ -4,6 +4,12 @@ class Action
   end
 end
 
+class WaitAction
+  def perform
+    # no op
+  end
+end
+
 # Quits the game
 module EscapeAction
   def self.perform
