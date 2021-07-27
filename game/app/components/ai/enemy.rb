@@ -22,7 +22,7 @@ module Components
           return MovementAction.new(entity, dx: dest_x - entity.x, dy: dest_y - entity.y).perform
         end
 
-        WaitAction.new(entity).perform
+        WaitAction.perform
       end
 
       private

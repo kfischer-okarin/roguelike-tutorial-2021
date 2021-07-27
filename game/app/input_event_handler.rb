@@ -43,5 +43,9 @@ module InputEventHandler
     def dispatch_action_for_down_left
       BumpIntoEntityAction.new($game.player, dx: -1, dy: -1)
     end
+
+    def dispatch_action_for_wait
+      WaitAction
+    end
   end
 end

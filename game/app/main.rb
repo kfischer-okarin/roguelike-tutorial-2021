@@ -72,6 +72,7 @@ def process_input(gtk_inputs)
     result << { type: :up_left } if key_down.y
     result << { type: :down_right } if key_down.n
     result << { type: :down_left } if key_down.b
+    result << { type: :wait } if key_down.space || key_down.period
   }
 end
 

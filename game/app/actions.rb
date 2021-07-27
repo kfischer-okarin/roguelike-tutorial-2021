@@ -4,8 +4,8 @@ class Action
   end
 end
 
-class WaitAction
-  def perform
+module WaitAction
+  def self.perform
     # no op
   end
 end
