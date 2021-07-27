@@ -28,6 +28,10 @@ class Game
     terminal.render
   end
 
+  def quit
+    $gtk.request_quit
+  end
+
   private
 
   def handle_enemy_turns
