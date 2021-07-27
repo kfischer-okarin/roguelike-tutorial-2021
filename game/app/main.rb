@@ -64,10 +64,14 @@ def process_input(gtk_inputs)
   key_down = gtk_inputs.keyboard.key_down
   [].tap { |result|
     result << { type: :quit } if key_down.escape
-    result << { type: :up } if key_down.up
-    result << { type: :down } if key_down.down
-    result << { type: :left } if key_down.left
-    result << { type: :right } if key_down.right
+    result << { type: :up } if key_down.up || key_down.k
+    result << { type: :down } if key_down.down || key_down.j
+    result << { type: :left } if key_down.left || key_down.h
+    result << { type: :right } if key_down.right || key_down.l
+    result << { type: :up_right } if key_down.u
+    result << { type: :up_left } if key_down.y
+    result << { type: :down_right } if key_down.n
+    result << { type: :down_left } if key_down.b
   }
 end
 
