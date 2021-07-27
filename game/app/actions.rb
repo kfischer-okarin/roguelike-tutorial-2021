@@ -31,11 +31,15 @@ class ActionWithDirection < Action
   def dest_y
     @entity.y + @dy
   end
+
+  def target_actor
+    @entity.game_map.actor_at(dest_x, dest_y)
+  end
 end
 
 class BumpIntoEntityAction < ActionWithDirection
   def perform
-    return MeleeAction.new(@entity, dx: @dx, dy: @dy).perform if @entity.game_map.blocking_entity_at(dest_x, dest_y)
+    return MeleeAction.new(@entity, dx: @dx, dy: @dy).perform if target_actor
 
     MovementAction.new(@entity, dx: @dx, dy: @dy).perform
   end
@@ -44,10 +48,17 @@ end
 # Attacks another entity
 class MeleeAction < ActionWithDirection
   def perform
-    target = @entity.game_map.blocking_entity_at(dest_x, dest_y)
+    target = target_actor
     return unless target
 
-    puts "You kick the #{target.name}, much to its annoyance!"
+    damage = @entity.combatant.power - target.combatant.defense
+    attack_description = "#{@entity.name} attacks #{target_actor.name}"
+    if damage.positive?
+      puts "#{attack_description} for #{damage} hit points."
+      target.combatant.hp -= damage
+    else
+      puts "#{attack_description} but does no damage."
+    end
   end
 end
 

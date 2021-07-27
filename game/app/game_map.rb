@@ -67,6 +67,10 @@ class GameMap
     @entities.find { |entity| entity.blocks_movement? && entity.x == x && entity.y == y }
   end
 
+  def actor_at(x, y)
+    actors.find { |entity| entity.x == x && entity.y == y }
+  end
+
   def add_entity(entity)
     entity.game_map = self
     @entities.add entity
