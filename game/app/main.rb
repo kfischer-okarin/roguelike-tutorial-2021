@@ -4,6 +4,7 @@ require 'lib/priority_queue.rb'
 require 'lib/engine.rb'
 
 require 'app/render_order.rb'
+require 'app/actions.rb'
 require 'app/input_event_handler.rb'
 require 'app/components.rb'
 require 'app/entity.rb'
