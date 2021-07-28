@@ -17,9 +17,11 @@ module Engine
     end
 
     def print(x:, y:, string:, fg: nil)
-      cell = @buffer[x, y]
-      cell.char = string
-      cell.color = fg
+      string.each_char.with_index do |char, index|
+        cell = @buffer[x + index, y]
+        cell.char = char
+        cell.color = fg
+      end
     end
 
     def assign_tiles(x, y, tile_array_2d)
