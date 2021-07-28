@@ -38,7 +38,7 @@ def setup(args)
   Entities.setup(args.state)
   Entities.player = EntityPrototypes.build(:player)
 
-  $game = Game.new(input_event_handler: InputEventHandler, player: Entities.player)
+  $game = Game.new(player: Entities.player)
 
   map_width = 80
   map_height = 40
@@ -49,10 +49,16 @@ def setup(args)
     max_monsters_per_room: 2
   )
 
-  $game.game_map = Procgen.generate_dungeon(
+  game_map = Procgen.generate_dungeon(
     map_width: map_width,
     map_height: map_height,
     parameters: procgen_parameters,
+    player: Entities.player
+  )
+
+  $game.game_map = game_map
+  $game.input_event_handler = InputEventHandler::Gameplay.new(
+    game_map: game_map,
     player: Entities.player
   )
 end
