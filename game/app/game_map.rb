@@ -41,10 +41,13 @@ class GameMap
 
   def render(terminal, offset_y: nil)
     terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
-    @entities.each do |entity|
-      next unless visible?(entity.x, entity.y)
 
-      terminal.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)
+    RenderOrder.each do |render_order|
+      @entities.select { |entity| entity.render_order == render_order }.each do |entity|
+        next unless visible?(entity.x, entity.y)
+
+        terminal.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)
+      end
     end
   end
 

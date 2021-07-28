@@ -16,6 +16,7 @@ module Entity
       message = death_message
       self.char = '%'
       self.color = [191, 0, 0]
+      self.render_order = RenderOrder::CORPSE
       self.blocks_movement = false
       @ai = Components::AI::None
       self.name = "remains of #{name}"

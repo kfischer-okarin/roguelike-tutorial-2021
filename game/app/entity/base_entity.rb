@@ -17,7 +17,7 @@ module Entity
       self.y = y
     end
 
-    data_accessor :x, :y, :char, :color, :name
+    data_accessor :x, :y, :char, :color, :render_order, :name
     data_writer :blocks_movement
 
     def blocks_movement?

@@ -3,6 +3,7 @@ require 'lib/data_backed_object.rb'
 require 'lib/priority_queue.rb'
 require 'lib/engine.rb'
 
+require 'app/render_order.rb'
 require 'app/input_event_handler.rb'
 require 'app/components.rb'
 require 'app/entity.rb'

@@ -12,7 +12,7 @@ module EntityPrototypes
     end
 
     def define_actor(type, data)
-      define(type, { blocks_movement: true }.merge(data))
+      define(type, { blocks_movement: true, render_order: RenderOrder::ACTOR }.merge(data))
     end
 
     private
