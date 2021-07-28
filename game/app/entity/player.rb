@@ -1,5 +1,10 @@
 module Entity
   class Player < Actor
+    def die
+      super
+      $game.input_event_handler = InputEventHandler::GameOver.new
+    end
+
     protected
 
     def death_message
