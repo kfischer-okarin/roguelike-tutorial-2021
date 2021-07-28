@@ -5,17 +5,19 @@ module Entity
     end
 
     def ai
-      @ai ||= case data.ai
-              when :enemy
-                Components::AI::Enemy.new(self)
-              when :none
-                Components::AI::None
-              end
+      @ai ||= build_ai
     end
 
     def reset_reference
       super
       @combatant = nil
+      @ai = nil
+    end
+
+    protected
+
+    def build_ai
+      Components::AI::Enemy.new(self)
     end
   end
 end

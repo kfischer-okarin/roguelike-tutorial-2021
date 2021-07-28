@@ -12,7 +12,7 @@ module EntityPrototypes
     end
 
     def define_actor(type, data)
-      define(type, { blocks_movement: true, ai: :enemy }.merge(data))
+      define(type, { blocks_movement: true }.merge(data))
     end
 
     private
@@ -33,8 +33,7 @@ end
 EntityPrototypes.define_actor :player,
                               name: 'Player',
                               char: '@', color: [255, 255, 255],
-                              combatant: { hp: 30, defense: 2, power: 5 },
-                              ai: :none
+                              combatant: { hp: 30, defense: 2, power: 5 }
 
 EntityPrototypes.define_actor :mutant_spider,
                               name: 'Mutant Spider',
