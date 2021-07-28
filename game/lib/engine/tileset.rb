@@ -8,11 +8,23 @@ module Engine
       calc_tile_dimensions
     end
 
-    TILE_POSITIONS = {
-      '@' => [0, 11].freeze,
-      'B' => [2, 11].freeze,
-      's' => [3, 8].freeze,
-      '%' => [5, 13].freeze
+    TILES = [
+      [].freeze,
+      [].freeze,
+      %( !"#$%&'()*+,-./).chars.freeze,
+      '0123456789:;<=>?'.chars.freeze,
+      '@ABCDEFGHIJKLMNO'.chars.freeze,
+      'PQRSTUVWXYZ[\]^_'.chars.freeze,
+      '`abcdefghijklmno'.chars.freeze,
+      'pqrstuvwxyz{|}~⌂'.chars.freeze
+    ].freeze
+
+    TILE_POSITIONS = {}.tap { |result|
+      TILES.each_with_index { |row, y_from_top|
+        row.each_with_index do |char, x|
+          result[char] = [x, 15 - y_from_top].freeze
+        end
+      }
     }.freeze
 
     def tile_x(string)
