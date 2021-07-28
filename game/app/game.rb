@@ -25,6 +25,7 @@ class Game
   def render(terminal)
     terminal.clear
     @game_map.render(terminal, offset_y: 5)
+    terminal.print(x: 1, y: 2, string: "HP: #{@player.combatant.hp}/#{@player.combatant.max_hp}")
     terminal.render
   end
 
