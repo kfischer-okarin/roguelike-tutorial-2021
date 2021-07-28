@@ -24,6 +24,16 @@ module Engine
       end
     end
 
+    def draw_rect(x:, y:, width:, height:, bg:)
+      (y...(y + height)).each do |current_y|
+        (x...(x + width)).each do |current_x|
+          cell = @buffer[current_x, current_y]
+          cell.char ||= ' '
+          cell.background_color = bg
+        end
+      end
+    end
+
     def assign_tiles(x, y, tile_array_2d)
       assigned_index = 0
       assigned_data = tile_array_2d.data
