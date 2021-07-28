@@ -11,7 +11,8 @@ module Engine
     TILE_POSITIONS = {
       '@' => [0, 11].freeze,
       'B' => [2, 11].freeze,
-      's' => [3, 8].freeze
+      's' => [3, 8].freeze,
+      '%' => [5, 13].freeze
     }.freeze
 
     def tile_x(string)

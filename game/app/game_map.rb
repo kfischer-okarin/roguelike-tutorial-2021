@@ -14,7 +14,7 @@ class GameMap
   end
 
   def actors
-    @entities.select { |entity| entity.is_a? Entity::Actor }
+    @entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
   end
 
   def set_tile(x, y, tile)

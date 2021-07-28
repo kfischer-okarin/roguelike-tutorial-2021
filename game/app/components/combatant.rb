@@ -4,6 +4,11 @@ module Components
 
     def hp=(value)
       data.hp = value.clamp(0, data.max_hp)
+      @entity.die if dead?
+    end
+
+    def dead?
+      hp.zero?
     end
   end
 end
