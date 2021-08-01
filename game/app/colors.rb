@@ -11,5 +11,21 @@ module Colors
     def welcome_text
       [32, 160, 255]
     end
+
+    def player_attack
+      [224, 224, 224]
+    end
+
+    def enemy_attack
+      [255, 192, 192]
+    end
+
+    def player_death
+      [255, 48, 48]
+    end
+
+    def enemy_death
+      [255, 160, 48]
+    end
   end
 end

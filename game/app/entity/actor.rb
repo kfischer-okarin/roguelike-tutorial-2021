@@ -21,7 +21,7 @@ module Entity
       @ai = Components::AI::None
       self.name = "remains of #{name}"
 
-      puts(message)
+      $game.add_message(text: message, fg: death_message_color)
     end
 
     def reset_reference
@@ -30,10 +30,18 @@ module Entity
       @ai = nil
     end
 
+    def attack_message_color
+      Colors.enemy_attack
+    end
+
     protected
 
     def death_message
       "#{name} is dead!"
+    end
+
+    def death_message_color
+      Colors.enemy_death
     end
 
     def build_ai
