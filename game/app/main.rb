@@ -26,6 +26,7 @@ def tick(args)
 
   $game.render($terminal)
   $game.handle_input_events(process_input(args.inputs))
+  $game.handle_mouse($terminal.mouse_coordinates(args.inputs))
 
   render_framerate(args)
 end

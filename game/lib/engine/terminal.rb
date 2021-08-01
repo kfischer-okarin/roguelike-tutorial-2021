@@ -16,6 +16,11 @@ module Engine
       @prepared = false
     end
 
+    def mouse_coordinates(gtk_inputs)
+      mouse = gtk_inputs.mouse
+      [mouse.x.idiv(@tileset.tile_w), mouse.y.idiv(@tileset.tile_h)]
+    end
+
     def print(x:, y:, string:, fg: nil)
       string.each_char.with_index do |char, index|
         cell = @buffer[x + index, y]

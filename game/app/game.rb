@@ -18,6 +18,10 @@ class Game
     @input_event_handler.handle_input_events(input_events)
   end
 
+  def handle_mouse(mouse_position)
+    @mouse_position = mouse_position
+  end
+
   def add_message(text:, fg:, stack: true)
     @message_log.add_message(text: text, fg: fg, stack: stack)
   end
@@ -27,6 +31,7 @@ class Game
     render_game_map(terminal)
     render_hp_bar(terminal)
     render_message_log(terminal)
+    render_names_at_mouse_position(terminal)
     terminal.render
   end
 
@@ -43,10 +48,19 @@ class Game
   def render_hp_bar(terminal)
     @hp_bar.current_value = @player.combatant.hp
     @hp_bar.maximum_value = @player.combatant.max_hp
-    @hp_bar.render(terminal, x: 1, y: 2)
+    @hp_bar.render(terminal, x: 1, y: 4)
   end
 
   def render_message_log(terminal)
     @message_log.render(terminal, x: 21, y: 0, width: 40, height: 5)
+  end
+
+  def render_names_at_mouse_position(terminal)
+    mouse_x, mouse_y = @mouse_position
+    mouse_y -= 5
+    return unless @game_map.in_bounds?(mouse_x, mouse_y) && @game_map.visible?(mouse_x, mouse_y)
+
+    names_at_mouse_position = @game_map.entities_at(mouse_x, mouse_y).map(&:name).join(', ').capitalize
+    terminal.print(x: 21, y: 5, string: names_at_mouse_position)
   end
 end
