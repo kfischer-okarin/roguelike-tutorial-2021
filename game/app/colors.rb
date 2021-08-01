@@ -7,5 +7,9 @@ module Colors
     def hp_bar_empty
       [64, 16, 16]
     end
+
+    def welcome_text
+      [32, 160, 255]
+    end
   end
 end
