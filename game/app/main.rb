@@ -6,7 +6,6 @@ require 'lib/engine.rb'
 require 'app/colors.rb'
 require 'app/render_order.rb'
 require 'app/actions.rb'
-require 'app/input_event_handler.rb'
 require 'app/components.rb'
 require 'app/entity.rb'
 require 'app/entity_prototypes.rb'
@@ -29,7 +28,6 @@ def tick(args)
   $game.mouse_position = $terminal.mouse_coordinates(args.inputs)
   $game.render($terminal)
   $game.handle_input_events(process_input(args.inputs))
-  $game.handle_mouse($terminal.mouse_coordinates(args.inputs))
 
   render_framerate(args)
 end
@@ -64,11 +62,12 @@ def setup(args)
     player: Entities.player
   )
 
-  $game = Game.new(player: Entities.player, scene: Scenes::Gameplay.new(game_map: game_map, player: Entities.player))
-  $game.game_map = game_map
-  $game.input_event_handler = InputEventHandler::Gameplay.new(
-    game_map: game_map,
-    player: Entities.player
+  $game = Game.new(
+    player: Entities.player,
+    scene: Scenes::Gameplay.new(
+      game_map: game_map,
+      player: Entities.player
+    )
   )
 end
 
