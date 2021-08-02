@@ -79,35 +79,41 @@ module Engine
       :sprite
     end
 
-    class RenderedCell
+    class RenderedCell < Array
       attr_reader :x, :y, :r, :g, :b, :bg_r, :bg_g, :bg_b
       attr_accessor :char
 
+      # x, y, char, :r, :g, :b, :bg_r, :bg_g, :bg_b, bg_color
       def initialize(terminal, index)
-        @x = (index % terminal.w) * terminal.tileset.tile_w
-        @y = index.idiv(terminal.w) * terminal.tileset.tile_h
+        super(10)
+        self[0] = (index % terminal.w) * terminal.tileset.tile_w
+        self[1] = index.idiv(terminal.w) * terminal.tileset.tile_h
+      end
+
+      def char=(char)
+        self[2] = char
       end
 
       def color=(color)
-        @r, @g, @b = color || [nil, nil, nil]
+        self[3], self[4], self[5] = color || [nil, nil, nil]
       end
 
       def background_color=(color)
         if color
-          @bg_r, @bg_g, @bg_b = color
-          @bg_color = true
+          self[6], self[7], self[8] = color
+          self[9] = true
         else
-          @bg_r = @bg_g = @bg_b = nil
-          @bg_color = false
+          self[6] = self[7] = self[8] = nil
+          self[9] = false
         end
       end
 
       def bg_color?
-        @bg_color
+        self[9]
       end
 
       def self.clear(cell)
-        cell.char = nil
+        cell[2] = nil
       end
     end
 
@@ -120,28 +126,27 @@ module Engine
       buffer = @buffer.data
       buffer_size = buffer.size
       while index < buffer_size
-        cell = buffer[index]
-        char = cell.char
+        x, y, char, r, g, b, bg_r, bg_g, bg_b, bg_color = buffer[index]
         index += 1
         next unless char
 
-        if cell.bg_color?
-          ffi_draw.draw_sprite_4 cell.x, cell.y, tile_w, tile_h,
+        if bg_color
+          ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
                                  'bg',
                                  nil, # angle
-                                 nil, cell.bg_r, cell.bg_g, cell.bg_b, # a, r, g, b
+                                 nil, bg_r, bg_g, bg_b, # a, r, g, b
                                  nil, nil, nil, nil, # tile_x, tile_y, tile_w, tile_h
                                  nil, nil, # flip_horizontally, flip_vertically
                                  nil, nil, # angle_anchor_x, angle_anchor_y
                                  nil, nil, nil, nil, # source_x, source_y, source_w, source_h
                                  1 # blendmode_enum
         end
-        next if cell.char == ' '
+        next if char == ' '
 
-        ffi_draw.draw_sprite_4 cell.x, cell.y, tile_w, tile_h,
+        ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
                                path,
                                nil, # angle
-                               nil, cell.r, cell.g, cell.b, # a, r, g, b
+                               nil, r, g, b, # a, r, g, b
                                nil, nil, nil, nil, # tile_x, tile_y, tile_w, tile_h
                                nil, nil, # flip_horizontally, flip_vertically
                                nil, nil, # angle_anchor_x, angle_anchor_y
