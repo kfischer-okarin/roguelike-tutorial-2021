@@ -1,8 +1,8 @@
 class Game
   attr_reader :player
-  attr_accessor :input_event_handler, :game_map
+  attr_accessor :input_event_handler, :game_map, :mouse_position, :scene
 
-  def initialize(player:)
+  def initialize(player:, scene:)
     @player = player
     @hp_bar = UI::Bar.new(
       name: 'HP',
@@ -12,10 +12,11 @@ class Game
       bg: Colors.hp_bar_empty
     )
     @message_log = UI::MessageLog.new(x: 21, y: 0, width: 40, height: 5)
+    @scene = scene
   end
 
   def handle_input_events(input_events)
-    @input_event_handler.handle_input_events(input_events)
+    @scene.handle_input_events(input_events)
   end
 
   def handle_mouse(mouse_position)
@@ -24,10 +25,7 @@ class Game
 
   def render(terminal)
     terminal.clear
-    render_game_map(terminal)
-    render_hp_bar(terminal)
-    render_message_log(terminal)
-    render_names_at_mouse_position(terminal)
+    @scene.render(terminal)
     terminal.render
   end
 

@@ -12,6 +12,7 @@ require 'app/entity.rb'
 require 'app/entity_prototypes.rb'
 require 'app/entities.rb'
 require 'app/message_log.rb'
+require 'app/scenes.rb'
 require 'app/game.rb'
 require 'app/ui.rb'
 require 'app/game_tile.rb'
@@ -25,6 +26,7 @@ def tick(args)
   Entities.gtk_state = args.state
   $terminal.gtk_outputs = args.outputs
 
+  $game.mouse_position = $terminal.mouse_coordinates(args.inputs)
   $game.render($terminal)
   $game.handle_input_events(process_input(args.inputs))
   $game.handle_mouse($terminal.mouse_coordinates(args.inputs))
@@ -45,7 +47,6 @@ def setup(args)
 
   $message_log = MessageLog.new
   $message_log.add_message(text: 'Hello and welcome, traveler, to yet another dimension!', fg: Colors.welcome_text)
-  $game = Game.new(player: Entities.player)
 
   map_width = 80
   map_height = 40
@@ -63,6 +64,7 @@ def setup(args)
     player: Entities.player
   )
 
+  $game = Game.new(player: Entities.player, scene: Scenes::Gameplay.new(game_map: game_map, player: Entities.player))
   $game.game_map = game_map
   $game.input_event_handler = InputEventHandler::Gameplay.new(
     game_map: game_map,
