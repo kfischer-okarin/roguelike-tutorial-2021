@@ -55,10 +55,10 @@ class MeleeAction < ActionWithDirection
     attack_description = "#{@entity.name} attacks #{target_actor.name}"
     message_color = @entity.attack_message_color
     if damage.positive?
-      $game.add_message(text: "#{attack_description} for #{damage} hit points.", fg: message_color)
+      $message_log.add_message(text: "#{attack_description} for #{damage} hit points.", fg: message_color)
       target.combatant.hp -= damage
     else
-      $game.add_message(text: "#{attack_description} but does no damage.", fg: message_color)
+      $message_log.add_message(text: "#{attack_description} but does no damage.", fg: message_color)
     end
   end
 end

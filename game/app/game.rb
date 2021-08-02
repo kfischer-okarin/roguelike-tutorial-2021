@@ -11,7 +11,7 @@ class Game
       fg: Colors.hp_bar_filled,
       bg: Colors.hp_bar_empty
     )
-    @message_log = UI::MessageLog.new
+    @message_log = UI::MessageLog.new(x: 21, y: 0, width: 40, height: 5)
   end
 
   def handle_input_events(input_events)
@@ -20,10 +20,6 @@ class Game
 
   def handle_mouse(mouse_position)
     @mouse_position = mouse_position
-  end
-
-  def add_message(text:, fg:, stack: true)
-    @message_log.add_message(text: text, fg: fg, stack: stack)
   end
 
   def render(terminal)
@@ -52,7 +48,7 @@ class Game
   end
 
   def render_message_log(terminal)
-    @message_log.render(terminal, x: 21, y: 0, width: 40, height: 5)
+    @message_log.render(terminal)
   end
 
   def render_names_at_mouse_position(terminal)

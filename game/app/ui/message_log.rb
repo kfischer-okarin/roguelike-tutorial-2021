@@ -1,49 +1,26 @@
 module UI
   class MessageLog
-    def initialize
-      @messages = []
+    def initialize(x:, y:, width:, height:)
+      @x = x
+      @y = y
+      @width = width
+      @height = height
     end
 
-    def add_message(text:, fg:, stack: true)
-      last_message = @messages.last
-      if stack && last_message&.text == text
-        last_message.count += 1
-        return
-      end
-
-      @messages << Message.new(text: text, fg: fg)
-    end
-
-    def render(terminal, x:, y:, width:, height:)
+    def render(terminal)
       y_offset = 0
-      message_index = @messages.length - 1
+      messages = $message_log.messages
+      message_index = messages.length - 1
       loop do
         return if message_index.negative?
 
-        message = @messages[message_index]
-        message.full_text.wrapped_lines(width).reverse_each do |line|
-          terminal.print(x: x, y: y + y_offset, string: line.strip, fg: message.fg)
+        message = messages[message_index]
+        message.full_text.wrapped_lines(@width).reverse_each do |line|
+          terminal.print(x: @x, y: @y + y_offset, string: line.strip, fg: message.fg)
           y_offset += 1
-          return if y_offset >= height
+          return if y_offset >= @height
         end
         message_index -= 1
-      end
-    end
-
-    class Message
-      attr_reader :text, :fg
-      attr_accessor :count
-
-      def initialize(text:, fg:)
-        @text = text
-        @fg = fg
-        @count = 1
-      end
-
-      def full_text
-        return @text unless @count > 1
-
-        "#{@text} (#{@count})"
       end
     end
   end

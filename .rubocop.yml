@@ -34,3 +34,4 @@ Style/GlobalVars:
     - $state
     - $terminal
     - $game
+    - $message_log

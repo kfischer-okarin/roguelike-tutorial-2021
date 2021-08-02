@@ -11,6 +11,7 @@ require 'app/components.rb'
 require 'app/entity.rb'
 require 'app/entity_prototypes.rb'
 require 'app/entities.rb'
+require 'app/message_log.rb'
 require 'app/game.rb'
 require 'app/ui.rb'
 require 'app/game_tile.rb'
@@ -42,8 +43,9 @@ def setup(args)
   Entities.setup(args.state)
   Entities.player = EntityPrototypes.build(:player)
 
+  $message_log = MessageLog.new
+  $message_log.add_message(text: 'Hello and welcome, traveler, to yet another dimension!', fg: Colors.welcome_text)
   $game = Game.new(player: Entities.player)
-  $game.add_message(text: 'Hello and welcome, traveler, to yet another dimension!', fg: Colors.welcome_text)
 
   map_width = 80
   map_height = 40

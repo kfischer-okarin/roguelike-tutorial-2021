@@ -21,7 +21,7 @@ module Entity
       @ai = Components::AI::None
       self.name = "remains of #{name}"
 
-      $game.add_message(text: message, fg: death_message_color)
+      $message_log.add_message(text: message, fg: death_message_color)
     end
 
     def reset_reference
