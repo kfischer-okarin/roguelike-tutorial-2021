@@ -11,9 +11,9 @@ class Game
     @scene.handle_input_events(input_events)
   end
 
-  def render(terminal)
-    terminal.clear
-    @scene.render(terminal)
+  def render(console)
+    console.clear
+    @scene.render(console)
   end
 
   def quit

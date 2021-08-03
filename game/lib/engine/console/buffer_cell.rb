@@ -5,10 +5,10 @@ module Engine
       attr_accessor :char
 
       # x, y, char, :r, :g, :b, :bg_r, :bg_g, :bg_b, bg_color
-      def initialize(terminal, index)
+      def initialize(console, index)
         super(10)
-        self[0] = (index % terminal.w)
-        self[1] = index.idiv(terminal.w)
+        self[0] = (index % console.w)
+        self[1] = index.idiv(console.w)
       end
 
       def char=(char)

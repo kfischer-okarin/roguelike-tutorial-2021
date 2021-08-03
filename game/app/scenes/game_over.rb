@@ -8,8 +8,8 @@ module Scenes
       @input_event_handler = InputEventHandler.new
     end
 
-    def render(terminal)
-      @gameplay_scene.render(terminal)
+    def render(console)
+      @gameplay_scene.render(console)
     end
 
     class InputEventHandler < BaseInputHandler

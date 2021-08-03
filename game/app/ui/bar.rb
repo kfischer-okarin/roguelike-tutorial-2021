@@ -11,11 +11,11 @@ module UI
       @bg = bg
     end
 
-    def render(terminal, x:, y:)
+    def render(console, x:, y:)
       bar_width = ((@current_value / @maximum_value) * @total_width).to_i
-      terminal.draw_rect(x: x, y: y, width: @total_width, height: 1, bg: @bg)
-      terminal.draw_rect(x: x, y: y, width: bar_width, height: 1, bg: @fg)
-      terminal.print(x: x + 1, y: y, string: "#{@name}: #{@current_value}/#{@maximum_value}")
+      console.draw_rect(x: x, y: y, width: @total_width, height: 1, bg: @bg)
+      console.draw_rect(x: x, y: y, width: bar_width, height: 1, bg: @fg)
+      console.print(x: x + 1, y: y, string: "#{@name}: #{@current_value}/#{@maximum_value}")
     end
   end
 end

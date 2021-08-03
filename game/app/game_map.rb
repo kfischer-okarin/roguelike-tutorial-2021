@@ -39,14 +39,14 @@ class GameMap
     @visible[x, y]
   end
 
-  def render(terminal, offset_y: nil)
-    terminal.assign_tiles(0, offset_y || 0, @rendered_tiles)
+  def render(console, offset_y: nil)
+    console.assign_tiles(0, offset_y || 0, @rendered_tiles)
 
     RenderOrder.each do |render_order|
       @entities.select { |entity| entity.render_order == render_order }.each do |entity|
         next unless visible?(entity.x, entity.y)
 
-        terminal.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)
+        console.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)
       end
     end
   end

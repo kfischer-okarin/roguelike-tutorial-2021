@@ -7,7 +7,7 @@ module UI
       @height = height
     end
 
-    def render(terminal)
+    def render(console)
       y_offset = 0
       messages = $message_log.messages
       message_index = messages.length - 1
@@ -16,7 +16,7 @@ module UI
 
         message = messages[message_index]
         message.full_text.wrapped_lines(@width).reverse_each do |line|
-          terminal.print(x: @x, y: @y + y_offset, string: line.strip, fg: message.fg)
+          console.print(x: @x, y: @y + y_offset, string: line.strip, fg: message.fg)
           y_offset += 1
           return if y_offset >= @height
         end

@@ -20,11 +20,11 @@ module Scenes
       update_fov
     end
 
-    def render(terminal)
-      render_game_map(terminal)
-      render_hp_bar(terminal)
-      render_message_log(terminal)
-      render_names_at_mouse_position(terminal)
+    def render(console)
+      render_game_map(console)
+      render_hp_bar(console)
+      render_message_log(console)
+      render_names_at_mouse_position(console)
     end
 
     def after_action_performed
@@ -49,27 +49,27 @@ module Scenes
       $game.scene = GameOver.new(self)
     end
 
-    def render_game_map(terminal)
-      @game_map.render(terminal, offset_y: 5)
+    def render_game_map(console)
+      @game_map.render(console, offset_y: 5)
     end
 
-    def render_hp_bar(terminal)
+    def render_hp_bar(console)
       @hp_bar.current_value = @player.combatant.hp
       @hp_bar.maximum_value = @player.combatant.max_hp
-      @hp_bar.render(terminal, x: 1, y: 4)
+      @hp_bar.render(console, x: 1, y: 4)
     end
 
-    def render_message_log(terminal)
-      @message_log.render(terminal)
+    def render_message_log(console)
+      @message_log.render(console)
     end
 
-    def render_names_at_mouse_position(terminal)
+    def render_names_at_mouse_position(console)
       mouse_x, mouse_y = $game.mouse_position
       mouse_y -= 5
       return unless @game_map.in_bounds?(mouse_x, mouse_y) && @game_map.visible?(mouse_x, mouse_y)
 
       names_at_mouse_position = @game_map.entities_at(mouse_x, mouse_y).map(&:name).join(', ').capitalize
-      terminal.print(x: 21, y: 5, string: names_at_mouse_position)
+      console.print(x: 21, y: 5, string: names_at_mouse_position)
     end
   end
 end
