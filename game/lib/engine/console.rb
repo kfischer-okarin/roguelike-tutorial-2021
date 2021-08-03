@@ -17,11 +17,17 @@ module Engine
     end
 
     def print(x:, y:, string:, fg: nil)
-      string.each_char.with_index do |char, index|
+      string.unicode_chars.each_with_index do |char, index|
         cell = @buffer[x + index, y]
         cell.char = char
         cell.color = fg
       end
+    end
+
+    def print_box_centered(x:, y:, width:, height:, string:)
+      actual_x = x + width.idiv(2) - string.length.idiv(2)
+      actual_y = y + height.idiv(2)
+      print(x: actual_x, y: actual_y, string: string)
     end
 
     def draw_rect(x:, y:, width:, height:, bg:)
@@ -93,6 +99,29 @@ module Engine
         if own_index >= next_row_index
           own_index = own_index - assigned_w + own_w
           next_row_index += own_w
+        end
+      end
+    end
+
+    def blit(other_console, x:, y:)
+      target_data = other_console.buffer_data
+      target_w = other_console.width
+
+      index = 0
+      data = buffer_data
+      data_size = data.size
+      w = @width
+
+      target_index = y * target_w + x
+      next_row_index = target_index + w
+
+      while index < data_size
+        target_data[target_index][2..-1] = data[index][2..-1]
+        target_index += 1
+        index += 1
+        if target_index >= next_row_index
+          target_index = target_index - w + target_w
+          next_row_index += target_w
         end
       end
     end
