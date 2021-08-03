@@ -2,3 +2,6 @@
 Gemfile.lock
 vendor
 game/builds
+*~
+.\#*
+\#*\#
