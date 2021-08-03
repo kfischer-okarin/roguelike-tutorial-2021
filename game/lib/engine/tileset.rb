@@ -1,3 +1,23 @@
+class String
+  def unicode_chars
+    [].tap { |result|
+      original_chars = chars
+      index = 0
+      while index < original_chars.size
+        char = original_chars[index]
+        if char == "\xe2"
+          result << self[index..(index + 2)]
+          index += 3
+        else
+          result << char
+          index += 1
+        end
+      end
+    }
+  end
+end
+
+
 module Engine
   # Tileset in 16x16 tiles Dwarf Fortress layout
   class Tileset
@@ -16,7 +36,13 @@ module Engine
       '@ABCDEFGHIJKLMNO'.chars.freeze,
       'PQRSTUVWXYZ[\]^_'.chars.freeze,
       '`abcdefghijklmno'.chars.freeze,
-      'pqrstuvwxyz{|}~⌂'.chars.freeze
+      'pqrstuvwxyz{|}~⌂'.chars.freeze,
+      [].freeze,
+      [].freeze,
+      [].freeze,
+      '░▒▓│┤╡╢╖╕╣║╗╝╜╛┐'.unicode_chars.freeze,
+      '└┴┬├─┼╞╟╚╔╩╦╠═╬╧'.unicode_chars.freeze,
+      '╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀'.unicode_chars.freeze
     ].freeze
 
     TILE_POSITIONS = {}.tap { |result|
@@ -44,3 +70,4 @@ module Engine
     end
   end
 end
+
