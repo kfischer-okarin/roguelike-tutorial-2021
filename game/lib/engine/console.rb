@@ -34,6 +34,43 @@ module Engine
       end
     end
 
+    def draw_frame(x:, y:, width:, height:, decoration: nil)
+      decoration_chars = (decoration || '┌─┐│ │└─┘').unicode_chars
+
+      right = x + width - 1
+      top = y + height - 1
+      (x..right).each do |current_x|
+        (y..top).each do |current_y|
+          char_index = if current_x == x
+                         if current_y == y
+                           6 # bottom left
+                         elsif current_y < top
+                           3 # left
+                         else
+                           0 # top left
+                         end
+                       elsif current_x < right
+                         if current_y == y
+                           7 # bottom
+                         elsif current_y < top
+                           4 # middle
+                         else
+                           1 # top
+                         end
+                       else
+                         if current_y == y
+                           8 # bottom right
+                         elsif current_y < top
+                           5 # right
+                         else
+                           2 # top right
+                         end
+                       end
+          @buffer[current_x, current_y].char = decoration_chars[char_index]
+        end
+      end
+    end
+
     def assign_tiles(x, y, tile_array_2d)
       assigned_index = 0
       assigned_data = tile_array_2d.data
