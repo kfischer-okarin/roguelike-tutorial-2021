@@ -23,11 +23,12 @@ def tick(args)
   setup(args) if args.tick_count.zero?
 
   Entities.gtk_state = args.state
-  $terminal.gtk_outputs = args.outputs
+  $render_context.gtk_outputs = args.outputs
 
-  $game.mouse_position = $terminal.mouse_coordinates(args.inputs)
-  $game.render($terminal)
+  $game.mouse_position = $render_context.mouse_coordinates(args.inputs)
+  $game.render($console)
   $game.handle_input_events(process_input(args.inputs))
+  $render_context.present($console)
 
   render_framerate(args)
 end
@@ -39,6 +40,8 @@ def setup(args)
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $terminal = Engine::Terminal.new(screen_width, screen_height, tileset: tileset)
+  $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
+  $console = Engine::Console.new(screen_width, screen_height)
 
   Entities.setup(args.state)
   Entities.player = EntityPrototypes.build(:player)

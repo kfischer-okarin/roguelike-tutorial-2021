@@ -14,7 +14,6 @@ class Game
   def render(terminal)
     terminal.clear
     @scene.render(terminal)
-    terminal.render
   end
 
   def quit
