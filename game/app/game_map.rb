@@ -97,7 +97,7 @@ class GameMap
   end
 
   def update_rendered_tiles
-    shroud = Engine::Terminal::Tile.new(' ', fg: [255, 255, 255], bg: nil)
+    shroud = Engine::Tile.new(' ', fg: [255, 255, 255], bg: nil)
     @rendered_tiles = Array2D.new(@width, @height, [].tap { |result|
       tiles = @tiles.data
       visible = @visible.data

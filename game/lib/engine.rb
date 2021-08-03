@@ -1,5 +1,6 @@
 require 'lib/engine/line_of_sight.rb'
 require 'lib/engine/field_of_view.rb'
+require 'lib/engine/tile.rb'
 require 'lib/engine/tileset.rb'
 require 'lib/engine/render_context.rb'
 require 'lib/engine/console.rb'

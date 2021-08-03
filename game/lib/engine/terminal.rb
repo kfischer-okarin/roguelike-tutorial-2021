@@ -1,5 +1,3 @@
-require 'lib/engine/terminal/tile.rb'
-
 module Engine
   # Simulated terminal for rendering the tiles
   class Terminal

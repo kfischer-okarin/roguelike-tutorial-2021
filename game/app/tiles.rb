@@ -9,8 +9,8 @@ module Tiles
   end
 
   def self.build_game_tile(dark:, light:, walkable:, transparent:)
-    dark = Engine::Terminal::Tile.new(dark[:char], fg: dark[:fg], bg: dark[:bg])
-    light = Engine::Terminal::Tile.new(light[:char], fg: light[:fg], bg: light[:bg])
+    dark = Engine::Tile.new(dark[:char], fg: dark[:fg], bg: dark[:bg])
+    light = Engine::Tile.new(light[:char], fg: light[:fg], bg: light[:bg])
     GameTile.new(walkable: walkable, transparent: transparent, dark: dark, light: light)
   end
 
