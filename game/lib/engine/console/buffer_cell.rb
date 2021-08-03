@@ -7,8 +7,8 @@ module Engine
       # x, y, char, :r, :g, :b, :bg_r, :bg_g, :bg_b, bg_color
       def initialize(console, index)
         super(10)
-        self[0] = (index % console.w)
-        self[1] = index.idiv(console.w)
+        self[0] = (index % console.width)
+        self[1] = index.idiv(console.width)
       end
 
       def char=(char)

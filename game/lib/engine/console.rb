@@ -3,13 +3,13 @@ require 'lib/engine/console/buffer_cell.rb'
 module Engine
   # Simulated terminal for rendering the tiles
   class Console
-    attr_reader :w, :h
+    attr_reader :width, :height
 
-    def initialize(w, h)
-      @w = w
-      @h = h
+    def initialize(width, height)
+      @width = width
+      @height = height
 
-      @buffer = Array2D.new(w, h) { |index| BufferCell.new(self, index) }
+      @buffer = Array2D.new(width, height) { |index| BufferCell.new(self, index) }
     end
 
     def buffer_data
@@ -41,7 +41,7 @@ module Engine
       assigned_w = tile_array_2d.w
 
       own_data = @buffer.data
-      own_w = @w
+      own_w = @width
       own_index = y * own_w + x
       next_row_index = own_index + assigned_w
 
