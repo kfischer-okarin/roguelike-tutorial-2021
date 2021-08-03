@@ -60,6 +60,7 @@ module Scenes
     end
 
     def render_message_log(console)
+      @message_log.messages = $message_log.messages
       @message_log.render(console)
     end
 

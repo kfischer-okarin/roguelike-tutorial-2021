@@ -16,6 +16,10 @@ class Game
     @scene.render(console)
   end
 
+  def show_history(console)
+    @scene = Scenes::HistoryViewer.new(previous_scene: @scene, console: console)
+  end
+
   def quit
     $gtk.request_quit
   end

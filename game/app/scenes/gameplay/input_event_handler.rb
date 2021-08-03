@@ -47,6 +47,11 @@ module Scenes
       def dispatch_action_for_wait
         WaitAction
       end
+
+      def dispatch_action_for_view_history
+        $game.show_history($console)
+        nil
+      end
     end
   end
 end

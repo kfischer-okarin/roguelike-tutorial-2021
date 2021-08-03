@@ -90,6 +90,11 @@ def process_input(gtk_inputs)
     result << { type: :down_right } if key_down.n
     result << { type: :down_left } if key_down.b
     result << { type: :wait } if key_down.space || key_down.period
+    result << { type: :view_history } if key_down.v
+    result << { type: :page_up } if key_down.pageup
+    result << { type: :page_down } if key_down.pagedown
+    result << { type: :home } if key_down.home
+    result << { type: :end } if key_down.end
   }
 end
 

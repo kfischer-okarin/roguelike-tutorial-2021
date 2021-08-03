@@ -1,5 +1,7 @@
 module UI
   class MessageLog
+    attr_accessor :x, :y, :width, :height, :messages
+
     def initialize(x:, y:, width:, height:)
       @x = x
       @y = y
@@ -9,7 +11,6 @@ module UI
 
     def render(console)
       y_offset = 0
-      messages = $message_log.messages
       message_index = messages.length - 1
       loop do
         return if message_index.negative?
