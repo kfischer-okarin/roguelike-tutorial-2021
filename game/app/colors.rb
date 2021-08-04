@@ -1,5 +1,9 @@
 module Colors
   class << self
+    def error
+      [255, 64, 64]
+    end
+
     def hp_bar_filled
       [0, 96, 0]
     end

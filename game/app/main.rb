@@ -25,10 +25,16 @@ def tick(args)
   Entities.gtk_state = args.state
   $render_context.gtk_outputs = args.outputs
 
-  $game.mouse_position = $render_context.mouse_coordinates(args.inputs)
-  $game.render($console)
-  $game.handle_input_events(process_input(args.inputs))
-  $render_context.present($console)
+  begin
+    $game.mouse_position = $render_context.mouse_coordinates(args.inputs)
+    $game.render($console)
+    $game.handle_input_events(process_input(args.inputs))
+    $render_context.present($console)
+  rescue StandardError => e
+    message = e.inspect
+    log_error(message)
+    $message_log.add_message(text: message, fg: Colors.error)
+  end
 
   render_framerate(args)
 end
