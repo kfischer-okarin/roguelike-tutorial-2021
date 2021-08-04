@@ -76,7 +76,7 @@ class GameMap
 
   def add_entity(entity)
     entity.game_map = self
-    @entities.add entity
+    @entities << entity
   end
 
   private
