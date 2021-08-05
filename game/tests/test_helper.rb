@@ -7,6 +7,13 @@ module GTK
       raise "Collection:\n  #{collection.inspect}\n\ndid not contain:\n  #{element}\n#{message}."
     end
 
+    def includes_no!(collection, element, message = nil)
+      @assertion_performed = true
+      return unless collection.include? element
+
+      raise "Collection:\n  #{collection.inspect}\n\nwas not expected to contain:\n  #{element}\n#{message}."
+    end
+
     def raises_with_message!(exception_class, exception_message, message = nil)
       @assertion_performed = true
 
@@ -92,6 +99,16 @@ module TestHelper
         name: name || 'Enemy',
         combatant: { hp: hp, max_hp: hp, defense: defense, power: power }
       )
+    end
+  end
+
+  class Spy
+    def initialize
+      @calls = []
+    end
+
+    def method_missing(name, *args)
+      @calls << [name, args]
     end
   end
 end

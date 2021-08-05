@@ -1,6 +1,7 @@
+require 'tests/test_helper.rb'
+
 def test_combatant_heal(_args, assert)
-  entity = TestHelper::EntityStub.new
-  combatant = Components::Combatant.new(entity, { hp: 5, max_hp: 10 })
+  combatant = Components::Combatant.new(TestHelper::Spy.new, { hp: 5, max_hp: 10 })
 
   healed_amount = combatant.heal(2)
 
@@ -14,28 +15,17 @@ def test_combatant_heal(_args, assert)
 end
 
 def test_combatant_take_damage(_args, assert)
-  entity = TestHelper::EntityStub.new
+  entity = TestHelper::Spy.new
   combatant = Components::Combatant.new(entity, { hp: 5, max_hp: 10 })
 
   combatant.take_damage(2)
 
   assert.equal! combatant.hp, 3
-  assert.false! entity.died?
+  assert.includes_no! entity.calls, [:die, []]
 
   combatant.take_damage(20)
 
   assert.equal! combatant.hp, 0
-  assert.true! entity.died?
+  assert.includes! entity.calls, [:die, []]
 end
 
-module TestHelper
-  class EntityStub
-    def die
-      @died = true
-    end
-
-    def died?
-      @died || false
-    end
-  end
-end
