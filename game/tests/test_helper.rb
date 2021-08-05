@@ -18,16 +18,19 @@ module GTK
       @assertion_performed = true
 
       expected_description = "#{exception_class} with #{exception_message.inspect}"
+      error_message = nil
       begin
         yield
-        raise "Expected:\n  #{expected_description}\n\nto be raised, but nothing was raised.\n #{message}."
+        error_message = "Expected:\n  #{expected_description}\n\nto be raised, but nothing was raised.\n #{message}."
       rescue exception_class => e
         return if e.message == exception_message
 
-        raise "Actual exception:\n  #{exception_description(e)}\n\nwas raised but expected:\n  #{expected_description}\n#{message}."
+        error_message = "Actual exception:\n  #{exception_description(e)}\n\nwas raised but expected:\n  #{expected_description}\n#{message}."
       rescue StandardError => e
-        raise "Actual exception:\n  #{exception_description(e)}\n\nwas raised but expected:\n  #{expected_description}\n#{message}."
+        error_message = "Actual exception:\n  #{exception_description(e)}\n\nwas raised but expected:\n  #{expected_description}\n#{message}."
       end
+
+      raise error_message if error_message
     end
 
     def raises_no_exception!(message = nil)
