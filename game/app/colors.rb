@@ -4,6 +4,10 @@ module Colors
       [255, 64, 64]
     end
 
+    def action_impossible
+      [128, 128, 128]
+    end
+
     def hp_bar_filled
       [0, 96, 0]
     end
