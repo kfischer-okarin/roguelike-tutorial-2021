@@ -69,8 +69,8 @@ end
 class MovementAction < ActionWithDirection
   def perform
     game_map = @entity.game_map
-    return unless game_map.in_bounds?(dest_x, dest_y)
-    return unless game_map.walkable?(dest_x, dest_y)
+    raise Action::Impossible, 'That way is blocked.' unless game_map.in_bounds?(dest_x, dest_y)
+    raise Action::Impossible, 'That way is blocked.' unless game_map.walkable?(dest_x, dest_y)
 
     @entity.move(@dx, @dy)
   end
