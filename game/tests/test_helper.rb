@@ -40,5 +40,15 @@ module TestHelper
     def log_messages
       $message_log.messages.map(&:text)
     end
+
+    def stub(methods)
+      Object.new.tap { |result|
+        methods.each do |method_name, return_value|
+          result.define_singleton_method method_name do |*args|
+            return_value&.call(*args) || return_value
+          end
+        end
+      }
+    end
   end
 end

@@ -15,35 +15,17 @@ module TestHelper
     def build_test_scene
       scene_class = Class.new(Scenes::BaseScene) do
         def input_event_handler
-          @input_event_handler ||= InputEventHandlerStub.new
+          @input_event_handler
         end
 
         def next_action=(action_lambda)
-          input_event_handler.next_action = action_lambda
+          @input_event_handler = TestHelper.stub(
+            handle_input_event: ->(_) { TestHelper.stub(perform: action_lambda) }
+          )
         end
       end
 
       scene_class.new
-    end
-
-    class InputEventHandlerStub
-      def handle_input_event(_event)
-        @next_action
-      end
-
-      def next_action=(action_lambda)
-        @next_action = ActionStub.new(action_lambda)
-      end
-
-      class ActionStub
-        def initialize(action_lambda)
-          @action_lambda = action_lambda
-        end
-
-        def perform
-          @action_lambda.call
-        end
-      end
     end
   end
 end
