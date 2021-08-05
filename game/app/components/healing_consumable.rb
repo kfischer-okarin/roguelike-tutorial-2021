@@ -3,10 +3,10 @@ module Components
     data_accessor :amount
 
     def activate(consumer)
-      consumer.combatant.heal(amount)
+      amount_recovered = consumer.combatant.heal(amount)
 
       $message_log.add_message(
-        text: "You consume the #{entity.name} and recover #{amount} HP!",
+        text: "You consume the #{entity.name} and recover #{amount_recovered} HP!",
         fg: Colors.health_recovered
       )
     end
