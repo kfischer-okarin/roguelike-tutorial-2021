@@ -62,7 +62,9 @@ module TestHelper
       Object.new.tap { |result|
         methods.each do |method_name, return_value|
           result.define_singleton_method method_name do |*args|
-            return_value&.call(*args) || return_value
+            return return_value.call(*args) if return_value.respond_to? :call
+
+            return_value
           end
         end
       }

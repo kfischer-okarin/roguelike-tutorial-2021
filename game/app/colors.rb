@@ -8,6 +8,10 @@ module Colors
       [128, 128, 128]
     end
 
+    def health_recovered
+      [0, 255, 0]
+    end
+
     def hp_bar_filled
       [0, 96, 0]
     end
