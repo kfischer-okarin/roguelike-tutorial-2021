@@ -1,4 +1,6 @@
 class Action
+  class Impossible < StandardError; end
+
   def initialize(entity)
     @entity = entity
   end
@@ -49,7 +51,7 @@ end
 class MeleeAction < ActionWithDirection
   def perform
     target = target_actor
-    return unless target
+    raise Action::Impossible, 'Nothing to attack.' unless target
 
     damage = @entity.combatant.power - target.combatant.defense
     attack_description = "#{@entity.name} attacks #{target_actor.name}"
