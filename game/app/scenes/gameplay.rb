@@ -38,6 +38,8 @@ module Scenes
     def handle_enemy_turns
       @game_map.actors.each do |entity|
         entity.ai.perform_action
+      rescue Action::Impossible
+        # no op
       end
     end
 

@@ -23,6 +23,16 @@ module GTK
       end
     end
 
+    def raises_no_exception!(message = nil)
+      @assertion_performed = true
+
+      begin
+        yield
+      rescue StandardError => e
+        raise "Actual exception:\n  #{exception_description(e)}\n\nwas raised but expected none to be raised.\n#{message}."
+      end
+    end
+
     private
 
     def exception_description(exception)
@@ -49,6 +59,39 @@ module TestHelper
           end
         end
       }
+    end
+
+    def build_map(width, height)
+      GameMap.new(width: width, height: height, entities: []).tap { |game_map|
+        game_map.fill_rect([0, 0, width, height], Tiles.floor)
+      }
+    end
+
+    def build_map_with_entities(entities_by_position)
+      width = entities_by_position.keys.map(&:x).max + 3
+      height = entities_by_position.keys.map(&:y).max + 3
+      build_map(width, height).tap { |game_map|
+        entities_by_position.each do |position, entity|
+          entity.place(game_map, x: position.x, y: position.y)
+        end
+      }
+    end
+
+    def build_entity(name = nil)
+      Entity::BaseEntity.new(
+        :entity,
+        x: nil, y: nil,
+        name: name || 'An entity'
+      )
+    end
+
+    def build_combatant(name = nil, hp: 20, power: 5, defense: 5)
+      Entity::Actor.new(
+        :combatant,
+        x: nil, y: nil,
+        name: name || 'Enemy',
+        combatant: { hp: hp, max_hp: hp, defense: defense, power: power }
+      )
     end
   end
 end
