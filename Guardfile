@@ -13,7 +13,7 @@ end
 warn_if_env_is_not_set
 
 guard :shell do
-  watch(/.*\.rb/) { |m|
+  watch(/^[^#]*\.rb/) { |m|
     if run_all?(m)
       run_all
     else
