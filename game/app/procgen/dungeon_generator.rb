@@ -10,6 +10,20 @@ module Procgen
       end
     end
 
+    class RNG
+      def initialize
+        @random = Random.new
+      end
+
+      def random_int_between(min, max)
+        min + ((max - min + 1) * @random.rand).floor
+      end
+
+      def rand
+        @random.rand
+      end
+    end
+
     attr_reader :result
 
     def initialize(map_width:, map_height:, parameters:, player:)
@@ -17,6 +31,10 @@ module Procgen
       @parameters = parameters
       @player = player
       @rooms = []
+      @entities_generator = RoomEntitiesGenerator.new(
+        RNG.new,
+        max_monsters_per_room: parameters.max_monsters_per_room
+      )
 
       generate
     end
@@ -79,14 +97,10 @@ module Procgen
     end
 
     def place_entities(room)
-      random_number_of_monsters.times do
-        x = room.x + 1 + (rand * (room.w - 2)).floor
-        y = room.y + 1 + (rand * (room.h - 2)).floor
-        next if @result.entity_at?(x, y)
+      @entities_generator.generate_for(room).each do |entity|
+        next if @result.entity_at?(entity[:x], entity[:y])
 
-        entity_type = rand < 0.8 ? :mutant_spider : :cyborg_bearman
-
-        EntityPrototypes.build(entity_type).place(@result, x: x, y: y)
+        EntityPrototypes.build(entity[:type]).place(@result, x: entity[:x], y: entity[:y])
       end
     end
 

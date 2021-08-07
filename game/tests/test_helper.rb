@@ -87,6 +87,18 @@ module TestHelper
       }
     end
 
+    def allow_calls(name, allowed_calls)
+      index = 0
+      lambda { |*args|
+        expected_args, result = allowed_calls[index]
+        unless args == expected_args
+          raise "Expected call \##{index + 1} to #{name} to be with args:\n  #{expected_args}\n\n but it was called with:\n  #{args}"
+        end
+        index += 1
+        result
+      }
+    end
+
     def build_map(width, height)
       GameMap.new(width: width, height: height, entities: []).tap { |game_map|
         game_map.fill_rect([0, 0, width, height], Tiles.floor)
