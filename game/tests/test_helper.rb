@@ -14,6 +14,19 @@ module GTK
       raise "Collection:\n  #{collection.inspect}\n\nwas not expected to contain:\n  #{element}\n#{message}."
     end
 
+    def has_attributes!(object, attributes)
+      @assertion_performed = true
+      missing_attributes = attributes.each_key.reject { |name| object.respond_to?(name) }
+
+      expectation_message = "Object:\n  #{object}\n\nwas expected to have attributes:\n  #{attributes.inspect}\n\n"
+      raise "#{expectation_message}but it didn't respond to:\n  #{missing_attributes}" unless missing_attributes.empty?
+
+      actual_values = attributes.each_key.map { |name| [name, object.send(name)] }.to_h
+      return if actual_values == attributes
+
+      raise "#{expectation_message}but it's actual attributes were:\n  #{actual_values}"
+    end
+
     def raises_with_message!(exception_class, exception_message, message = nil)
       @assertion_performed = true
 

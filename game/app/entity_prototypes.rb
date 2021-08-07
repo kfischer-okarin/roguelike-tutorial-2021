@@ -15,6 +15,10 @@ module EntityPrototypes
       define(type, { blocks_movement: true, render_order: RenderOrder::ACTOR }.merge(data))
     end
 
+    def define_item(type, data)
+      define(type, { blocks_movement: false, render_order: RenderOrder::ITEM }.merge(data))
+    end
+
     private
 
     def copy_prototype(prototype)
