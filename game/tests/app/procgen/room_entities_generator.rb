@@ -7,9 +7,13 @@ def test_room_entities(args, assert)
     random_int_between: TestHelper.allow_calls(
       :random_int_between,
       [
-        [[0, 2], 1], # number of monsters
-        [[6, 6], 6], # monster x
-        [[6, 7], 6]  # monster y
+        [[0, 2], 1] # number of monsters
+      ]
+    ),
+    random_position_in_rect: TestHelper.allow_calls(
+      :random_position_in_rect,
+      [
+        [[[6, 6, 1, 2]], [6, 6]] # Monster position
       ]
     ),
     rand: TestHelper.allow_calls(
