@@ -9,6 +9,7 @@ module Entities
     end
 
     def setup(gtk_state)
+      @gtk_state = nil
       gtk_state.entities_by_id = {}
       self.gtk_state = gtk_state
       @entity_objects_by_id = {}

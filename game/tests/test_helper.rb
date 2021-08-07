@@ -68,6 +68,7 @@ module TestHelper
   class << self
     def init_globals(args)
       $message_log = MessageLog.new
+      Entities.setup args.state
     end
 
     def log_messages
