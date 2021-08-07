@@ -66,7 +66,7 @@ end
 
 module TestHelper
   class << self
-    def init_globals
+    def init_globals(args)
       $message_log = MessageLog.new
     end
 
