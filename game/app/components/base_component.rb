@@ -1,11 +1,15 @@
 module Components
   class BaseComponent < DataBackedObject
-    attr_reader :entity, :data
+    attr_reader :data
 
-    def initialize(entity, data)
+    def initialize(parent, data)
       super()
-      @entity = entity
+      @parent = parent
       @data = data
+    end
+
+    def entity
+      @parent.entity
     end
   end
 end

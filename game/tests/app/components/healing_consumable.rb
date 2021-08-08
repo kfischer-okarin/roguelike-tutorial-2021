@@ -2,7 +2,9 @@ require 'tests/test_helper.rb'
 
 def test_healing_consumable_heals_consumer_hp(args, assert)
   TestHelper.init_globals(args)
-  entity = TestHelper.stub(name: 'Potion')
+  entity = TestHelper.stub(
+    entity: TestHelper.stub(name: 'Potion')
+  )
   healing_consumable = Components::HealingConsumable.new(entity, amount: 3)
 
   npc = TestHelper.build_combatant('NPC', hp: 20)
@@ -16,7 +18,9 @@ end
 
 def test_healing_consumable_heals_until_max_hp(args, assert)
   TestHelper.init_globals(args)
-  entity = TestHelper.stub(name: 'Potion')
+  entity = TestHelper.stub(
+    entity: TestHelper.stub(name: 'Potion')
+  )
   healing_consumable = Components::HealingConsumable.new(entity, amount: 20)
 
   npc = TestHelper.build_combatant('NPC', hp: 20)
@@ -30,7 +34,9 @@ end
 
 def test_healing_consumable_consuming_with_max_hp_is_impossible(args, assert)
   TestHelper.init_globals(args)
-  entity = TestHelper.stub(name: 'Potion')
+  entity = TestHelper.stub(
+    entity: TestHelper.stub(name: 'Potion')
+  )
   healing_consumable = Components::HealingConsumable.new(entity, amount: 1)
 
   npc = TestHelper.build_combatant('NPC', hp: 20)

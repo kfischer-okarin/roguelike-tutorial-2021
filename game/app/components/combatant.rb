@@ -4,7 +4,7 @@ module Components
 
     def hp=(value)
       data.hp = value.clamp(0, data.max_hp)
-      @entity.die if dead?
+      entity.die if dead?
     end
 
     def heal(amount)

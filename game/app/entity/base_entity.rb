@@ -15,6 +15,10 @@ module Entity
       self.y = y
     end
 
+    def entity
+      self
+    end
+
     def game_map
       @parent.game_map
     end

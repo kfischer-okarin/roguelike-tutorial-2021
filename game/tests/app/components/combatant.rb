@@ -16,7 +16,8 @@ end
 
 def test_combatant_take_damage(_args, assert)
   entity = TestHelper::Spy.new
-  combatant = Components::Combatant.new(entity, { hp: 5, max_hp: 10 })
+  parent = TestHelper.stub(entity: entity)
+  combatant = Components::Combatant.new(parent, { hp: 5, max_hp: 10 })
 
   combatant.take_damage(2)
 
@@ -28,4 +29,3 @@ def test_combatant_take_damage(_args, assert)
   assert.equal! combatant.hp, 0
   assert.includes! entity.calls, [:die, []]
 end
-
