@@ -21,6 +21,10 @@ class GameMap
     @entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
   end
 
+  def items
+    @entities.select { |entity| entity.is_a?(Entity::Item) }
+  end
+
   def set_tile(x, y, tile)
     @tiles[x, y] = tile
     update_transparent_tiles

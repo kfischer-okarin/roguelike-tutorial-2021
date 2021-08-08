@@ -11,7 +11,21 @@ module GTK
       @assertion_performed = true
       return unless collection.include? element
 
-      raise "Collection:\n  #{collection.inspect}\n\nwas not expected to contain:\n  #{element}\n#{message}."
+      raise "#{collection_description(collection)}was not expected to contain exactly:\n  #{element}\n#{message}."
+    end
+
+    def contains_exactly!(collection, elements, message = nil)
+      @assertion_performed = true
+      expected_description = "#{collection_description(collection)}was expected to contain exactly:\n#{elements.inspect}\n\n"
+      missing_elements = elements.reject { |element| collection.include? element }
+      unless missing_elements.empty?
+        raise "#{expected_description}but it was was missing:\n#{missing_elements.inspect}\n#{message}"
+      end
+
+      unexpected_elements = collection.reject { |element| elements.include? element }
+      return if unexpected_elements.empty?
+
+      raise "#{expected_description}but it additionally contained:\n#{unexpected_elements.inspect}\n#{message}"
     end
 
     def has_attributes!(object, attributes)
@@ -61,6 +75,10 @@ module GTK
     def exception_description(exception)
       "#{exception.class} with #{exception.message.inspect}"
     end
+
+    def collection_description(collection)
+      "Collection:\n  #{collection.inspect}\n\n"
+    end
   end
 end
 
@@ -100,7 +118,7 @@ module TestHelper
       }
     end
 
-    def build_map(width, height)
+    def build_map(width = 10, height = 10)
       GameMap.new(width: width, height: height, entities: []).tap { |game_map|
         game_map.fill_rect([0, 0, width, height], Tiles.floor)
       }
@@ -130,6 +148,15 @@ module TestHelper
         x: nil, y: nil,
         name: name || 'Enemy',
         combatant: { hp: hp, max_hp: hp, defense: defense, power: power }
+      )
+    end
+
+    def build_item(name = nil)
+      Entity.build(
+        :item,
+        x: nil, y: nil,
+        name: name || 'Item',
+        consumable: { amount: 5 }
       )
     end
   end
