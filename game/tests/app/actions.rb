@@ -87,7 +87,6 @@ def test_pickup_action(args, assert)
   TestHelper.init_globals(args)
   actor = TestHelper.build_actor
   item = TestHelper.build_item('Potion')
-  Entities << item
   game_map = TestHelper.build_map_with_entities(
     [3, 3] => actor,
     [1, 1] => TestHelper.build_item
@@ -105,7 +104,6 @@ def test_pickup_action_when_not_at_same_position_is_impossible(args, assert)
   TestHelper.init_globals(args)
   actor = TestHelper.build_actor
   item = TestHelper.build_item('Potion')
-  Entities << item
   game_map = TestHelper.build_map
   actor.place(game_map, x: 3, y: 4)
   item.place(game_map, x: 3, y: 3)

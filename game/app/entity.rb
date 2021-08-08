@@ -19,7 +19,9 @@ module Entity
 
     def build(type, attributes)
       data = $state.new_entity_strict(type, attributes)
-      from(data)
+      from(data).tap { |result|
+        Entities << result
+      }
     end
   end
 end

@@ -2,7 +2,7 @@ require 'tests/test_helper.rb'
 
 def test_entities_setup_resets_entities(args, assert)
   TestHelper.init_globals(args)
-  Entities << TestHelper.build_entity
+  TestHelper.build_entity
 
   Entities.setup(args.state)
 
@@ -12,7 +12,6 @@ end
 def test_entities_add(args, assert)
   TestHelper.init_globals(args)
   entity = TestHelper.build_entity
-  Entities << entity
 
   assert.equal! Entities.each.to_a, [entity]
 end
@@ -20,7 +19,6 @@ end
 def test_entities_get(args, assert)
   TestHelper.init_globals(args)
   entity = TestHelper.build_entity
-  Entities << entity
 
   assert.equal! Entities.get(entity.id), entity
 end

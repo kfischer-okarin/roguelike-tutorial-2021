@@ -14,7 +14,6 @@ end
 def test_inventory_items(args, assert)
   TestHelper.init_globals(args)
   item_entity = TestHelper.build_entity
-  Entities << item_entity
   inventory = Components::Inventory.new(TestHelper.build_entity, items: [])
   inventory.add_entity item_entity
 
