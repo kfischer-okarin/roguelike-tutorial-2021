@@ -20,6 +20,10 @@ module Entities
       @entity_objects_by_id[entity.id] = entity
     end
 
+    def get(id)
+      @entity_objects_by_id[id]
+    end
+
     def each(&block)
       @entity_objects_by_id.each_value(&block)
     end

@@ -1,13 +1,26 @@
 require 'tests/test_helper.rb'
 
-def test_entities_setup(args, assert)
+def test_entities_setup_resets_entities(args, assert)
   TestHelper.init_globals(args)
-  entity = Entity::BaseEntity.new(:entity, some_data: 5)
-  Entities << entity
-
-  assert.equal! Entities.each.to_a, [entity]
+  Entities << TestHelper.build_entity
 
   Entities.setup(args.state)
 
   assert.equal! Entities.each.to_a, []
+end
+
+def test_entities_add(args, assert)
+  TestHelper.init_globals(args)
+  entity = TestHelper.build_entity
+  Entities << entity
+
+  assert.equal! Entities.each.to_a, [entity]
+end
+
+def test_entities_get(args, assert)
+  TestHelper.init_globals(args)
+  entity = TestHelper.build_entity
+  Entities << entity
+
+  assert.equal! Entities.get(entity.id), entity
 end
