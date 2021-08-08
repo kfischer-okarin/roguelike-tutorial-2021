@@ -116,7 +116,7 @@ module TestHelper
     end
 
     def build_entity(name = nil)
-      Entity::BaseEntity.new(
+      Entity.build(
         :entity,
         x: nil, y: nil,
         name: name || 'An entity'
@@ -124,7 +124,7 @@ module TestHelper
     end
 
     def build_combatant(name = nil, hp: 20, power: 5, defense: 5)
-      Entity::Actor.new(
+      Entity.build(
         :combatant,
         x: nil, y: nil,
         name: name || 'Enemy',
