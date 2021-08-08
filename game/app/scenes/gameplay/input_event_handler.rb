@@ -44,6 +44,10 @@ module Scenes
         BumpIntoEntityAction.new(player, dx: -1, dy: -1)
       end
 
+      def dispatch_action_for_get
+        PickupAction.new(player)
+      end
+
       def dispatch_action_for_wait
         WaitAction
       end

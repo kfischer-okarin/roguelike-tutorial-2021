@@ -102,6 +102,7 @@ def process_input(gtk_inputs)
     result << { type: :page_down } if key_down.pagedown
     result << { type: :home } if key_down.home
     result << { type: :end } if key_down.end
+    result << { type: :get } if key_down.g
   }
 end
 
