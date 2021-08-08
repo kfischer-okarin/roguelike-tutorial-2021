@@ -11,7 +11,14 @@ module EntityPrototypes
     end
 
     def define_actor(type, data)
-      define(type, { blocks_movement: true, render_order: RenderOrder::ACTOR }.merge(data))
+      define(
+        type,
+        {
+          blocks_movement: true,
+          render_order: RenderOrder::ACTOR,
+          inventory: { items: [] }
+        }.merge(data)
+      )
     end
 
     def define_item(type, data)

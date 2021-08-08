@@ -69,6 +69,7 @@ module TestHelper
     def init_globals(args)
       $message_log = MessageLog.new
       Entities.setup args.state
+      GTK::Entity.strict_entities.clear
     end
 
     def log_messages

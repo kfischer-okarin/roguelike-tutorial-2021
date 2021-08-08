@@ -8,6 +8,10 @@ module Entity
       @ai ||= build_ai
     end
 
+    def inventory
+      @inventory ||= Components::Inventory.new(self, data.inventory)
+    end
+
     def alive?
       !combatant.dead?
     end
