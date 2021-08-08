@@ -21,9 +21,17 @@ end
 
 class PickupAction < Action
   def perform
-    item = @entity.game_map.items.first
+    item = items_at_own_position.first
+    raise Action::Impossible, 'There is nothing to pick up.' unless item
+
     item.place(@entity.inventory)
     $message_log.add_message(text: "You picked up the #{item.name}!")
+  end
+
+  private
+
+  def items_at_own_position
+    @entity.game_map.items_at(@entity.x, @entity.y)
   end
 end
 

@@ -78,6 +78,10 @@ class GameMap
     @entities.select { |entity| entity.x == x && entity.y == y }
   end
 
+  def items_at(x, y)
+    items.select { |item| item.x == x && item.y == y }
+  end
+
   def actor_at(x, y)
     actors.find { |entity| entity.x == x && entity.y == y }
   end
