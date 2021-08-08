@@ -48,3 +48,8 @@ EntityPrototypes.define_actor :cyborg_bearman,
                               name: 'Cyborg Bearman',
                               char: 'B', color: [0, 127, 0],
                               combatant: { hp: 16, defense: 1, power: 4 }
+
+EntityPrototypes.define_item  :bandages,
+                              name: 'Bandages',
+                              char: '!', color: [127, 0, 255],
+                              consumable: { amount: 4 }

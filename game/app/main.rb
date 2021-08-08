@@ -60,7 +60,8 @@ def setup(args)
   procgen_parameters = Procgen::DungeonGenerator::Parameters.new(
     max_rooms: 10,
     room_size_range: (6..10),
-    max_monsters_per_room: 2
+    max_monsters_per_room: 2,
+    max_items_per_room: 2
   )
 
   game_map = Procgen.generate_dungeon(
