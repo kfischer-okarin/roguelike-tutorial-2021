@@ -2,8 +2,8 @@ require 'tests/test_helper.rb'
 
 def test_melee_action_deal_damage(args, assert)
   TestHelper.init_globals(args)
-  attacker = TestHelper.build_combatant('Attacker', hp: 30, defense: 2, power: 5)
-  defender = TestHelper.build_combatant('Defender', hp: 30, defense: 1, power: 3)
+  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 5)
+  defender = TestHelper.build_actor('Defender', hp: 30, defense: 1, power: 3)
   TestHelper.build_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
@@ -17,8 +17,8 @@ end
 
 def test_melee_action_deal_no_damage(args, assert)
   TestHelper.init_globals(args)
-  attacker = TestHelper.build_combatant('Attacker', hp: 30, defense: 2, power: 1)
-  defender = TestHelper.build_combatant('Defender', hp: 30, defense: 5, power: 3)
+  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
+  defender = TestHelper.build_actor('Defender', hp: 30, defense: 5, power: 3)
   TestHelper.build_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
@@ -32,7 +32,7 @@ end
 
 def test_melee_action_nothing_to_attack(args, assert)
   TestHelper.init_globals(args)
-  attacker = TestHelper.build_combatant('Attacker', hp: 30, defense: 2, power: 1)
+  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
   TestHelper.build_map_with_entities(
     [3, 3] => attacker
   )

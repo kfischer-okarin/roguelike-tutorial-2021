@@ -123,7 +123,7 @@ module TestHelper
       )
     end
 
-    def build_combatant(name = nil, hp: 20, power: 5, defense: 5)
+    def build_actor(name = nil, hp: 20, power: 5, defense: 5)
       Entity.build(
         :combatant,
         x: nil, y: nil,

@@ -3,7 +3,7 @@ require 'tests/test_helper.rb'
 def test_gameplay_scene_ai_impossible_actions_are_ignored(args, assert)
   TestHelper.init_globals(args)
   player = EntityPrototypes.build(:player)
-  other_entity = TestHelper.build_combatant
+  other_entity = TestHelper.build_actor
   other_entity.define_singleton_method :ai do
     TestHelper.stub(perform_action: -> { raise Action::Impossible, 'Something went wrong' })
   end
