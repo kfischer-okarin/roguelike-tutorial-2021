@@ -13,6 +13,10 @@ class GameMap
     update_transparent_tiles
   end
 
+  def game_map
+    self
+  end
+
   def actors
     @entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
   end

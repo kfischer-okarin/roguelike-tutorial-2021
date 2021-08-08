@@ -1,8 +1,6 @@
 module Entity
   class BaseEntity < DataBackedObject
-    attr_reader :id
-
-    attr_accessor :game_map
+    attr_reader :id, :parent
 
     def initialize(id, data)
       super()
@@ -10,11 +8,15 @@ module Entity
       @data = data
     end
 
-    def place(game_map, x:, y:)
-      @game_map = game_map
-      game_map.add_entity self
+    def place(parent, x:, y:)
+      @parent = parent
+      parent.add_entity self
       self.x = x
       self.y = y
+    end
+
+    def game_map
+      @parent.game_map
     end
 
     data_accessor :x, :y, :char, :color, :render_order, :name
