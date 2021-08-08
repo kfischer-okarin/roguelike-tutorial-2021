@@ -5,14 +5,14 @@ class MessageLog
     @messages = []
   end
 
-  def add_message(text:, fg:, stack: true)
+  def add_message(text:, fg: nil, stack: true)
     last_message = @messages.last
     if stack && last_message&.text == text
       last_message.count += 1
       return
     end
 
-    @messages << Message.new(text: text, fg: fg)
+    @messages << Message.new(text: text, fg: fg || Colors.white)
   end
 
   class Message

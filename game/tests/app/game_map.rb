@@ -1,5 +1,17 @@
 require 'tests/test_helper.rb'
 
+def test_game_remove_entity(args, assert)
+  TestHelper.init_globals(args)
+
+  entity = TestHelper.build_entity
+  game_map = TestHelper.build_map
+  game_map.add_entity entity
+
+  game_map.remove_entity entity
+
+  assert.equal! game_map.entities, []
+end
+
 def test_game_map_items(args, assert)
   TestHelper.init_globals(args)
 

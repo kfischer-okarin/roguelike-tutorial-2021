@@ -19,6 +19,14 @@ module EscapeAction
   end
 end
 
+class PickupAction < Action
+  def perform
+    item = @entity.game_map.items.first
+    item.place(@entity.inventory)
+    $message_log.add_message(text: "You picked up the #{item.name}!")
+  end
+end
+
 class ActionWithDirection < Action
   def initialize(entity, dx:, dy:)
     super(entity)

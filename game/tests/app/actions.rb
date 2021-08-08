@@ -82,3 +82,19 @@ def test_move_action_cannot_move_beyond_map_bounds(args, assert)
   assert.equal! entity.x, 3
   assert.equal! entity.y, 3
 end
+
+def test_pickup_action(args, assert)
+  TestHelper.init_globals(args)
+  actor = TestHelper.build_actor
+  item = TestHelper.build_item('Potion')
+  Entities << item
+  game_map = TestHelper.build_map
+  actor.place(game_map, x: 3, y: 3)
+  item.place(game_map, x: 3, y: 3)
+
+  PickupAction.new(actor).perform
+
+  assert.includes! actor.inventory.items, item
+  assert.includes_no! game_map.items, item
+  assert.contains_exactly! TestHelper.log_messages, ['You picked up the Potion!']
+end

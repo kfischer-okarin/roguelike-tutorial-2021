@@ -86,6 +86,10 @@ class GameMap
     @entities << entity
   end
 
+  def remove_entity(entity)
+    @entities.delete(entity)
+  end
+
   private
 
   def update_transparent_tiles

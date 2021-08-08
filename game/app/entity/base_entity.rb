@@ -8,9 +8,12 @@ module Entity
       @data = data
     end
 
-    def place(parent, x:, y:)
+    def place(parent, x: nil, y: nil)
+      @parent.remove_entity self if @parent
       @parent = parent
       parent.add_entity self
+      return unless x && y
+
       self.x = x
       self.y = y
     end

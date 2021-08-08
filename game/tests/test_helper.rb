@@ -147,7 +147,8 @@ module TestHelper
         :combatant,
         x: nil, y: nil,
         name: name || 'Enemy',
-        combatant: { hp: hp, max_hp: hp, defense: defense, power: power }
+        combatant: { hp: hp, max_hp: hp, defense: defense, power: power },
+        inventory: { items: [] }
       )
     end
 

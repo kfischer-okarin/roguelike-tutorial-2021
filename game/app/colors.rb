@@ -39,5 +39,9 @@ module Colors
     def enemy_death
       [255, 160, 48]
     end
+
+    def white
+      [255, 255, 255]
+    end
   end
 end
