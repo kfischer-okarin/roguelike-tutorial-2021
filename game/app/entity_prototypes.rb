@@ -2,8 +2,7 @@ module EntityPrototypes
   class << self
     def build(type)
       prototype = copy_prototype @prototypes.fetch(type)
-      entity_data = $state.new_entity_strict(type, build_initial_attributes(prototype))
-      Entity.from(entity_data)
+      Entity.build(type, build_initial_attributes(prototype))
     end
 
     def define(type, data)
