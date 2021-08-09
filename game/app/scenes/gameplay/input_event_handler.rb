@@ -61,6 +61,11 @@ module Scenes
         $game.show_inventory
         nil
       end
+
+      def dispatch_action_for_drop
+        $game.show_drop_item_menu
+        nil
+      end
     end
   end
 end

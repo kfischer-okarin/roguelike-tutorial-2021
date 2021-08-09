@@ -104,6 +104,7 @@ def process_input(gtk_inputs)
     result << { type: :end } if key_down.end
     result << { type: :get } if key_down.g
     result << { type: :inventory } if key_down.i
+    result << { type: :drop } if key_down.d
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
   }
 end

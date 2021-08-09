@@ -129,3 +129,17 @@ def test_use_item_action_activates_consumable(args, assert)
 
   assert.equal! item_consumer, actor
 end
+
+def test_drop_item_action_drops_from_inventory(args, assert)
+  TestHelper.init_globals(args)
+  actor = TestHelper.build_actor
+  item = TestHelper.build_item
+  dropped_item = nil
+  actor.inventory.define_singleton_method :drop do |selected_item|
+    dropped_item = selected_item
+  end
+
+  DropItemAction.new(actor, item).perform
+
+  assert.equal! dropped_item, item
+end

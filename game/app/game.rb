@@ -25,13 +25,30 @@ class Game
       @scene,
       inventory: player.inventory,
       title: 'Select an item to use',
-      window_x: @player.x <= 30 ? 40 : 0
+      window_x: item_window_x
     ) do |selected_item|
       UseItemAction.new(@player, selected_item)
     end
   end
 
+  def show_drop_item_menu
+    @scene = Scenes::ItemSelection.new(
+      @scene,
+      inventory: player.inventory,
+      title: 'Select an item to drop',
+      window_x: item_window_x
+    ) do |selected_item|
+      DropItemAction.new(@player, selected_item)
+    end
+  end
+
   def quit
     $gtk.request_quit
+  end
+
+  private
+
+  def item_window_x
+    @player.x <= 30 ? 40 : 0
   end
 end

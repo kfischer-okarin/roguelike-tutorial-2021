@@ -46,6 +46,17 @@ class UseItemAction < Action
   end
 end
 
+class DropItemAction < Action
+  def initialize(entity, item)
+    super(entity)
+    @item = item
+  end
+
+  def perform
+    @entity.inventory.drop @item
+  end
+end
+
 class ActionWithDirection < Action
   def initialize(entity, dx:, dy:)
     super(entity)
