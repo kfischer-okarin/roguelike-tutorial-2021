@@ -56,6 +56,11 @@ module Scenes
         $game.show_history($console)
         nil
       end
+
+      def dispatch_action_for_inventory
+        $game.show_inventory
+        nil
+      end
     end
   end
 end

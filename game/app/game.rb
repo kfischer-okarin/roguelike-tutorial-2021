@@ -20,6 +20,17 @@ class Game
     @scene = Scenes::HistoryViewer.new(previous_scene: @scene, console: console)
   end
 
+  def show_inventory
+    @scene = Scenes::ItemSelection.new(
+      @scene,
+      inventory: player.inventory,
+      title: 'Select an item to use',
+      window_x: @player.x <= 30 ? 40 : 0
+    ) do |selected_item|
+      UseItemAction.new(@player, selected_item)
+    end
+  end
+
   def quit
     $gtk.request_quit
   end

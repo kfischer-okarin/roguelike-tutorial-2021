@@ -35,6 +35,17 @@ class PickupAction < Action
   end
 end
 
+class UseItemAction < Action
+  def initialize(entity, item)
+    super(entity)
+    @item = item
+  end
+
+  def perform
+    @item.consumable.activate @entity
+  end
+end
+
 class ActionWithDirection < Action
   def initialize(entity, dx:, dy:)
     super(entity)

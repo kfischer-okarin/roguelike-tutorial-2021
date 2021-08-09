@@ -1,10 +1,20 @@
 module Scenes
   class ItemSelection < BaseScene
-    def initialize(previous_scene, inventory:, &build_action_for_selected_item)
+    def initialize(previous_scene, inventory:, title: nil, window_x: 0, &build_action_for_selected_item)
       @inventory = inventory
       @build_action_for_selected_item = build_action_for_selected_item
       @previous_scene = previous_scene
+      @item_list = UI::ItemList.new(
+        @inventory,
+        top: 44, x: window_x,
+        title: title || 'Select item'
+      )
       super()
+    end
+
+    def render(console)
+      @previous_scene.render(console)
+      @item_list.render(console)
     end
 
     def go_back_to_previous_scene
@@ -43,7 +53,7 @@ module Scenes
       end
 
       def dispatch_action_for_quit
-        @selection.go_back_to_previous_scene
+        @selection_scene.go_back_to_previous_scene
         nil
       end
     end

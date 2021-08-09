@@ -47,5 +47,17 @@ module Colors
     def white
       [255, 255, 255]
     end
+
+    def black
+      [0, 0, 0]
+    end
+
+    def item_window_bg
+      black
+    end
+
+    def item_window_fg
+      white
+    end
   end
 end

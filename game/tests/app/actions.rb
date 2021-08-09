@@ -115,3 +115,17 @@ def test_pickup_action_when_not_at_same_position_is_impossible(args, assert)
   assert.includes_no! actor.inventory.items, item
   assert.includes! game_map.items, item
 end
+
+def test_use_item_action_activates_consumable(args, assert)
+  TestHelper.init_globals(args)
+  actor = TestHelper.build_actor
+  item = TestHelper.build_item
+  item_consumer = nil
+  item.consumable.define_singleton_method :activate do |consumer|
+    item_consumer = consumer
+  end
+
+  UseItemAction.new(actor, item).perform
+
+  assert.equal! item_consumer, actor
+end
