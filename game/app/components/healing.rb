@@ -1,5 +1,5 @@
 module Components
-  class HealingConsumable < Consumable
+  class Healing < Consumable
     data_accessor :amount
 
     def activate(consumer)
