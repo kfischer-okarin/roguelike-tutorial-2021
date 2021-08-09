@@ -16,18 +16,25 @@ module Engine
       @buffer.data
     end
 
-    def print(x:, y:, string:, fg: nil)
+    def print(x:, y:, string:, fg: nil, bg: nil)
       string.unicode_chars.each_with_index do |char, index|
         cell = @buffer[x + index, y]
         cell.char = char
-        cell.color = fg
+        cell.color = fg if fg
+        cell.background_color = bg if bg
       end
     end
 
-    def print_box_centered(x:, y:, width:, height:, string:)
-      actual_x = x + width.idiv(2) - string.length.idiv(2)
-      actual_y = y + height.idiv(2)
-      print(x: actual_x, y: actual_y, string: string)
+    def print_centered(x:, y:, string:, fg: nil, bg: nil)
+      actual_x = x - string.length.idiv(2)
+      print(x: actual_x, y: y, string: string, fg: fg, bg: bg)
+    end
+
+    # TODO: Word Wrap
+    def print_box_centered(x:, y:, width:, height:, string:, fg: nil, bg: nil)
+      box_center_x = x + width.idiv(2)
+      top_y = y + height - 1
+      print_centered(x: box_center_x, y: top_y, string: string, fg: fg, bg: bg)
     end
 
     def draw_rect(x:, y:, width:, height:, bg:)
@@ -40,7 +47,7 @@ module Engine
       end
     end
 
-    def draw_frame(x:, y:, width:, height:, decoration: nil)
+    def draw_frame(x:, y:, width:, height:, decoration: nil, title: nil, fg: nil, bg: nil)
       decoration_chars = (decoration || '┌─┐│ │└─┘').unicode_chars
 
       right = x + width - 1
@@ -72,9 +79,14 @@ module Engine
                            2 # top right
                          end
                        end
-          @buffer[current_x, current_y].char = decoration_chars[char_index]
+          cell = @buffer[current_x, current_y]
+          cell.char = decoration_chars[char_index]
+          cell.color = fg if fg
+          cell.background_color = bg if bg
         end
       end
+
+      print_centered(x: x + width.idiv(2), y: top, string: title, fg: bg, bg: fg) if title
     end
 
     def assign_tiles(x, y, tile_array_2d)

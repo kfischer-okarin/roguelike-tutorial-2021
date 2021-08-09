@@ -16,6 +16,10 @@ module Colors
       [0, 96, 0]
     end
 
+    def bar_text
+      white
+    end
+
     def hp_bar_empty
       [64, 16, 16]
     end

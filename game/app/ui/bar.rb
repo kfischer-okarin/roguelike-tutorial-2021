@@ -15,7 +15,11 @@ module UI
       bar_width = ((@current_value / @maximum_value) * @total_width).to_i
       console.draw_rect(x: x, y: y, width: @total_width, height: 1, bg: @bg)
       console.draw_rect(x: x, y: y, width: bar_width, height: 1, bg: @fg)
-      console.print(x: x + 1, y: y, string: "#{@name}: #{@current_value}/#{@maximum_value}")
+      console.print(
+        x: x + 1, y: y,
+        string: "#{@name}: #{@current_value}/#{@maximum_value}",
+        fg: Colors.bar_text
+      )
     end
   end
 end
