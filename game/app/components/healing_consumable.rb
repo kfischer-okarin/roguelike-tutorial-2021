@@ -11,6 +11,12 @@ module Components
         text: "You consume the #{entity.name} and recover #{amount_recovered} HP!",
         fg: Colors.health_recovered
       )
+      consume
+    end
+
+    def consume
+      item_container = entity.parent
+      item_container.remove_entity entity
     end
   end
 end
