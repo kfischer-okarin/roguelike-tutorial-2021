@@ -8,6 +8,10 @@ module Components
       @data = data
     end
 
+    def game_map
+      entity.game_map
+    end
+
     def entity
       @parent.entity
     end
