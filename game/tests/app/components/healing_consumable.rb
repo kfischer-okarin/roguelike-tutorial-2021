@@ -10,7 +10,7 @@ def test_healing_consumable_heals_consumer_hp(args, assert)
 
   healing_consumable.activate(npc)
 
-  assert.includes! TestHelper.log_messages, 'You consume the Potion and recover 3 HP!'
+  assert.includes! TestHelper.log_messages, 'You use the Potion and recover 3 HP!'
   assert.equal! npc.combatant.hp, 13
   assert.includes_no! npc.inventory.items, item
 end
@@ -25,7 +25,7 @@ def test_healing_consumable_heals_until_max_hp(args, assert)
 
   healing_consumable.activate(npc)
 
-  assert.includes! TestHelper.log_messages, 'You consume the Potion and recover 5 HP!'
+  assert.includes! TestHelper.log_messages, 'You use the Potion and recover 5 HP!'
   assert.equal! npc.combatant.hp, 20
   assert.includes_no! npc.inventory.items, item
 end

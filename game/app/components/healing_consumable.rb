@@ -8,7 +8,7 @@ module Components
       raise Action::Impossible, 'Your health is already full.' unless amount_recovered.positive?
 
       $message_log.add_message(
-        text: "You consume the #{entity.name} and recover #{amount_recovered} HP!",
+        text: "You use the #{entity.name} and recover #{amount_recovered} HP!",
         fg: Colors.health_recovered
       )
       consume
