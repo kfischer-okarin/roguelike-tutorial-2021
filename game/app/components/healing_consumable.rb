@@ -1,5 +1,5 @@
 module Components
-  class HealingConsumable < BaseComponent
+  class HealingConsumable < Consumable
     data_accessor :amount
 
     def activate(consumer)
@@ -12,11 +12,6 @@ module Components
         fg: Colors.health_recovered
       )
       consume
-    end
-
-    def consume
-      item_container = entity.parent
-      item_container.remove_entity entity
     end
   end
 end
