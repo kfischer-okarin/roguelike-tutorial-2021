@@ -2,16 +2,15 @@ require 'app/scenes/gameplay/input_event_handler.rb'
 
 module Scenes
   class HistoryViewer < BaseScene
-    attr_reader :input_event_handler, :cursor_index
+    attr_reader :cursor_index
 
     def initialize(previous_scene:, console:)
-      super()
       @previous_scene = previous_scene
+      super()
       @messages = $message_log.messages
       @cursor_index = @messages.size - 1
       @log_console = Engine::Console.new(console.width - 6, console.height - 6)
       @message_log = UI::MessageLog.new(x: 1, y: 1, width: @log_console.width - 2, height: @log_console.height - 2)
-      @input_event_handler = InputEventHandler.new(self, @previous_scene)
     end
 
     def message_count
@@ -35,6 +34,12 @@ module Scenes
       @message_log.render(@log_console)
 
       @log_console.blit(console, x: 3, y: 3)
+    end
+
+    protected
+
+    def build_input_handler
+      InputEventHandler.new(self, @previous_scene)
     end
 
     class InputEventHandler < BaseInputHandler

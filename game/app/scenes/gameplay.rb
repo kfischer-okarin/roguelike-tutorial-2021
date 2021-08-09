@@ -2,13 +2,10 @@ require 'app/scenes/gameplay/input_event_handler.rb'
 
 module Scenes
   class Gameplay < BaseScene
-    attr_reader :input_event_handler
-
     def initialize(game_map:, player:)
-      super()
-      @input_event_handler = InputEventHandler.new(player: player)
-      @game_map = game_map
       @player = player
+      super()
+      @game_map = game_map
       @hp_bar = UI::Bar.new(
         name: 'HP',
         maximum_value: @player.combatant.max_hp,
@@ -31,6 +28,12 @@ module Scenes
       handle_enemy_turns
       update_fov
       handle_game_over unless @player.alive?
+    end
+
+    protected
+
+    def build_input_handler
+      InputEventHandler.new(player: @player)
     end
 
     private

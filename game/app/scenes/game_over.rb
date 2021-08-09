@@ -5,11 +5,16 @@ module Scenes
     def initialize(gameplay_scene)
       super()
       @gameplay_scene = gameplay_scene
-      @input_event_handler = InputEventHandler.new
     end
 
     def render(console)
       @gameplay_scene.render(console)
+    end
+
+    protected
+
+    def build_input_handler
+      InputEventHandler.new
     end
 
     class InputEventHandler < BaseInputHandler
