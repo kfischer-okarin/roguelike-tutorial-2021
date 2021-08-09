@@ -103,6 +103,7 @@ def process_input(gtk_inputs)
     result << { type: :home } if key_down.home
     result << { type: :end } if key_down.end
     result << { type: :get } if key_down.g
+    result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
   }
 end
 

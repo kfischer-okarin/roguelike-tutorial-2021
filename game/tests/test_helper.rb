@@ -85,6 +85,7 @@ end
 module TestHelper
   class << self
     def init_globals(args)
+      $game = Spy.new
       $message_log = MessageLog.new
       Entities.setup args.state
       GTK::Entity.strict_entities.clear
@@ -160,9 +161,22 @@ module TestHelper
         consumable: { amount: 5 }
       )
     end
+
+    def build_inventory(entity:  nil, items: nil)
+      Components::Inventory.new(
+        entity || build_entity,
+        items: []
+      ).tap { |result|
+        (items || []).each do |item|
+          result.add_entity item
+        end
+      }
+    end
   end
 
   class Spy
+    attr_reader :calls
+
     def initialize
       @calls = []
     end
