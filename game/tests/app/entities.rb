@@ -13,7 +13,7 @@ def test_entities_add(args, assert)
   TestHelper.init_globals(args)
   entity = TestHelper.build_entity
 
-  assert.equal! Entities.each.to_a, [entity]
+  assert.includes! Entities.each, entity
 end
 
 def test_entities_get(args, assert)

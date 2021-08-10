@@ -85,10 +85,10 @@ end
 module TestHelper
   class << self
     def init_globals(args)
-      $game = Spy.new
-      $message_log = MessageLog.new
-      Entities.setup args.state
       GTK::Entity.strict_entities.clear
+      Entities.setup args.state
+      $message_log = MessageLog.new
+      $game = Spy.new(Game.new(player: build_player, scene: :initial_scene))
     end
 
     def log_messages
@@ -177,12 +177,14 @@ module TestHelper
   class Spy
     attr_reader :calls
 
-    def initialize
+    def initialize(wrapped_object = nil)
+      @wrapped_object = wrapped_object
       @calls = []
     end
 
     def method_missing(name, *args)
       @calls << [name, args]
+      @wrapped_object.send(name, args) if @wrapped_object&.respond_to? name
     end
   end
 end
@@ -218,6 +220,10 @@ def build_actor(name = nil, attributes = nil)
       item.place(result.inventory)
     end
   }
+end
+
+def build_player
+  EntityPrototypes.build(:player)
 end
 
 def build_item(name = nil, attributes = nil)
