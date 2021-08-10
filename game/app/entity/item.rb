@@ -1,7 +1,7 @@
 module Entity
   class Item < BaseEntity
     def consumable
-      @consumable ||= Components::Healing.new(self, data.consumable)
+      @consumable ||= Components::Consumable.from(self, data.consumable)
     end
 
     def reset_reference

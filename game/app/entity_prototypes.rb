@@ -58,4 +58,4 @@ EntityPrototypes.define_actor :cyborg_bearman,
 EntityPrototypes.define_item  :bandages,
                               name: 'Bandages',
                               char: '!', color: [127, 0, 255],
-                              consumable: { amount: 4 }
+                              consumable: { type: :healing, amount: 4 }
