@@ -68,3 +68,20 @@ def test_lightning_damage_cannot_hit_non_visible_targets(args, assert)
   assert.equal! closer_monster.combatant.hp, 30
   assert.includes! npc.inventory.items, item
 end
+
+def test_lightning_damage_shows_correct_name_when_killing_enemy(args, assert) 
+  TestHelper.init_globals(args)
+  item = build_item('Lightning Scroll', type: :lightning_damage, amount: 30, maximum_range: 2)
+  npc = build_actor('NPC', items: [item])
+  monster = build_actor('Monster', hp: 10)
+  build_game_map_with_entities(
+    [5, 5] => npc,
+    [5, 6] => monster
+  )
+
+  item.consumable.activate(npc)
+
+  assert.includes! TestHelper.log_messages, 'A lightning bolt strikes the Monster with a loud thunder, for 30 damage!'
+  assert.equal! monster.combatant.hp, 0
+  assert.includes_no! npc.inventory.items, item
+end

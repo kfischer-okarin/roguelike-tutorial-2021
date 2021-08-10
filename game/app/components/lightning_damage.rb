@@ -8,8 +8,8 @@ module Components
         raise Action::Impossible, 'No enemy is close enough to strike.'
       end
 
-      target.combatant.take_damage(amount)
       $message_log.add_message(text: "A lightning bolt strikes the #{target.name} with a loud thunder, for #{amount} damage!")
+      target.combatant.take_damage(amount)
       consume
     end
 

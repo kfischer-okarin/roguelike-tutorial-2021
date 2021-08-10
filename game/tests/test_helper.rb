@@ -188,8 +188,14 @@ module TestHelper
 end
 
 def build_entity(attributes = nil)
-  final_attributes = { x: nil, y: nil, parent: nil }.update(attributes || {})
+  final_attributes = {
+    x: nil, y: nil, parent: nil,
+    color: [255, 255, 255],
+    render_order: RenderOrder::ACTOR,
+    blocks_movement: true
+  }.update(attributes || {})
   final_attributes[:name] ||= 'Entity'
+  final_attributes[:char] ||= final_attributes[:name][0]
   Entity.build(
     final_attributes[:name].to_sym,
     final_attributes
@@ -217,6 +223,7 @@ end
 def build_item(name = nil, attributes = nil)
   build_entity(
     name: name || 'Item',
+    blocks_movement: false,
     consumable: attributes || {}
   )
 end
