@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_melee_action_deal_damage(args, assert)
-  TestHelper.init_globals(args)
+def test_melee_action_deal_damage(_args, assert)
   attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 5)
   defender = TestHelper.build_actor('Defender', hp: 30, defense: 1, power: 3)
   TestHelper.build_map_with_entities(
@@ -15,8 +14,7 @@ def test_melee_action_deal_damage(args, assert)
   assert.equal! defender.combatant.hp, 26
 end
 
-def test_melee_action_deal_no_damage(args, assert)
-  TestHelper.init_globals(args)
+def test_melee_action_deal_no_damage(_args, assert)
   attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
   defender = TestHelper.build_actor('Defender', hp: 30, defense: 5, power: 3)
   TestHelper.build_map_with_entities(
@@ -30,8 +28,7 @@ def test_melee_action_deal_no_damage(args, assert)
   assert.equal! defender.combatant.hp, 30
 end
 
-def test_melee_action_nothing_to_attack(args, assert)
-  TestHelper.init_globals(args)
+def test_melee_action_nothing_to_attack(_args, assert)
   attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
   TestHelper.build_map_with_entities(
     [3, 3] => attacker
@@ -42,8 +39,7 @@ def test_melee_action_nothing_to_attack(args, assert)
   end
 end
 
-def test_move_action_success(args, assert)
-  TestHelper.init_globals(args)
+def test_move_action_success(_args, assert)
   entity = TestHelper.build_entity
   TestHelper.build_map_with_entities(
     [3, 3] => entity
@@ -55,8 +51,7 @@ def test_move_action_success(args, assert)
   assert.equal! entity.y, 2
 end
 
-def test_move_action_cannot_move_into_wall(args, assert)
-  TestHelper.init_globals(args)
+def test_move_action_cannot_move_into_wall(_args, assert)
   entity = TestHelper.build_entity
   game_map = TestHelper.build_map_with_entities(
     [3, 3] => entity
@@ -70,8 +65,7 @@ def test_move_action_cannot_move_into_wall(args, assert)
   assert.equal! entity.y, 3
 end
 
-def test_move_action_cannot_move_beyond_map_bounds(args, assert)
-  TestHelper.init_globals(args)
+def test_move_action_cannot_move_beyond_map_bounds(_args, assert)
   entity = TestHelper.build_entity
   game_map = TestHelper.build_map(4, 4)
   entity.place(game_map, x: 3, y: 3)
@@ -83,8 +77,7 @@ def test_move_action_cannot_move_beyond_map_bounds(args, assert)
   assert.equal! entity.y, 3
 end
 
-def test_pickup_action(args, assert)
-  TestHelper.init_globals(args)
+def test_pickup_action(_args, assert)
   actor = TestHelper.build_actor
   item = TestHelper.build_item('Potion')
   game_map = TestHelper.build_map_with_entities(
@@ -100,8 +93,7 @@ def test_pickup_action(args, assert)
   assert.contains_exactly! TestHelper.log_messages, ['You picked up the Potion!']
 end
 
-def test_pickup_action_when_not_at_same_position_is_impossible(args, assert)
-  TestHelper.init_globals(args)
+def test_pickup_action_when_not_at_same_position_is_impossible(_args, assert)
   actor = TestHelper.build_actor
   item = TestHelper.build_item('Potion')
   game_map = TestHelper.build_map
@@ -116,8 +108,7 @@ def test_pickup_action_when_not_at_same_position_is_impossible(args, assert)
   assert.includes! game_map.items, item
 end
 
-def test_use_item_action_activates_consumable(args, assert)
-  TestHelper.init_globals(args)
+def test_use_item_action_activates_consumable(_args, assert)
   actor = TestHelper.build_actor
   item = TestHelper.build_item
   item_consumer = nil
@@ -130,8 +121,7 @@ def test_use_item_action_activates_consumable(args, assert)
   assert.equal! item_consumer, actor
 end
 
-def test_drop_item_action_drops_from_inventory(args, assert)
-  TestHelper.init_globals(args)
+def test_drop_item_action_drops_from_inventory(_args, assert)
   actor = TestHelper.build_actor
   item = TestHelper.build_item
   dropped_item = nil

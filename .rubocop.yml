@@ -36,3 +36,4 @@ Style/GlobalVars:
     - $console
     - $game
     - $message_log
+    - $before_each_blocks

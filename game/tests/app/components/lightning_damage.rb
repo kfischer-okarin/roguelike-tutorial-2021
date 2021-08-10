@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_lightning_damage_hits_closest_actor(args, assert)
-  TestHelper.init_globals(args)
+def test_lightning_damage_hits_closest_actor(_args, assert)
   item = build_item('Lightning Scroll', type: :lightning_damage, amount: 5, maximum_range: 5)
   npc = build_actor('NPC', items: [item])
   closer_monster = build_actor('Close Monster', hp: 30)
@@ -20,8 +19,7 @@ def test_lightning_damage_hits_closest_actor(args, assert)
   assert.includes_no! npc.inventory.items, item
 end
 
-def test_lightning_damage_cannot_hit_outside_maximum_range(args, assert)
-  TestHelper.init_globals(args)
+def test_lightning_damage_cannot_hit_outside_maximum_range(_args, assert)
   item = build_item('Lightning Scroll', type: :lightning_damage, amount: 5, maximum_range: 2)
   npc = build_actor('NPC', items: [item])
   far_monster = build_actor('Far Monster', hp: 30)
@@ -37,8 +35,7 @@ def test_lightning_damage_cannot_hit_outside_maximum_range(args, assert)
   assert.includes! npc.inventory.items, item
 end
 
-def test_lightning_damage_cannot_hit_without_target(args, assert)
-  TestHelper.init_globals(args)
+def test_lightning_damage_cannot_hit_without_target(_args, assert)
   item = build_item('Lightning Scroll', type: :lightning_damage, amount: 5, maximum_range: 2)
   npc = build_actor('NPC', items: [item])
   build_game_map_with_entities(
@@ -51,8 +48,7 @@ def test_lightning_damage_cannot_hit_without_target(args, assert)
   assert.includes! npc.inventory.items, item
 end
 
-def test_lightning_damage_cannot_hit_non_visible_targets(args, assert) 
-  TestHelper.init_globals(args)
+def test_lightning_damage_cannot_hit_non_visible_targets(_args, assert)
   item = build_item('Lightning Scroll', type: :lightning_damage, amount: 5, maximum_range: 2)
   npc = build_actor('NPC', items: [item])
   closer_monster = build_actor('Close Monster', hp: 30)
@@ -69,8 +65,7 @@ def test_lightning_damage_cannot_hit_non_visible_targets(args, assert)
   assert.includes! npc.inventory.items, item
 end
 
-def test_lightning_damage_shows_correct_name_when_killing_enemy(args, assert) 
-  TestHelper.init_globals(args)
+def test_lightning_damage_shows_correct_name_when_killing_enemy(_args, assert)
   item = build_item('Lightning Scroll', type: :lightning_damage, amount: 30, maximum_range: 2)
   npc = build_actor('NPC', items: [item])
   monster = build_actor('Monster', hp: 10)

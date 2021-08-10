@@ -84,14 +84,6 @@ end
 
 module TestHelper
   class << self
-    def init_globals(args)
-      GTK::Entity.strict_entities.clear
-      Entities.setup args.state
-      Entities.player = build_player
-      $message_log = MessageLog.new
-      $game = Spy.new(Game.new(player: Entities.player, scene: :initial_scene))
-    end
-
     def log_messages
       $message_log.messages.map(&:text)
     end
@@ -263,3 +255,34 @@ def make_positions_non_visible(game_map, positions)
   end
 end
 
+$before_each_blocks = []
+
+def before_each(&block)
+  $before_each_blocks << block
+end
+
+module TestExtension
+  def start
+    (test_methods + test_methods_focused).each do |method_name|
+      old_method = method(method_name)
+      define_singleton_method method_name do |args, assert|
+        $before_each_blocks.each do |before_each_block|
+          before_each_block.call(args, assert)
+        end
+        old_method.call(args, assert)
+      end
+    end
+
+    super
+  end
+end
+
+GTK::Tests.prepend TestExtension
+
+before_each do |args|
+  GTK::Entity.strict_entities.clear
+  Entities.setup args.state
+  Entities.player = build_player
+  $message_log = MessageLog.new
+  $game = TestHelper::Spy.new(Game.new(player: Entities.player, scene: :initial_scene))
+end

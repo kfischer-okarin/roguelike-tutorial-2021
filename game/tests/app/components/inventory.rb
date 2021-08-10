@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_inventory_add_entity(args, assert)
-  TestHelper.init_globals(args)
+def test_inventory_add_entity(_args, assert)
   entity_data = { items: [] }
   inventory = Components::Inventory.new(TestHelper.build_actor, entity_data)
   item_entity = TestHelper.build_item
@@ -11,8 +10,7 @@ def test_inventory_add_entity(args, assert)
   assert.includes! entity_data[:items], item_entity.id
 end
 
-def test_inventory_items(args, assert)
-  TestHelper.init_globals(args)
+def test_inventory_items(_args, assert)
   item_entity = TestHelper.build_item
   inventory = Components::Inventory.new(TestHelper.build_actor, items: [])
   inventory.add_entity item_entity
@@ -20,8 +18,7 @@ def test_inventory_items(args, assert)
   assert.equal! inventory.items, [item_entity]
 end
 
-def test_inventory_drop(args, assert)
-  TestHelper.init_globals(args)
+def test_inventory_drop(_args, assert)
   actor = TestHelper.build_actor
   game_map = TestHelper.build_map_with_entities(
     [3, 4] => actor

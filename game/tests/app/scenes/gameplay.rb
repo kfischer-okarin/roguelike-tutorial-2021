@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_gameplay_scene_ai_impossible_actions_are_ignored(args, assert)
-  TestHelper.init_globals(args)
+def test_gameplay_scene_ai_impossible_actions_are_ignored(_args, assert)
   player = EntityPrototypes.build(:player)
   other_entity = TestHelper.build_actor
   other_entity.define_singleton_method :ai do

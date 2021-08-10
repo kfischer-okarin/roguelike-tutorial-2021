@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_room_entities(args, assert)
-  TestHelper.init_globals(args)
+def test_room_entities(_args, assert)
   room = Procgen::RectangularRoom.new(5, 5, 5, 6)
   rng = TestHelper.stub(
     random_int_between: TestHelper.allow_calls(

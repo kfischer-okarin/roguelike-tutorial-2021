@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_define_actor(args, assert)
-  TestHelper.init_globals(args)
+def test_define_actor(_args, assert)
   EntityPrototypes.define_actor :monster,
                                 name: 'Monster',
                                 char: 'm', color: [100, 0, 0],
@@ -17,8 +16,7 @@ def test_define_actor(args, assert)
   assert.has_attributes! entity.inventory, items: []
 end
 
-def test_define_item(args, assert)
-  TestHelper.init_globals(args)
+def test_define_item(_args, assert)
   EntityPrototypes.define_item :potion,
                                name: 'Potion',
                                char: '!', color: [200, 200, 200],

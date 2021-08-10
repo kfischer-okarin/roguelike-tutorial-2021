@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_base_scene_log_impossible_actions(args, assert)
-  TestHelper.init_globals(args)
+def test_base_scene_log_impossible_actions(_args, assert)
   scene = TestHelper.build_test_scene
   scene.next_action = -> { raise Action::Impossible, 'Something did not work.' }
 

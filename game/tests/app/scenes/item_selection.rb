@@ -1,7 +1,6 @@
 require 'tests/test_helper.rb'
 
-def test_item_selection_success(args, assert)
-  TestHelper.init_globals(args)
+def test_item_selection_success(_args, assert)
   previous_scene = TestHelper::Spy.new
   potion = TestHelper.build_item('Potion')
   bomb = TestHelper.build_item('Bomb')
@@ -25,8 +24,7 @@ def test_item_selection_success(args, assert)
   assert.includes! previous_scene.calls, [:after_action_performed, []]
 end
 
-def test_item_selection_cannot_selected_non_existing_item(args, assert)
-  TestHelper.init_globals(args)
+def test_item_selection_cannot_selected_non_existing_item(_args, assert)
   potion = TestHelper.build_item('Potion')
   bomb = TestHelper.build_item('Bomb')
   inventory = TestHelper.build_inventory(items: [potion, bomb])
@@ -45,8 +43,7 @@ def test_item_selection_cannot_selected_non_existing_item(args, assert)
   assert.true! $game.calls.empty?
 end
 
-def test_item_selection_non_item_input_returns_to_previous_scene(args, assert)
-  TestHelper.init_globals(args)
+def test_item_selection_non_item_input_returns_to_previous_scene(_args, assert)
   previous_scene = TestHelper::Spy.new
   potion = TestHelper.build_item('Potion')
   bomb = TestHelper.build_item('Bomb')
@@ -67,8 +64,7 @@ def test_item_selection_non_item_input_returns_to_previous_scene(args, assert)
   assert.true! previous_scene.calls.empty?
 end
 
-def test_item_selection_quit_input_returns_to_previous_scene(args, assert)
-  TestHelper.init_globals(args)
+def test_item_selection_quit_input_returns_to_previous_scene(_args, assert)
   previous_scene = TestHelper::Spy.new
   potion = TestHelper.build_item('Potion')
   bomb = TestHelper.build_item('Bomb')
