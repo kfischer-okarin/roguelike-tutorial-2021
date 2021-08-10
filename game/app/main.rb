@@ -18,6 +18,7 @@ require 'app/game_tile.rb'
 require 'app/tiles.rb'
 require 'app/procgen.rb'
 require 'app/game_map.rb'
+require 'app/screen_layout.rb'
 
 def tick(args)
   setup(args) if args.tick_count.zero?

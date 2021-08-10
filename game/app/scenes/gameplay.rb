@@ -55,7 +55,7 @@ module Scenes
     end
 
     def render_game_map(console)
-      @game_map.render(console, offset_y: 5)
+      @game_map.render(console, offset_y: ScreenLayout.map_offset.y)
     end
 
     def render_hp_bar(console)
@@ -70,8 +70,7 @@ module Scenes
     end
 
     def render_names_at_cursor_position(console)
-      cursor_x, cursor_y = $game.cursor_position
-      cursor_y -= 5
+      cursor_x, cursor_y = ScreenLayout.console_to_map_position $game.cursor_position
       return unless @game_map.in_bounds?(cursor_x, cursor_y) && @game_map.visible?(cursor_x, cursor_y)
 
       names_at_cursor_position = @game_map.entities_at(cursor_x, cursor_y).map(&:name).join(', ').capitalize
