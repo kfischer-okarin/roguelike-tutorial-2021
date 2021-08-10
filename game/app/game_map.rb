@@ -13,6 +13,10 @@ class GameMap
     update_transparent_tiles
   end
 
+  def id_as_parent
+    { type: :game_map }
+  end
+
   def game_map
     self
   end

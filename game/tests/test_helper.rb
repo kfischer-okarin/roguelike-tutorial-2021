@@ -138,7 +138,7 @@ module TestHelper
     def build_entity(name = nil)
       Entity.build(
         :entity,
-        x: nil, y: nil,
+        x: nil, y: nil, parent: nil,
         name: name || 'An entity'
       )
     end
@@ -146,7 +146,7 @@ module TestHelper
     def build_actor(name = nil, hp: 20, power: 5, defense: 5)
       Entity.build(
         :combatant,
-        x: nil, y: nil,
+        x: nil, y: nil, parent: nil,
         name: name || 'Enemy',
         combatant: { hp: hp, max_hp: hp, defense: defense, power: power },
         inventory: { items: [] }
@@ -156,7 +156,7 @@ module TestHelper
     def build_item(name = nil)
       Entity.build(
         :item,
-        x: nil, y: nil,
+        x: nil, y: nil, parent: nil,
         name: name || 'Item',
         consumable: { amount: 5 }
       )
@@ -185,4 +185,57 @@ module TestHelper
       @calls << [name, args]
     end
   end
+end
+
+def build_entity(attributes = nil)
+  final_attributes = { x: nil, y: nil, parent: nil }.update(attributes || {})
+  final_attributes[:name] ||= 'Entity'
+  Entity.build(
+    final_attributes[:name].to_sym,
+    final_attributes
+  )
+end
+
+def build_actor(name = nil, attributes = nil)
+  values = attributes || {}
+  build_entity(
+    name: name || 'Monster',
+    combatant: {
+      hp: values[:hp] || 20,
+      max_hp: values[:max_hp] || values[:hp] || 20,
+      defense: values[:defense] || 5,
+      power: values[:power] || 5
+    },
+    inventory: { items: [] }
+  ).tap { |result|
+    (values[:items] || []).each do |item|
+      item.place(result.inventory)
+    end
+  }
+end
+
+def build_item(name = nil, attributes = nil)
+  build_entity(
+    name: name || 'Item',
+    consumable: attributes || {}
+  )
+end
+
+def build_game_map(width = 10, height = 10)
+  GameMap.new(width: width, height: height, entities: []).tap { |game_map|
+    game_map.fill_rect([0, 0, width, height], Tiles.floor)
+    game_map.define_singleton_method :visible? do |_x, _y|
+      true
+    end
+  }
+end
+
+def build_game_map_with_entities(entities_by_position)
+  width = entities_by_position.keys.map(&:x).max + 3
+  height = entities_by_position.keys.map(&:y).max + 3
+  build_game_map(width, height).tap { |game_map|
+    entities_by_position.each do |position, entity|
+      entity.place(game_map, x: position.x, y: position.y)
+    end
+  }
 end

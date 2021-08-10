@@ -1,6 +1,6 @@
 module Entity
   class BaseEntity < DataBackedObject
-    attr_reader :id, :parent
+    attr_reader :id
 
     def initialize(id, data)
       super()
@@ -12,10 +12,13 @@ module Entity
       @parent.remove_entity self if @parent
       @parent = parent
       parent.add_entity self
-      return unless x && y
-
+      data.parent = parent.id_as_parent
       self.x = x
       self.y = y
+    end
+
+    def parent
+      @parent ||= parent_from(data.parent)
     end
 
     def entity
@@ -44,6 +47,15 @@ module Entity
     def move(dx, dy)
       self.x += dx
       self.y += dy
+    end
+
+    private
+
+    def parent_from(parent_data)
+      case parent_data[:type]
+      when :inventory
+        Entities.get(parent_data[:entity_id]).inventory
+      end
     end
   end
 end

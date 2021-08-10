@@ -1,5 +1,9 @@
 module Components
   class Inventory < BaseComponent
+    def id_as_parent
+      { type: :inventory, entity_id: entity.id }
+    end
+
     def add_entity(entity)
       data.items << entity.id
     end

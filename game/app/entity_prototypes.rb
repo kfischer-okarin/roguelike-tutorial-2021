@@ -32,7 +32,7 @@ module EntityPrototypes
     end
 
     def build_initial_attributes(prototype)
-      { x: nil, y: nil }.tap { |result|
+      { x: nil, y: nil, parent: nil }.tap { |result|
         result.update(prototype)
         result[:combatant][:max_hp] = result[:combatant][:hp] if result.key? :combatant
       }
