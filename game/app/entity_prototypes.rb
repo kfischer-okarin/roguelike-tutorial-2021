@@ -59,3 +59,8 @@ EntityPrototypes.define_item  :bandages,
                               name: 'Bandages',
                               char: '!', color: [127, 0, 255],
                               consumable: { type: :healing, amount: 4 }
+
+EntityPrototypes.define_item  :megavolt_capsule,
+                              name: 'Megavolt Capsule',
+                              char: '~', color: [255, 255, 0],
+                              consumable: { type: :lightning_damage, amount: 20, maximum_range: 5 }

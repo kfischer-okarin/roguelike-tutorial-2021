@@ -22,7 +22,9 @@ def test_room_entities(args, assert)
     rand: TestHelper.allow_calls(
       :rand,
       [
-        [[], 0.9] # monster type -> bearman
+        [[], 0.9], # monster type -> bearman
+        [[], 0.5], # item 1 type -> bandages
+        [[], 0.9]  # item 2 type -> megavolt_capsule
       ]
     )
   )
@@ -37,6 +39,6 @@ def test_room_entities(args, assert)
   assert.equal! result, [
     { type: :cyborg_bearman, x: 6, y: 6 },
     { type: :bandages, x: 7, y: 7 },
-    { type: :bandages, x: 8, y: 7 }
+    { type: :megavolt_capsule, x: 8, y: 7 }
   ]
 end
