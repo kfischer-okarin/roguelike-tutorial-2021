@@ -239,3 +239,13 @@ def build_game_map_with_entities(entities_by_position)
     end
   }
 end
+
+def make_positions_non_visible(game_map, positions)
+  original_method = game_map.method(:visible?)
+  game_map.define_singleton_method :visible? do |x, y|
+    return false if positions.include? [x, y]
+
+    original_method.call(x, y)
+  end
+end
+
