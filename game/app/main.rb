@@ -26,7 +26,7 @@ def tick(args)
   $render_context.gtk_outputs = args.outputs
 
   begin
-    $game.mouse_position = $render_context.mouse_coordinates(args.inputs)
+    $game.cursor_position = $render_context.mouse_coordinates(args.inputs)
     $game.render($console)
     $game.handle_input_events(process_input(args.inputs))
     $render_context.present($console)

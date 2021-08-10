@@ -21,7 +21,7 @@ module Scenes
       render_game_map(console)
       render_hp_bar(console)
       render_message_log(console)
-      render_names_at_mouse_position(console)
+      render_names_at_cursor_position(console)
     end
 
     def after_action_performed
@@ -69,13 +69,13 @@ module Scenes
       @message_log.render(console)
     end
 
-    def render_names_at_mouse_position(console)
-      mouse_x, mouse_y = $game.mouse_position
-      mouse_y -= 5
-      return unless @game_map.in_bounds?(mouse_x, mouse_y) && @game_map.visible?(mouse_x, mouse_y)
+    def render_names_at_cursor_position(console)
+      cursor_x, cursor_y = $game.cursor_position
+      cursor_y -= 5
+      return unless @game_map.in_bounds?(cursor_x, cursor_y) && @game_map.visible?(cursor_x, cursor_y)
 
-      names_at_mouse_position = @game_map.entities_at(mouse_x, mouse_y).map(&:name).join(', ').capitalize
-      console.print(x: 21, y: 5, string: names_at_mouse_position)
+      names_at_cursor_position = @game_map.entities_at(cursor_x, cursor_y).map(&:name).join(', ').capitalize
+      console.print(x: 21, y: 5, string: names_at_cursor_position)
     end
   end
 end

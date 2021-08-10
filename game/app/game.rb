@@ -1,6 +1,6 @@
 class Game
   attr_reader :player
-  attr_accessor :mouse_position, :scene
+  attr_accessor :cursor_position, :scene
 
   def initialize(player:, scene:)
     @player = player
