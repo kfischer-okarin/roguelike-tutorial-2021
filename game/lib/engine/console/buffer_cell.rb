@@ -1,9 +1,6 @@
 module Engine
   class Console
     class BufferCell < Array
-      attr_reader :x, :y, :r, :g, :b, :bg_r, :bg_g, :bg_b
-      attr_accessor :char
-
       # x, y, char, :r, :g, :b, :bg_r, :bg_g, :bg_b, bg_color
       def initialize(console, index)
         super(10)
@@ -11,12 +8,24 @@ module Engine
         self[1] = index.idiv(console.width)
       end
 
+      def char
+        self[2]
+      end
+
       def char=(char)
         self[2] = char
       end
 
+      def color
+        self[3..5]
+      end
+
       def color=(color)
         self[3], self[4], self[5] = color || [nil, nil, nil]
+      end
+
+      def background_color
+        self[6..8]
       end
 
       def background_color=(color)

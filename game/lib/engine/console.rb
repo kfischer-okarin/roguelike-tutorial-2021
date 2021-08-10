@@ -12,6 +12,14 @@ module Engine
       @buffer = Array2D.new(width, height) { |index| BufferCell.new(self, index) }
     end
 
+    def bg
+      @bg ||= Array2D::AttributeAccessor.new(@buffer, :background_color)
+    end
+
+    def fg
+      @fg ||= Array2D::AttributeAccessor.new(@buffer, :color)
+    end
+
     def buffer_data
       @buffer.data
     end

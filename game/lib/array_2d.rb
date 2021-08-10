@@ -78,4 +78,19 @@ class Array2D
       end
     end
   end
+
+  class AttributeAccessor
+    def initialize(array_2d, attribute)
+      @array_2d = array_2d
+      @attribute = attribute
+    end
+
+    def [](x, y)
+      @array_2d[x, y].send(@attribute)
+    end
+
+    def []=(x, y, value)
+      @array_2d[x, y].send(:"#{@attribute}=", value)
+    end
+  end
 end
