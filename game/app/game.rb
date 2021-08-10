@@ -5,6 +5,7 @@ class Game
   def initialize(player:, scene:)
     @player = player
     @scene = scene
+    @cursor_position = [player.x, player.y]
   end
 
   def handle_input_events(input_events)
