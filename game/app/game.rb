@@ -43,6 +43,15 @@ class Game
     end
   end
 
+  def start_look
+    @scene = Scenes::PositionSelection.new(
+      @scene,
+      game_map: @scene.game_map
+    ) do
+      # no op - don't perform action on enter
+    end
+  end
+
   def quit
     $gtk.request_quit
   end

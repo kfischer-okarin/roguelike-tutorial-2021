@@ -87,8 +87,9 @@ module TestHelper
     def init_globals(args)
       GTK::Entity.strict_entities.clear
       Entities.setup args.state
+      Entities.player = build_player
       $message_log = MessageLog.new
-      $game = Spy.new(Game.new(player: build_player, scene: :initial_scene))
+      $game = Spy.new(Game.new(player: Entities.player, scene: :initial_scene))
     end
 
     def log_messages

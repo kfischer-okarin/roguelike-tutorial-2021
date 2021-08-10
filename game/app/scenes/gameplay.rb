@@ -2,6 +2,8 @@ require 'app/scenes/gameplay/input_event_handler.rb'
 
 module Scenes
   class Gameplay < BaseScene
+    attr_reader :game_map
+
     def initialize(game_map:, player:)
       @player = player
       super()

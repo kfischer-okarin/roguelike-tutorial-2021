@@ -66,6 +66,11 @@ module Scenes
         $game.show_drop_item_menu
         nil
       end
+
+      def dispatch_action_for_look
+        $game.start_look
+        nil
+      end
     end
   end
 end
