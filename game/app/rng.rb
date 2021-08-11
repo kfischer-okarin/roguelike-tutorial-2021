@@ -20,4 +20,9 @@ class RNG
   def rand
     @random.rand
   end
+
+  def random_element_from(collection)
+    random_index = (@random.rand * collection.size).floor
+    collection[random_index]
+  end
 end

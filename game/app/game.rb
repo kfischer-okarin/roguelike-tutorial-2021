@@ -1,11 +1,12 @@
 class Game
-  attr_reader :player
+  attr_reader :player, :rng
   attr_accessor :cursor_position, :scene
 
   def initialize(player:, scene:)
     @player = player
     @scene = scene
     @cursor_position = [player.x, player.y]
+    @rng = RNG.new
   end
 
   def handle_input_events(input_events)
