@@ -17,32 +17,27 @@ module Scenes
       @item_list.render(console)
     end
 
-    def go_back_to_previous_scene
-      $game.scene = @previous_scene
-    end
-
     def after_action_performed
-      go_back_to_previous_scene
+      $game.pop_scene
       @previous_scene.after_action_performed
     end
 
     protected
 
     def build_input_handler
-      InputEventHandler.new(self, @item_list, @build_action_for_selected_item)
+      InputEventHandler.new(@item_list, @build_action_for_selected_item)
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(selection_scene, selection_ui, build_action_for_selected_item)
+      def initialize(selection_ui, build_action_for_selected_item)
         super()
-        @selection_scene = selection_scene
         @selection_ui = selection_ui
         @build_action_for_selected_item = build_action_for_selected_item
       end
 
       def dispatch_action_for_char_typed(event)
         unless @selection_ui.valid_input_char? event.char
-          @selection_scene.go_back_to_previous_scene
+          $game.pop_scene
           return
         end
 
@@ -53,7 +48,7 @@ module Scenes
       end
 
       def dispatch_action_for_quit
-        @selection_scene.go_back_to_previous_scene
+        $game.pop_scene
         nil
       end
     end

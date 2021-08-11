@@ -15,25 +15,20 @@ module Scenes
       console.fg[x, y] = Colors.black
     end
 
-    def go_back_to_gameplay_scene
-      $game.scene = @gameplay_scene
-    end
-
     def after_action_performed
-      go_back_to_gameplay_scene
+      $game.pop_scene
       @gameplay_scene.after_action_performed
     end
 
     protected
 
     def build_input_handler
-      InputEventHandler.new(self, @build_action_for_selected_position)
+      InputEventHandler.new(@build_action_for_selected_position)
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(selection_scene, build_action_for_selected_position)
+      def initialize(build_action_for_selected_position)
         super()
-        @selection_scene = selection_scene
         @build_action_for_selected_position = build_action_for_selected_position
       end
 
@@ -63,7 +58,7 @@ module Scenes
       end
 
       def dispatch_action_for_quit
-        @selection_scene.go_back_to_gameplay_scene
+        $game.pop_scene
         nil
       end
     end

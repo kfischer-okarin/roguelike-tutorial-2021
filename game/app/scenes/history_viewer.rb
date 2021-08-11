@@ -39,18 +39,17 @@ module Scenes
     protected
 
     def build_input_handler
-      InputEventHandler.new(self, @previous_scene)
+      InputEventHandler.new(self)
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(viewer, previous_scene)
+      def initialize(viewer)
         super()
         @viewer = viewer
-        @previous_scene = previous_scene
       end
 
       def dispatch_action_for_quit
-        $game.scene = @previous_scene
+        $game.pop_scene
         nil
       end
 

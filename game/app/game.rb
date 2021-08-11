@@ -5,6 +5,7 @@ class Game
   def initialize(player:, scene:)
     @player = player
     @scene = scene
+    @scene_stack = []
     @cursor_position = [player.x, player.y]
     @rng = RNG.new
   end
@@ -13,17 +14,26 @@ class Game
     @scene.handle_input_events(input_events)
   end
 
+  def push_scene(next_scene)
+    @scene_stack.push @scene
+    @scene = next_scene
+  end
+
+  def pop_scene
+    @scene = @scene_stack.pop
+  end
+
   def render(console)
     console.clear
     @scene.render(console)
   end
 
   def show_history(console)
-    @scene = Scenes::HistoryViewer.new(previous_scene: @scene, console: console)
+    push_scene Scenes::HistoryViewer.new(previous_scene: @scene, console: console)
   end
 
   def show_inventory
-    @scene = Scenes::ItemSelection.new(
+    item_selection = Scenes::ItemSelection.new(
       @scene,
       inventory: player.inventory,
       title: 'Select an item to use',
@@ -31,10 +41,11 @@ class Game
     ) do |selected_item|
       selected_item.consumable.get_action(@player)
     end
+    push_scene item_selection
   end
 
   def show_drop_item_menu
-    @scene = Scenes::ItemSelection.new(
+    item_selection = Scenes::ItemSelection.new(
       @scene,
       inventory: player.inventory,
       title: 'Select an item to drop',
@@ -42,15 +53,17 @@ class Game
     ) do |selected_item|
       DropItemAction.new(@player, selected_item)
     end
+    push_scene item_selection
   end
 
   def start_look
-    @scene = Scenes::PositionSelection.new(
+    position_selection = Scenes::PositionSelection.new(
       @scene,
       game_map: @scene.game_map
     ) do
       # no op - don't perform action on enter
     end
+    push_scene position_selection
   end
 
   def quit
