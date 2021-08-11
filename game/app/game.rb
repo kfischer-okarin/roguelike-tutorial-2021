@@ -29,7 +29,7 @@ class Game
       title: 'Select an item to use',
       window_x: item_window_x
     ) do |selected_item|
-      UseItemAction.new(@player, selected_item)
+      selected_item.consumable.get_action(@player)
     end
   end
 

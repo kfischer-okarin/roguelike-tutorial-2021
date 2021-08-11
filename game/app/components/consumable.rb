@@ -11,6 +11,10 @@ module Components
       end
     end
 
+    def get_action(consumer)
+      UseItemAction.new(consumer, entity)
+    end
+
     def consume
       item_container = entity.parent
       item_container.remove_entity entity

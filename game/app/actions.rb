@@ -4,6 +4,12 @@ class Action
   def initialize(entity)
     @entity = entity
   end
+
+  def ==(other)
+    return false unless self.class == other.class
+
+    instance_variables.all? { |var| instance_variable_get(var) == other.instance_variable_get(var) }
+  end
 end
 
 module WaitAction

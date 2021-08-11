@@ -33,3 +33,12 @@ def test_healing_consuming_with_max_hp_is_impossible(_args, assert)
   end
   assert.includes! npc.inventory.items, potion
 end
+
+def test_healing_get_action_returns_use_action(_args, assert)
+  potion = build_item type: :healing, amount: 1
+  consumer = build_actor
+
+  action = potion.consumable.get_action(consumer)
+
+  assert.equal! action, UseItemAction.new(consumer, potion)
+end
