@@ -1,41 +1,35 @@
 require 'tests/test_helper.rb'
 
 def test_healing_heals_consumer_hp(_args, assert)
-  item = TestHelper.build_item('Potion')
-  healing = Components::Healing.new(item, amount: 3)
-  npc = TestHelper.build_actor('NPC', hp: 20)
-  item.place npc.inventory
+  potion = build_item name: 'Potion', type: :healing, amount: 3
+  npc = build_actor hp: 20, items: [potion]
   npc.combatant.take_damage(10)
 
-  healing.activate(npc)
+  potion.consumable.activate(npc)
 
-  assert.includes! TestHelper.log_messages, 'You use the Potion and recover 3 HP!'
+  assert.includes! log_messages, 'You use the Potion and recover 3 HP!'
   assert.equal! npc.combatant.hp, 13
-  assert.includes_no! npc.inventory.items, item
+  assert.includes_no! npc.inventory.items, potion
 end
 
 def test_healing_heals_until_max_hp(_args, assert)
-  item = TestHelper.build_entity('Potion')
-  healing = Components::Healing.new(item, amount: 20)
-  npc = TestHelper.build_actor('NPC', hp: 20)
-  item.place npc.inventory
+  potion = build_item name: 'Potion', type: :healing, amount: 20
+  npc = build_actor hp: 20, items: [potion]
   npc.combatant.take_damage(5)
 
-  healing.activate(npc)
+  potion.consumable.activate(npc)
 
   assert.includes! TestHelper.log_messages, 'You use the Potion and recover 5 HP!'
   assert.equal! npc.combatant.hp, 20
-  assert.includes_no! npc.inventory.items, item
+  assert.includes_no! npc.inventory.items, potion
 end
 
 def test_healing_consuming_with_max_hp_is_impossible(_args, assert)
-  item = TestHelper.build_entity('Potion')
-  healing = Components::Healing.new(item, amount: 1)
-  npc = TestHelper.build_actor('NPC', hp: 20)
-  item.place npc.inventory
+  potion = build_item name: 'Potion', type: :healing, amount: 1
+  npc = build_actor hp: 20, items: [potion]
 
   assert.raises_with_message! Action::Impossible, 'Your health is already full.' do
-    healing.activate(npc)
+    potion.consumable.activate(npc)
   end
-  assert.includes! npc.inventory.items, item
+  assert.includes! npc.inventory.items, potion
 end

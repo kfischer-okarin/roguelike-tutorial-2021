@@ -83,90 +83,6 @@ module GTK
 end
 
 module TestHelper
-  class << self
-    def log_messages
-      $message_log.messages.map(&:text)
-    end
-
-    def stub(methods)
-      Object.new.tap { |result|
-        methods.each do |method_name, return_value|
-          result.define_singleton_method method_name do |*args|
-            return return_value.call(*args) if return_value.respond_to? :call
-
-            return_value
-          end
-        end
-      }
-    end
-
-    def allow_calls(name, allowed_calls)
-      index = 0
-      lambda { |*args|
-        expected_args, result = allowed_calls[index]
-        unless args == expected_args
-          raise "Expected call \##{index + 1} to #{name} to be with args:\n  #{expected_args}\n\n but it was called with:\n  #{args}"
-        end
-        index += 1
-        result
-      }
-    end
-
-    def build_map(width = 10, height = 10)
-      GameMap.new(width: width, height: height, entities: []).tap { |game_map|
-        game_map.fill_rect([0, 0, width, height], Tiles.floor)
-      }
-    end
-
-    def build_map_with_entities(entities_by_position)
-      width = entities_by_position.keys.map(&:x).max + 3
-      height = entities_by_position.keys.map(&:y).max + 3
-      build_map(width, height).tap { |game_map|
-        entities_by_position.each do |position, entity|
-          entity.place(game_map, x: position.x, y: position.y)
-        end
-      }
-    end
-
-    def build_entity(name = nil)
-      Entity.build(
-        :entity,
-        x: nil, y: nil, parent: nil,
-        name: name || 'An entity'
-      )
-    end
-
-    def build_actor(name = nil, hp: 20, power: 5, defense: 5)
-      Entity.build(
-        :combatant,
-        x: nil, y: nil, parent: nil,
-        name: name || 'Enemy',
-        combatant: { hp: hp, max_hp: hp, defense: defense, power: power },
-        inventory: { items: [] }
-      )
-    end
-
-    def build_item(name = nil)
-      Entity.build(
-        :item,
-        x: nil, y: nil, parent: nil,
-        name: name || 'Item',
-        consumable: { amount: 5 }
-      )
-    end
-
-    def build_inventory(entity:  nil, items: nil)
-      Components::Inventory.new(
-        entity || build_entity,
-        items: []
-      ).tap { |result|
-        (items || []).each do |item|
-          result.add_entity item
-        end
-      }
-    end
-  end
-
   class Spy
     attr_reader :calls
 
@@ -177,38 +93,90 @@ module TestHelper
 
     def method_missing(name, *args)
       @calls << [name, args]
-      @wrapped_object.send(name, args) if @wrapped_object&.respond_to? name
+      @wrapped_object.send(name, *args) if @wrapped_object && @wrapped_object.respond_to?(name)
+    end
+  end
+
+  class Mock
+    def initialize
+      @defined_methods = []
+      @expected_calls = []
+      @index = 0
+    end
+
+    def expect_call(method_name, args: nil, return_value: nil)
+      define_mock_method method_name unless @defined_methods.include? method_name
+      @expected_calls << [method_name, args || [], return_value]
+    end
+
+    def define_mock_method(name)
+      define_singleton_method name do |*args|
+        actual_call = "#{name} was called with args:\n#{args}\n\n"
+        raise "#{actual_call} as call \##{@index + 1} but no more calls are expected." unless @index < @expected_calls.size
+
+        expected_name, expected_args, return_value = expected_call
+        if name == expected_name && args == expected_args
+          @index += 1
+          return return_value
+        end
+
+        raise "#{expected_call_description} but actually #{actual_call}"
+      end
+      @defined_methods << name
+    end
+
+    def expected_call
+      @expected_calls[@index]
+    end
+
+    def expected_call_description
+      expected_name, expected_args = expected_call[0..1]
+      "Expected call \##{@index + 1} to be to #{expected_name} with args:\n  #{expected_args}\n\n"
+    end
+
+    def assert_all_calls_received!(assert)
+      assert.ok!
+      return if @index == @expected_calls.size
+
+      raise "#{expected_call_description} but it was never received."
     end
   end
 end
 
+def log_messages
+  $message_log.messages.map(&:text)
+end
+
 def build_entity(attributes = nil)
+  values = attributes || {}
   final_attributes = {
     x: nil, y: nil, parent: nil,
     color: [255, 255, 255],
     render_order: RenderOrder::ACTOR,
-    blocks_movement: true
-  }.update(attributes || {})
-  final_attributes[:name] ||= 'Entity'
+    blocks_movement: true,
+    name: values.delete(:name) || 'Entity'
+  }
   final_attributes[:char] ||= final_attributes[:name][0]
+  final_attributes.update(values)
   Entity.build(
     final_attributes[:name].to_sym,
     final_attributes
   )
 end
 
-def build_actor(name = nil, attributes = nil)
+def build_actor(attributes = nil)
   values = attributes || {}
-  build_entity(
-    name: name || 'Monster',
+  final_attributes = {
+    name: values.delete(:name) || 'Monster',
     combatant: {
-      hp: values[:hp] || 20,
-      max_hp: values[:max_hp] || values[:hp] || 20,
-      defense: values[:defense] || 5,
-      power: values[:power] || 5
+      hp: values.delete(:hp) || 20,
+      defense: values.delete(:defense) || 5,
+      power: values.delete(:power) || 5
     },
     inventory: { items: [] }
-  ).tap { |result|
+  }
+  final_attributes[:combatant][:max_hp] = values.delete(:max_hp) || final_attributes[:combatant][:hp]
+  build_entity(final_attributes).tap { |result|
     (values[:items] || []).each do |item|
       item.place(result.inventory)
     end
@@ -219,12 +187,14 @@ def build_player
   EntityPrototypes.build(:player)
 end
 
-def build_item(name = nil, attributes = nil)
-  build_entity(
-    name: name || 'Item',
+def build_item(attributes = nil)
+  values = attributes || {}
+  final_attributes = {
+    name: values.delete(:name) || 'Item',
     blocks_movement: false,
-    consumable: attributes || {}
-  )
+    consumable: values.empty? ? { type: :healing, amount: 5 } : values
+  }
+  build_entity(final_attributes)
 end
 
 def build_game_map(width = 10, height = 10)
@@ -253,6 +223,36 @@ def make_positions_non_visible(game_map, positions)
 
     original_method.call(x, y)
   end
+end
+
+def replace_method(object, name, &implementation)
+  object.define_singleton_method(name, &implementation)
+end
+
+def stub_attribute(object, attribute, value)
+  replace_method(object, attribute) { value }
+end
+
+def stub_attribute_with_mock(object, attribute)
+  stub_attribute object, attribute, TestHelper::Spy.new
+end
+
+def mock_method(object, name)
+  [].tap { |calls|
+    replace_method(object, name) { |*args| calls << args }
+  }
+end
+
+def stub(methods)
+  Object.new.tap { |result|
+    methods.each do |method_name, return_value|
+      result.define_singleton_method method_name do |*args|
+        return return_value.call(*args) if return_value.respond_to? :call
+
+        return_value
+      end
+    end
+  }
 end
 
 $before_each_blocks = []

@@ -2,31 +2,23 @@ require 'tests/test_helper.rb'
 
 def test_room_entities(_args, assert)
   room = Procgen::RectangularRoom.new(5, 5, 5, 6)
-  rng = TestHelper.stub(
-    random_int_between: TestHelper.allow_calls(
-      :random_int_between,
-      [
-        [[0, 2], 1], # number of monsters
-        [[0, 3], 2]  # number of items
-      ]
-    ),
-    random_position_in_rect: TestHelper.allow_calls(
-      :random_position_in_rect,
-      [
-        [[[6, 6, 3, 4]], [6, 6]], # Monster position
-        [[[6, 6, 3, 4]], [7, 7]], # Item 1 position
-        [[[6, 6, 3, 4]], [8, 7]]  # Item 2 position
-      ]
-    ),
-    rand: TestHelper.allow_calls(
-      :rand,
-      [
-        [[], 0.9], # monster type -> bearman
-        [[], 0.5], # item 1 type -> bandages
-        [[], 0.9]  # item 2 type -> megavolt_capsule
-      ]
-    )
-  )
+  rng = TestHelper::Mock.new
+  # number of monsters
+  rng.expect_call :random_int_between, args: [0, 2], return_value: 1
+  # monster position
+  rng.expect_call :random_position_in_rect, args: [[6, 6, 3, 4]], return_value: [6, 6]
+  # monster type -> bearman
+  rng.expect_call :rand, return_value: 0.9
+  # number of items
+  rng.expect_call :random_int_between, args: [0, 3], return_value: 2
+  # item 1 position
+  rng.expect_call :random_position_in_rect, args: [[6, 6, 3, 4]], return_value: [7, 7]
+  # item 1 type -> bandages
+  rng.expect_call :rand, return_value: 0.5
+  # item 2 position
+  rng.expect_call :random_position_in_rect, args: [[6, 6, 3, 4]], return_value: [8, 7]
+  # item 2 type -> megavolt_capsule
+  rng.expect_call :rand, return_value: 0.9
   generator = Procgen::RoomEntitiesGenerator.new(
     rng,
     max_monsters_per_room: 2,
@@ -35,6 +27,7 @@ def test_room_entities(_args, assert)
 
   result = generator.generate_for(room)
 
+  rng.assert_all_calls_received!(assert)
   assert.equal! result, [
     { type: :cyborg_bearman, x: 6, y: 6 },
     { type: :bandages, x: 7, y: 7 },

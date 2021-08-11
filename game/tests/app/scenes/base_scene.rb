@@ -6,7 +6,7 @@ def test_base_scene_log_impossible_actions(_args, assert)
 
   scene.handle_input_events [{ type: :test }]
 
-  assert.includes! TestHelper.log_messages, 'Something did not work.'
+  assert.includes! log_messages, 'Something did not work.'
 end
 
 module TestHelper
@@ -19,7 +19,7 @@ module TestHelper
 
         def next_action=(action_lambda)
           @input_event_handler = TestHelper.stub(
-            handle_input_event: ->(_) { TestHelper.stub(perform: action_lambda) }
+            handle_input_event: ->(_) { stub(perform: action_lambda) }
           )
         end
       end

@@ -1,13 +1,12 @@
 require 'tests/test_helper.rb'
 
 def test_gameplay_scene_ai_impossible_actions_are_ignored(_args, assert)
-  player = EntityPrototypes.build(:player)
-  other_entity = TestHelper.build_actor
-  other_entity.define_singleton_method :ai do
-    TestHelper.stub(perform_action: -> { raise Action::Impossible, 'Something went wrong' })
-  end
+  player = build_player
+  other_entity = build_actor
+  error_ai = stub(perform_action: -> { raise Action::Impossible, 'Something went wrong' })
+  stub_attribute(other_entity, :ai, error_ai)
 
-  game_map = TestHelper.build_map_with_entities(
+  game_map = build_game_map_with_entities(
     [5, 5] => player,
     [1, 1] => other_entity
   )

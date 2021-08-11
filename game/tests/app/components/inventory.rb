@@ -1,36 +1,33 @@
 require 'tests/test_helper.rb'
 
 def test_inventory_add_entity(_args, assert)
-  entity_data = { items: [] }
-  inventory = Components::Inventory.new(TestHelper.build_actor, entity_data)
-  item_entity = TestHelper.build_item
+  actor = build_actor
+  item = build_item
 
-  inventory.add_entity(item_entity)
+  actor.inventory.add_entity(item)
 
-  assert.includes! entity_data[:items], item_entity.id
+  assert.includes! actor.data.inventory.items, item.id
 end
 
 def test_inventory_items(_args, assert)
-  item_entity = TestHelper.build_item
-  inventory = Components::Inventory.new(TestHelper.build_actor, items: [])
-  inventory.add_entity item_entity
+  actor = build_actor
+  item = build_item
+  actor.inventory.add_entity item
 
-  assert.equal! inventory.items, [item_entity]
+  assert.equal! actor.inventory.items, [item]
 end
 
 def test_inventory_drop(_args, assert)
-  actor = TestHelper.build_actor
-  game_map = TestHelper.build_map_with_entities(
+  ball = build_item name: 'Ball'
+  actor = build_actor items: [ball]
+  game_map = build_game_map_with_entities(
     [3, 4] => actor
   )
-  inventory = Components::Inventory.new(actor, items: [])
-  item_entity = TestHelper.build_item('Ball')
-  item_entity.place inventory
 
-  inventory.drop item_entity
+  actor.inventory.drop ball
 
-  assert.equal! inventory.items, []
-  assert.includes! game_map.items, item_entity
-  assert.has_attributes! item_entity, x: 3, y: 4
-  assert.includes! TestHelper.log_messages, 'You dropped the Ball'
+  assert.equal! actor.inventory.items, []
+  assert.includes! game_map.items, ball
+  assert.has_attributes! ball, x: 3, y: 4
+  assert.includes! log_messages, 'You dropped the Ball'
 end

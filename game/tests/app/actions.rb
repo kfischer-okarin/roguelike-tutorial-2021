@@ -1,36 +1,36 @@
 require 'tests/test_helper.rb'
 
 def test_melee_action_deal_damage(_args, assert)
-  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 5)
-  defender = TestHelper.build_actor('Defender', hp: 30, defense: 1, power: 3)
-  TestHelper.build_map_with_entities(
+  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 5
+  defender = build_actor name: 'Defender', hp: 30, defense: 1, power: 3
+  build_game_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
   )
 
   MeleeAction.new(attacker, dx: 0, dy: 1).perform
 
-  assert.includes! TestHelper.log_messages, 'Attacker attacks Defender for 4 hit points.'
+  assert.includes! log_messages, 'Attacker attacks Defender for 4 hit points.'
   assert.equal! defender.combatant.hp, 26
 end
 
 def test_melee_action_deal_no_damage(_args, assert)
-  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
-  defender = TestHelper.build_actor('Defender', hp: 30, defense: 5, power: 3)
-  TestHelper.build_map_with_entities(
+  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 1
+  defender = build_actor name: 'Defender', hp: 30, defense: 5, power: 3
+  build_game_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
   )
 
   MeleeAction.new(attacker, dx: 0, dy: 1).perform
 
-  assert.includes! TestHelper.log_messages, 'Attacker attacks Defender but does no damage.'
+  assert.includes! log_messages, 'Attacker attacks Defender but does no damage.'
   assert.equal! defender.combatant.hp, 30
 end
 
 def test_melee_action_nothing_to_attack(_args, assert)
-  attacker = TestHelper.build_actor('Attacker', hp: 30, defense: 2, power: 1)
-  TestHelper.build_map_with_entities(
+  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 1
+  build_game_map_with_entities(
     [3, 3] => attacker
   )
 
@@ -40,8 +40,8 @@ def test_melee_action_nothing_to_attack(_args, assert)
 end
 
 def test_move_action_success(_args, assert)
-  entity = TestHelper.build_entity
-  TestHelper.build_map_with_entities(
+  entity = build_entity
+  build_game_map_with_entities(
     [3, 3] => entity
   )
 
@@ -52,8 +52,8 @@ def test_move_action_success(_args, assert)
 end
 
 def test_move_action_cannot_move_into_wall(_args, assert)
-  entity = TestHelper.build_entity
-  game_map = TestHelper.build_map_with_entities(
+  entity = build_entity
+  game_map = build_game_map_with_entities(
     [3, 3] => entity
   )
   game_map.set_tile(4, 3, Tiles.wall)
@@ -66,8 +66,8 @@ def test_move_action_cannot_move_into_wall(_args, assert)
 end
 
 def test_move_action_cannot_move_beyond_map_bounds(_args, assert)
-  entity = TestHelper.build_entity
-  game_map = TestHelper.build_map(4, 4)
+  entity = build_entity
+  game_map = build_game_map(4, 4)
   entity.place(game_map, x: 3, y: 3)
 
   assert.raises_with_message!(Action::Impossible, 'That way is blocked.') do
@@ -78,11 +78,11 @@ def test_move_action_cannot_move_beyond_map_bounds(_args, assert)
 end
 
 def test_pickup_action(_args, assert)
-  actor = TestHelper.build_actor
-  item = TestHelper.build_item('Potion')
-  game_map = TestHelper.build_map_with_entities(
+  actor = build_actor
+  item = build_item name: 'Potion'
+  game_map = build_game_map_with_entities(
     [3, 3] => actor,
-    [1, 1] => TestHelper.build_item
+    [1, 1] => build_item
   )
   item.place(game_map, x: 3, y: 3)
 
@@ -90,15 +90,16 @@ def test_pickup_action(_args, assert)
 
   assert.includes! actor.inventory.items, item
   assert.includes_no! game_map.items, item
-  assert.contains_exactly! TestHelper.log_messages, ['You picked up the Potion!']
+  assert.contains_exactly! log_messages, ['You picked up the Potion!']
 end
 
 def test_pickup_action_when_not_at_same_position_is_impossible(_args, assert)
-  actor = TestHelper.build_actor
-  item = TestHelper.build_item('Potion')
-  game_map = TestHelper.build_map
-  actor.place(game_map, x: 3, y: 4)
-  item.place(game_map, x: 3, y: 3)
+  actor = build_actor
+  item = build_item
+  game_map = build_game_map_with_entities(
+    [3, 4] => actor,
+    [3, 3] => item
+  )
 
   assert.raises_with_message!(Action::Impossible, 'There is nothing to pick up.') do
     PickupAction.new(actor).perform
@@ -109,27 +110,21 @@ def test_pickup_action_when_not_at_same_position_is_impossible(_args, assert)
 end
 
 def test_use_item_action_activates_consumable(_args, assert)
-  actor = TestHelper.build_actor
-  item = TestHelper.build_item
-  item_consumer = nil
-  item.consumable.define_singleton_method :activate do |consumer|
-    item_consumer = consumer
-  end
+  actor = build_actor
+  item = build_item
+  stub_attribute_with_mock(item, :consumable)
 
   UseItemAction.new(actor, item).perform
 
-  assert.equal! item_consumer, actor
+  assert.includes! item.consumable.calls, [:activate, [actor]]
 end
 
 def test_drop_item_action_drops_from_inventory(_args, assert)
-  actor = TestHelper.build_actor
-  item = TestHelper.build_item
-  dropped_item = nil
-  actor.inventory.define_singleton_method :drop do |selected_item|
-    dropped_item = selected_item
-  end
+  actor = build_actor
+  item = build_item
+  stub_attribute_with_mock(actor, :inventory)
 
   DropItemAction.new(actor, item).perform
 
-  assert.equal! dropped_item, item
+  assert.includes! actor.inventory.calls, [:drop, [item]]
 end

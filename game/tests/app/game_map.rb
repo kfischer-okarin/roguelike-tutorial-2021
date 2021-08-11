@@ -1,8 +1,8 @@
 require 'tests/test_helper.rb'
 
 def test_game_remove_entity(_args, assert)
-  entity = TestHelper.build_entity
-  game_map = TestHelper.build_map
+  entity = build_entity
+  game_map = build_game_map
   game_map.add_entity entity
 
   game_map.remove_entity entity
@@ -11,12 +11,12 @@ def test_game_remove_entity(_args, assert)
 end
 
 def test_game_map_items(_args, assert)
-  item1 = TestHelper.build_item
-  item2 = TestHelper.build_item
-  game_map = TestHelper.build_map
+  item1 = build_item
+  item2 = build_item
+  game_map = build_game_map
   game_map.add_entity item1
   game_map.add_entity item2
-  game_map.add_entity TestHelper.build_actor
+  game_map.add_entity build_actor
 
   assert.contains_exactly! game_map.items, [item1, item2]
 end
