@@ -12,6 +12,10 @@ module Colors
       [0, 255, 0]
     end
 
+    def status_effect_applied
+      [63, 255, 63]
+    end
+
     def hp_bar_filled
       [0, 96, 0]
     end

@@ -7,6 +7,8 @@ module Components
           Healing.new(entity, data)
         when :lightning_damage
           LightningDamage.new(entity, data)
+        when :confusion
+          Confusion.new(entity, data)
         end
       end
     end
