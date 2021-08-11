@@ -5,7 +5,12 @@ module Entity
     end
 
     def ai
-      @ai ||= build_ai
+      @ai ||= Components::AI.from(self, data.ai)
+    end
+
+    def replace_ai(ai_data)
+      data.ai = ai_data
+      @ai = nil
     end
 
     def inventory
@@ -22,7 +27,7 @@ module Entity
       self.color = [191, 0, 0]
       self.render_order = RenderOrder::CORPSE
       self.blocks_movement = false
-      @ai = Components::AI::None
+      replace_ai(type: :none, data: {})
       self.name = "remains of #{name}"
 
       $message_log.add_message(text: message, fg: death_message_color)
@@ -46,12 +51,6 @@ module Entity
 
     def death_message_color
       Colors.enemy_death
-    end
-
-    def build_ai
-      return Components::AI::None if combatant.dead?
-
-      Components::AI::Enemy.new(self)
     end
   end
 end

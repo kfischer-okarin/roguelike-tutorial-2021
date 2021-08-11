@@ -13,9 +13,5 @@ module Entity
     def death_message_color
       Colors.player_death
     end
-
-    def build_ai
-      Components::AI::None
-    end
   end
 end

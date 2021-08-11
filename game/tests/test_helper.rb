@@ -173,9 +173,11 @@ def build_actor(attributes = nil)
       defense: values.delete(:defense) || 5,
       power: values.delete(:power) || 5
     },
-    inventory: { items: [] }
+    inventory: { items: [] },
+    ai: { type: :enemy, data: {} }
   }
   final_attributes[:combatant][:max_hp] = values.delete(:max_hp) || final_attributes[:combatant][:hp]
+  final_attributes.update(values)
   build_entity(final_attributes).tap { |result|
     (values[:items] || []).each do |item|
       item.place(result.inventory)

@@ -16,7 +16,8 @@ module EntityPrototypes
         {
           blocks_movement: true,
           render_order: RenderOrder::ACTOR,
-          inventory: { items: [] }
+          inventory: { items: [] },
+          ai: { type: :enemy, data: {} }
         }.merge(data)
       )
     end
@@ -43,7 +44,8 @@ end
 EntityPrototypes.define_actor :player,
                               name: 'Player',
                               char: '@', color: [255, 255, 255],
-                              combatant: { hp: 30, defense: 2, power: 5 }
+                              combatant: { hp: 30, defense: 2, power: 5 },
+                              ai: { type: :none, data: {} }
 
 EntityPrototypes.define_actor :mutant_spider,
                               name: 'Mutant Spider',

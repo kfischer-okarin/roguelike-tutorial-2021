@@ -1,5 +1,6 @@
 require 'tests/test_helper.rb'
 require 'tests/app/entity/base_entity.rb'
+require 'tests/app/entity/actor.rb'
 require 'tests/app/entity/item.rb'
 
 def test_entity_build_returns_different_ids_for_each_entity(_args, assert)

@@ -1,10 +1,6 @@
 module Components
   module AI
     class Enemy < BaseComponent
-      def initialize(entity)
-        super(entity, {})
-      end
-
       def perform_action
         target = $game.player
         dy = target.y - entity.y
