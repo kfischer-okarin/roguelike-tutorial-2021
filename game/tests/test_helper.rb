@@ -286,5 +286,5 @@ before_each do |args|
   Entities.setup args.state
   Entities.player = build_player
   $message_log = MessageLog.new
-  $game = TestHelper::Spy.new(Game.new(player: Entities.player, scene: :initial_scene))
+  $game = Game.new(player: Entities.player, scene: :initial_scene)
 end
