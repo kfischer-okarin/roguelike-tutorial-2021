@@ -66,3 +66,8 @@ EntityPrototypes.define_item  :megavolt_capsule,
                               name: 'Megavolt Capsule',
                               char: '~', color: [255, 255, 0],
                               consumable: { type: :lightning_damage, amount: 20, maximum_range: 5 }
+
+EntityPrototypes.define_item  :neurosonic_emitter,
+                              name: 'Neurosonic emitter',
+                              char: '~', color: [207, 63, 255],
+                              consumable: { type: :confusion, turns: 10 }

@@ -28,7 +28,14 @@ module Procgen
     def add_items(result, area)
       @rng.random_int_between(0, @max_items_per_room).each do
         x, y = @rng.random_position_in_rect(area)
-        type = @rng.rand < 0.7 ? :bandages : :megavolt_capsule
+        type = case @rng.rand
+               when 0...0.7
+                 :bandages
+               when 0.7...0.9
+                 :neurosonic_emitter
+               else
+                 :megavolt_capsule
+               end
         result << { x: x, y: y, type: type }
       end
     end
