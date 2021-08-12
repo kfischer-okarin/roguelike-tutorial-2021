@@ -45,12 +45,13 @@ module Engine
       print_centered(x: box_center_x, y: top_y, string: string, fg: fg, bg: bg)
     end
 
-    def draw_rect(x:, y:, width:, height:, bg:)
+    def draw_rect(x:, y:, width:, height:, bg: nil, fg: nil)
       (y...(y + height)).each do |current_y|
         (x...(x + width)).each do |current_x|
           cell = @buffer[current_x, current_y]
           cell.char ||= ' '
-          cell.background_color = bg
+          cell.color = fg if fg
+          cell.background_color = bg if bg
         end
       end
     end
