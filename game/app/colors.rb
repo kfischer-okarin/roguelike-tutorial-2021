@@ -63,5 +63,9 @@ module Colors
     def item_window_fg
       white
     end
+
+    def item_window_selected
+      [128, 128, 0]
+    end
   end
 end

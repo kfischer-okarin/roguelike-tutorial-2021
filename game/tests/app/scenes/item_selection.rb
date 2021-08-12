@@ -26,6 +26,33 @@ def test_item_selection_success(_args, assert)
   assert.includes! previous_scene.calls, [:after_action_performed, []]
 end
 
+def test_item_selection_via_click(_args, assert)
+  pop_scene_calls = mock_method($game, :pop_scene)
+  previous_scene = TestHelper::Spy.new
+  $game.push_scene previous_scene
+  item1 = build_item
+  item2 = build_item
+  actor = build_actor items: [item1, item2]
+  selected_item = nil
+  item_action = TestHelper::Spy.new
+  scene = Scenes::ItemSelection.new(previous_scene, inventory: actor.inventory) do |item|
+    selected_item = item
+    item_action
+  end
+  $game.cursor_position = [10, 43] # first item
+
+  scene.handle_input_events(
+    [
+      { type: :click }
+    ]
+  )
+
+  assert.equal! selected_item, item1
+  assert.includes! item_action.calls, [:perform, []]
+  assert.equal! pop_scene_calls.size, 1
+  assert.includes! previous_scene.calls, [:after_action_performed, []]
+end
+
 def test_item_selection_cannot_selected_non_existing_item(_args, assert)
   pop_scene_calls = mock_method($game, :pop_scene)
   actor = build_actor items: [build_item, build_item]

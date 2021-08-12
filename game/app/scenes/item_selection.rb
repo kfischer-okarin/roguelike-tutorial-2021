@@ -17,6 +17,10 @@ module Scenes
       @item_list.render(console)
     end
 
+    def action_for_item(item)
+      @build_action_for_selected_item.call(item)
+    end
+
     def after_action_performed
       $game.pop_scene
       @previous_scene.after_action_performed
@@ -25,14 +29,14 @@ module Scenes
     protected
 
     def build_input_handler
-      InputEventHandler.new(@item_list, @build_action_for_selected_item)
+      InputEventHandler.new(@item_list, self)
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(selection_ui, build_action_for_selected_item)
+      def initialize(selection_ui, selection_scene)
         super()
         @selection_ui = selection_ui
-        @build_action_for_selected_item = build_action_for_selected_item
+        @selection_scene = selection_scene
       end
 
       def dispatch_action_for_char_typed(event)
@@ -44,7 +48,14 @@ module Scenes
         selected_item = @selection_ui.item_for_char event.char
         return unless selected_item
 
-        @build_action_for_selected_item.call(selected_item)
+        @selection_scene.action_for_item selected_item
+      end
+
+      def dispatch_action_for_click
+        selected_item = @selection_ui.mouse_over_item
+        return unless selected_item
+
+        @selection_scene.action_for_item selected_item
       end
 
       def dispatch_action_for_quit
