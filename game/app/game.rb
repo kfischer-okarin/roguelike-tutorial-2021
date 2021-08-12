@@ -75,6 +75,10 @@ class Game
     push_scene area_selection
   end
 
+  def show_help(topic)
+    push_scene Scenes::Help.new(@scene, topic: topic)
+  end
+
   def quit
     $gtk.request_quit
   end

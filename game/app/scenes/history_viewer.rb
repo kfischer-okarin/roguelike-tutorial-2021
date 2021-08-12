@@ -1,5 +1,3 @@
-require 'app/scenes/gameplay/input_event_handler.rb'
-
 module Scenes
   class HistoryViewer < BaseScene
     attr_reader :cursor_index

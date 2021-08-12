@@ -71,6 +71,11 @@ module Scenes
         $game.start_look
         nil
       end
+
+      def dispatch_action_for_help
+        $game.show_help('Gameplay')
+        nil
+      end
     end
   end
 end

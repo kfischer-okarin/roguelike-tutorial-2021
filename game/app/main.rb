@@ -107,6 +107,7 @@ def process_input(gtk_inputs)
     result << { type: :confirm } if key_down.enter
     result << { type: :click } if mouse.down
     result << { type: :look } if key_down.forward_slash
+    result << { type: :help } if key_down.question_mark
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
   }
 end
