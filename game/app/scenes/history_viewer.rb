@@ -83,6 +83,11 @@ module Scenes
         @viewer.cursor_index = @viewer.message_count - 1
         nil
       end
+
+      def dispatch_action_for_help
+        $game.show_help('Message Log')
+        nil
+      end
     end
   end
 end

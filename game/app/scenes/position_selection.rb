@@ -1,9 +1,10 @@
 module Scenes
   class PositionSelection < BaseScene
-    def initialize(gameplay_scene, &build_action_for_selected)
+    def initialize(gameplay_scene, help_topic: nil, &build_action_for_selected)
       @build_action_for_selected = build_action_for_selected
       @gameplay_scene = gameplay_scene
       $game.cursor_position = ScreenLayout.map_to_console_position [$game.player.x, $game.player.y]
+      @help_topic = help_topic || 'Target Selection'
       super()
     end
 
@@ -31,7 +32,7 @@ module Scenes
     protected
 
     def build_input_handler
-      InputEventHandler.new(self)
+      InputEventHandler.new(self, help_topic: @help_topic)
     end
 
     def build_action_for_selected(selected)
@@ -45,9 +46,10 @@ module Scenes
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(selection_scene)
+      def initialize(selection_scene, help_topic:)
         super()
         @selection_scene = selection_scene
+        @help_topic = help_topic
       end
 
       def move_cursor_if_possible(dx, dy)
@@ -86,6 +88,11 @@ module Scenes
 
       def dispatch_action_for_quit
         $game.pop_scene
+        nil
+      end
+
+      def dispatch_action_for_help
+        $game.show_help(@help_topic)
         nil
       end
     end

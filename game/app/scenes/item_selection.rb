@@ -40,6 +40,10 @@ module Scenes
       end
 
       def dispatch_action_for_char_typed(event)
+        if event.char == '?'
+          $game.show_help('Item Selection')
+          return
+        end
         unless @selection_ui.valid_input_char? event.char
           $game.pop_scene
           return

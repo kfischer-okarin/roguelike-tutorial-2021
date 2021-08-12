@@ -56,7 +56,7 @@ class Game
   end
 
   def start_look
-    position_selection = Scenes::PositionSelection.new(@scene) do
+    position_selection = Scenes::PositionSelection.new(@scene, help_topic: 'Look') do
       # no op - don't perform action on enter
     end
     push_scene position_selection
