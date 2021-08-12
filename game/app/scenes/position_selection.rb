@@ -9,9 +9,16 @@ module Scenes
 
     def render(console)
       @gameplay_scene.render(console)
+      return unless valid_position? $game.cursor_position
+
       x, y = $game.cursor_position
       console.bg[x, y] = Colors.white
       console.fg[x, y] = Colors.black
+    end
+
+    def valid_position?(position)
+      map_position = ScreenLayout.console_to_map_position position
+      $game.game_map.in_bounds?(map_position.x, map_position.y)
     end
 
     def action_for_position(position)
@@ -35,23 +42,30 @@ module Scenes
         @selection_scene = selection_scene
       end
 
+      def move_cursor_if_possible(dx, dy)
+        new_position = [$game.cursor_position.x + dx, $game.cursor_position.y + dy]
+        return unless @selection_scene.valid_position? new_position
+
+        $game.cursor_position = new_position
+      end
+
       def dispatch_action_for_right
-        $game.cursor_position.x += 1
+        move_cursor_if_possible(1, 0)
         nil
       end
 
       def dispatch_action_for_left
-        $game.cursor_position.x -= 1
+        move_cursor_if_possible(-1, 0)
         nil
       end
 
       def dispatch_action_for_up
-        $game.cursor_position.y += 1
+        move_cursor_if_possible(0, 1)
         nil
       end
 
       def dispatch_action_for_down
-        $game.cursor_position.y -= 1
+        move_cursor_if_possible(0, -1)
         nil
       end
 
