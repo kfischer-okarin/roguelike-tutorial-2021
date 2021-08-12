@@ -31,7 +31,9 @@ module Procgen
         type = case @rng.rand
                when 0...0.7
                  :bandages
-               when 0.7...0.9
+               when 0.7...0.8
+                 :grenade
+               when 0.8...0.9
                  :neurosonic_emitter
                else
                  :megavolt_capsule

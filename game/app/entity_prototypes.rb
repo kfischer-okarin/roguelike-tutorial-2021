@@ -71,3 +71,8 @@ EntityPrototypes.define_item  :neurosonic_emitter,
                               name: 'Neurosonic emitter',
                               char: '~', color: [207, 63, 255],
                               consumable: { type: :confusion, turns: 10 }
+
+EntityPrototypes.define_item  :grenade,
+                              name: 'Grenade',
+                              char: '~', color: [255, 0, 0],
+                              consumable: { type: :explosion, damage: 12, radius: 3 }
