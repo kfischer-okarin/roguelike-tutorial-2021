@@ -51,6 +51,19 @@ class GameMap
     @visible[x, y]
   end
 
+  def positions_in_radius(center:, radius:, &condition)
+    [].tap { |result|
+      ((center.x - radius)..(center.x + radius)).each do |x|
+        ((center.y - radius)..(center.y + radius)).each do |y|
+          next if center == [x, y]
+          next unless !condition || Engine::LineOfSight.bresenham(center, [x, y]).all?(&condition)
+
+          result << [x, y]
+        end
+      end
+    }
+  end
+
   def render(console, offset_y: nil)
     console.assign_tiles(0, offset_y || 0, @rendered_tiles)
 

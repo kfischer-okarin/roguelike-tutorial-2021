@@ -20,3 +20,32 @@ def test_game_map_items(_args, assert)
 
   assert.contains_exactly! game_map.items, [item1, item2]
 end
+
+def test_game_map_positions_in_effect_radius(_args, assert)
+  # 7 oo
+  # 6 oo
+  # 5 ooX
+  # 4 o_X
+  # 3 ooX
+  # 2 oo
+  # 1 oo
+  #   0123
+  game_map = build_game_map(10, 10)
+  game_map.set_tile 2, 3, Tiles.wall
+  game_map.set_tile 2, 4, Tiles.wall
+  game_map.set_tile 2, 5, Tiles.wall
+
+  walkable_positions = game_map.positions_in_radius(center: [1, 4], radius: 3) { |position|
+    game_map.walkable?(position.x, position.y)
+  }
+
+  assert.contains_exactly! walkable_positions, [
+    [0, 7], [1, 7],
+    [0, 6], [1, 6],
+    [0, 5], [1, 5],
+    [0, 4],
+    [0, 3], [1, 3],
+    [0, 2], [1, 2],
+    [0, 1], [1, 1]
+  ]
+end

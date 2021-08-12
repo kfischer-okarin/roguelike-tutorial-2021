@@ -2,7 +2,7 @@ module Engine
   module LineOfSight
     class << self
       def bresenham(start_point, end_point)
-        [].tap { |result|
+        Enumerator.new do |yielder|
           x = start_point.x
           y = start_point.y
           end_x = end_point.x
@@ -15,7 +15,7 @@ module Engine
           err = dx + dy
 
           loop do
-            result << [x, y]
+            yielder << [x, y]
             break if x == end_x && y == end_y
 
             e2 = 2 * err
@@ -27,7 +27,7 @@ module Engine
               y += sy
             end
           end
-        }
+        end
       end
     end
   end
