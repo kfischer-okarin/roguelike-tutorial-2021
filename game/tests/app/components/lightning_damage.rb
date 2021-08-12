@@ -76,7 +76,10 @@ def test_lightning_damage_shows_correct_name_when_killing_enemy(_args, assert)
 
   item.consumable.activate(npc)
 
-  assert.includes! TestHelper.log_messages, 'A lightning bolt strikes the Monster with a loud thunder, for 30 damage!'
+  assert.contains_exactly! log_messages, [
+    'A lightning bolt strikes the Monster with a loud thunder, for 30 damage!',
+    'Monster is dead!'
+  ]
   assert.equal! monster.combatant.hp, 0
   assert.includes_no! npc.inventory.items, item
 end
