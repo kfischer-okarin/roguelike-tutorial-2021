@@ -52,6 +52,18 @@ class UseItemAction < Action
   end
 end
 
+class UseItemOnPositionAction < Action
+  def initialize(entity, item, position:)
+    super(entity)
+    @item = item
+    @position = position
+  end
+
+  def perform
+    @item.consumable.activate @entity, @position
+  end
+end
+
 class DropItemAction < Action
   def initialize(entity, item)
     super(entity)

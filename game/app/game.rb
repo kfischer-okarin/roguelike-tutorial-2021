@@ -62,6 +62,14 @@ class Game
     push_scene position_selection
   end
 
+  def select_target_position(&build_action_for_selected_position)
+    target_selection = Scenes::PositionSelection.new(
+      @scene,
+      &build_action_for_selected_position
+    )
+    push_scene target_selection
+  end
+
   def quit
     $gtk.request_quit
   end

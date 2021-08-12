@@ -14,6 +14,10 @@ module Scenes
       console.fg[x, y] = Colors.black
     end
 
+    def action_for_position(position)
+      @build_action_for_selected_position.call position
+    end
+
     def after_action_performed
       $game.pop_scene
       @gameplay_scene.after_action_performed
@@ -22,13 +26,13 @@ module Scenes
     protected
 
     def build_input_handler
-      InputEventHandler.new(@build_action_for_selected_position)
+      InputEventHandler.new(self)
     end
 
     class InputEventHandler < BaseInputHandler
-      def initialize(build_action_for_selected_position)
+      def initialize(selection_scene)
         super()
-        @build_action_for_selected_position = build_action_for_selected_position
+        @selection_scene = selection_scene
       end
 
       def dispatch_action_for_right
@@ -53,7 +57,7 @@ module Scenes
 
       def dispatch_action_for_confirm
         selected_position = ScreenLayout.console_to_map_position $game.cursor_position
-        @build_action_for_selected_position.call(selected_position)
+        @selection_scene.action_for_position selected_position
       end
 
       def dispatch_action_for_quit

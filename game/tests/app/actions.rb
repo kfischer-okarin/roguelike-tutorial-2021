@@ -119,6 +119,16 @@ def test_use_item_action_activates_consumable(_args, assert)
   assert.includes! item.consumable.calls, [:activate, [actor]]
 end
 
+def test_use_item_on_position_action_activates_consumable(_args, assert)
+  actor = build_actor
+  item = build_item
+  stub_attribute_with_mock(item, :consumable)
+
+  UseItemOnPositionAction.new(actor, item, position: [3, 3]).perform
+
+  assert.includes! item.consumable.calls, [:activate, [actor, [3, 3]]]
+end
+
 def test_drop_item_action_drops_from_inventory(_args, assert)
   actor = build_actor
   item = build_item
