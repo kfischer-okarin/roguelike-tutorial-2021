@@ -51,6 +51,10 @@ class GameMap
     @visible[x, y]
   end
 
+  def explored?(x, y)
+    @explored[x, y]
+  end
+
   def positions_in_radius(center:, radius:, &condition)
     [].tap { |result|
       ((center.x - radius)..(center.x + radius)).each do |x|

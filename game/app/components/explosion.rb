@@ -2,6 +2,13 @@ module Components
   class Explosion < Consumable
     data_reader :damage, :radius
 
+    def get_action(consumer)
+      $game.select_explosion_area(radius: radius) do |position|
+        UseItemOnPositionAction.new(consumer, entity, position: position)
+      end
+      nil
+    end
+
     def activate(_consumer, center)
       raise Action::Impossible, 'You cannot target an area that you cannot see.' unless position_visible? center
 

@@ -70,6 +70,11 @@ class Game
     push_scene target_selection
   end
 
+  def select_explosion_area(radius:, &build_action_for_center)
+    area_selection = Scenes::ExplosionAreaSelection.new(@scene, radius: radius, &build_action_for_center)
+    push_scene area_selection
+  end
+
   def quit
     $gtk.request_quit
   end
