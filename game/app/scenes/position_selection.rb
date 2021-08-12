@@ -82,6 +82,8 @@ module Scenes
         @selection_scene.action_for_position selected_position
       end
 
+      alias dispatch_action_for_click dispatch_action_for_confirm
+
       def dispatch_action_for_quit
         $game.pop_scene
         nil

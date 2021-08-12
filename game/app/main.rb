@@ -84,6 +84,7 @@ end
 
 def process_input(gtk_inputs)
   key_down = gtk_inputs.keyboard.key_down
+  mouse = gtk_inputs.mouse
   [].tap { |result|
     result << { type: :quit } if key_down.escape
     result << { type: :up } if key_down.up || key_down.k
@@ -104,6 +105,7 @@ def process_input(gtk_inputs)
     result << { type: :inventory } if key_down.i
     result << { type: :drop } if key_down.d
     result << { type: :confirm } if key_down.enter
+    result << { type: :click } if mouse.down
     result << { type: :look } if key_down.forward_slash
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
   }
