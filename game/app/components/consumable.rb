@@ -9,6 +9,8 @@ module Components
           LightningDamage.new(entity, data)
         when :confusion
           Confusion.new(entity, data)
+        when :explosion
+          Explosion.new(entity, data)
         end
       end
     end
