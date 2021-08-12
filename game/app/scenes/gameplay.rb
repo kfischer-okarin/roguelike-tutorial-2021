@@ -2,12 +2,9 @@ require 'app/scenes/gameplay/input_event_handler.rb'
 
 module Scenes
   class Gameplay < BaseScene
-    attr_reader :game_map
-
-    def initialize(game_map:, player:)
+    def initialize(player:)
       @player = player
       super()
-      @game_map = game_map
       @hp_bar = UI::Bar.new(
         name: 'HP',
         maximum_value: @player.combatant.max_hp,
@@ -40,8 +37,12 @@ module Scenes
 
     private
 
+    def game_map
+      $game.game_map
+    end
+
     def handle_enemy_turns
-      @game_map.actors.each do |entity|
+      game_map.actors.each do |entity|
         entity.ai.perform_action
       rescue Action::Impossible
         # no op
@@ -49,7 +50,7 @@ module Scenes
     end
 
     def update_fov
-      @game_map.update_fov(x: @player.x, y: @player.y, radius: 8)
+      game_map.update_fov(x: @player.x, y: @player.y, radius: 8)
     end
 
     def handle_game_over
@@ -57,7 +58,7 @@ module Scenes
     end
 
     def render_game_map(console)
-      @game_map.render(console, offset_y: ScreenLayout.map_offset.y)
+      game_map.render(console, offset_y: ScreenLayout.map_offset.y)
     end
 
     def render_hp_bar(console)
@@ -73,9 +74,9 @@ module Scenes
 
     def render_names_at_cursor_position(console)
       cursor_x, cursor_y = ScreenLayout.console_to_map_position $game.cursor_position
-      return unless @game_map.in_bounds?(cursor_x, cursor_y) && @game_map.visible?(cursor_x, cursor_y)
+      return unless game_map.in_bounds?(cursor_x, cursor_y) && game_map.visible?(cursor_x, cursor_y)
 
-      names_at_cursor_position = @game_map.entities_at(cursor_x, cursor_y).map(&:name).join(', ').capitalize
+      names_at_cursor_position = game_map.entities_at(cursor_x, cursor_y).map(&:name).join(', ').capitalize
       console.print(x: 21, y: 5, string: names_at_cursor_position)
     end
   end

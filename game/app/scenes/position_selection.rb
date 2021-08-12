@@ -1,7 +1,6 @@
 module Scenes
   class PositionSelection < BaseScene
-    def initialize(gameplay_scene, game_map:, &build_action_for_selected_position)
-      @game_map = game_map
+    def initialize(gameplay_scene, &build_action_for_selected_position)
       @build_action_for_selected_position = build_action_for_selected_position
       @gameplay_scene = gameplay_scene
       $game.cursor_position = ScreenLayout.map_to_console_position [$game.player.x, $game.player.y]

@@ -1,10 +1,9 @@
 class Game
   attr_reader :player, :rng
-  attr_accessor :cursor_position, :scene
+  attr_accessor :cursor_position, :scene, :game_map
 
-  def initialize(player:, scene:)
+  def initialize(player:)
     @player = player
-    @scene = scene
     @scene_stack = []
     @cursor_position = [player.x, player.y]
     @rng = RNG.new
@@ -57,10 +56,7 @@ class Game
   end
 
   def start_look
-    position_selection = Scenes::PositionSelection.new(
-      @scene,
-      game_map: @scene.game_map
-    ) do
+    position_selection = Scenes::PositionSelection.new(@scene) do
       # no op - don't perform action on enter
     end
     push_scene position_selection

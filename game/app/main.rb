@@ -73,13 +73,9 @@ def setup(args)
     player: Entities.player
   )
 
-  $game = Game.new(
-    player: Entities.player,
-    scene: Scenes::Gameplay.new(
-      game_map: game_map,
-      player: Entities.player
-    )
-  )
+  $game = Game.new(player: Entities.player)
+  $game.game_map = game_map
+  $game.scene = Scenes::Gameplay.new(player: Entities.player)
 end
 
 def render_framerate(args)
