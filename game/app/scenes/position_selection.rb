@@ -1,7 +1,7 @@
 module Scenes
   class PositionSelection < BaseScene
-    def initialize(gameplay_scene, &build_action_for_selected_position)
-      @build_action_for_selected_position = build_action_for_selected_position
+    def initialize(gameplay_scene, &build_action_for_selected)
+      @build_action_for_selected = build_action_for_selected
       @gameplay_scene = gameplay_scene
       $game.cursor_position = ScreenLayout.map_to_console_position [$game.player.x, $game.player.y]
       super()
@@ -11,9 +11,7 @@ module Scenes
       @gameplay_scene.render(console)
       return unless valid_position? $game.cursor_position
 
-      x, y = $game.cursor_position
-      console.bg[x, y] = Colors.white
-      console.fg[x, y] = Colors.black
+      render_selection(console)
     end
 
     def valid_position?(position)
@@ -22,7 +20,7 @@ module Scenes
     end
 
     def action_for_position(position)
-      @build_action_for_selected_position.call position
+      build_action_for_selected(position)
     end
 
     def after_action_performed
@@ -34,6 +32,16 @@ module Scenes
 
     def build_input_handler
       InputEventHandler.new(self)
+    end
+
+    def build_action_for_selected(selected)
+      @build_action_for_selected.call(selected)
+    end
+
+    def render_selection(console)
+      x, y = $game.cursor_position
+      console.bg[x, y] = Colors.white
+      console.fg[x, y] = Colors.black
     end
 
     class InputEventHandler < BaseInputHandler
