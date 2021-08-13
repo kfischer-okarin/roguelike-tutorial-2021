@@ -15,8 +15,7 @@ module Scenes
     end
 
     def cursor_index=(value)
-      min_cursor_index = [@messages.size - 1, @message_log.height - 1].min
-      @cursor_index = value.clamp(min_cursor_index, @messages.size - 1)
+      @cursor_index = value.clamp(0, @messages.size - 1)
     end
 
     def render(console)
@@ -55,7 +54,7 @@ module Scenes
     end
 
     def dispatch_action_for_home
-      self.cursor_index = 0 # will be clamped to real value
+      self.cursor_index = 0
     end
 
     def dispatch_action_for_end
