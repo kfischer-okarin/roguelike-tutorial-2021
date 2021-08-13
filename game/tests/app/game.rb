@@ -26,6 +26,15 @@ def test_game_turn_is_not_advanced_after_opening_ui(_args, assert)
   assert.not_equal! $game.scene, scene_before
 end
 
+def test_game_log_impossible_actions(_args, assert)
+  $game.scene = GameTests.build_test_scene
+  $game.scene.next_action = -> { raise Action::Impossible, 'Something did not work.' }
+
+  $game.handle_input_events [{ type: :test }]
+
+  assert.includes! log_messages, 'Something did not work.'
+end
+
 module GameTests
   class << self
     def any_enemy_from(game_map)
@@ -52,6 +61,18 @@ module GameTests
 
       assert.equal! ai_calls.size, 0, 'AI was called'
       assert.equal! update_fov_calls.size, 0, 'FOV was updated'
+    end
+
+    def build_test_scene
+      scene_class = Class.new(Scenes::BaseScene) do
+        def next_action=(action_lambda)
+          replace_method self, :handle_input_event do |_|
+            stub(perform: action_lambda)
+          end
+        end
+      end
+
+      scene_class.new
     end
   end
 end
