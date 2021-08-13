@@ -1,11 +1,11 @@
 class Game
-  attr_reader :player, :rng, :game_map, :scene
-  attr_accessor :cursor_position
+  attr_reader :rng, :game_map, :scene
+  attr_accessor :cursor_position, :player
 
-  def initialize(player:)
+  def initialize
     @player = player
     @scene_stack = []
-    @cursor_position = [player.x, player.y]
+    @cursor_position = [0, 0]
     @rng = RNG.new
   end
 

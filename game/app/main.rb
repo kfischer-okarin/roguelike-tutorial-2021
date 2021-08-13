@@ -40,15 +40,7 @@ def tick(args)
   render_framerate(args)
 end
 
-def setup(args)
-  # DragonRuby is fixed at 1280x720 so choosing a resolution that fits neatly
-  screen_width = 80  # 80 * 16 = 1280
-  screen_height = 45 # 45 * 16 = 720
-
-  tileset = Engine::Tileset.new('Zilk-16x16.png')
-  $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
-  $console = Engine::Console.new(screen_width, screen_height)
-
+def new_game(args)
   args.state.entities = Entities.build_data
   Entities.data = args.state.entities
   Entities.player = EntityPrototypes.build(:player)
@@ -78,9 +70,23 @@ def setup(args)
   )
   args.state.game_map = game_map.data
 
-  $game = Game.new(player: Entities.player)
+  $game.player = Entities.player
   $game.game_map = game_map
   $game.scene = Scenes::Gameplay.new(player: Entities.player)
+end
+
+def setup(args)
+  # DragonRuby is fixed at 1280x720 so choosing a resolution that fits neatly
+  screen_width = 80  # 80 * 16 = 1280
+  screen_height = 45 # 45 * 16 = 720
+
+  tileset = Engine::Tileset.new('Zilk-16x16.png')
+  $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
+  $console = Engine::Console.new(screen_width, screen_height)
+
+  $game = Game.new
+
+  new_game(args)
 end
 
 def render_framerate(args)
