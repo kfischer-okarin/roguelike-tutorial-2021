@@ -22,10 +22,20 @@ class Game
   def handle_input_events(input_events)
     input_events.each do |event|
       action = @scene.handle_input_event(event)
-      next unless @scene.handle_action(action)
+      next unless handle_action(action)
 
       advance_turn
     end
+  end
+
+  def handle_action(action)
+    return false unless action.respond_to? :perform
+
+    action.perform
+    true
+  rescue Action::Impossible => e
+    $message_log.add_message(text: e.message, fg: Colors.action_impossible)
+    false
   end
 
   def advance_turn

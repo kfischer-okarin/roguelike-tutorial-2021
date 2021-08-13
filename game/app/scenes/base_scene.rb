@@ -22,16 +22,6 @@ module Scenes
       end
     end
 
-    def handle_action(action)
-      return false unless action.respond_to? :perform
-
-      action.perform
-      true
-    rescue Action::Impossible => e
-      $message_log.add_message(text: e.message, fg: Colors.action_impossible)
-      false
-    end
-
     protected
 
     def build_input_handler
