@@ -4,6 +4,7 @@ module Engine
   # Simulated terminal for rendering the tiles
   class Console
     attr_reader :width, :height
+    attr_accessor :background_image
 
     def initialize(width, height)
       @width = width
@@ -149,6 +150,7 @@ module Engine
 
     def clear
       fn.each_send @buffer.data, BufferCell, :clear
+      @background_image = nil
     end
   end
 end

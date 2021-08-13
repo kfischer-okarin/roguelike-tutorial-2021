@@ -25,10 +25,15 @@ module Engine
       prepare unless @prepared
       @gtk_outputs.background_color = [0, 0, 0]
       @rendered_console.console = console
+      @gtk_outputs.primitives << background_sprite(console) if console.background_image
       @gtk_outputs.primitives << @rendered_console
     end
 
     private
+
+    def background_sprite(console)
+      { x: 0, y: 0, w: 1280, h: 720, path: console.background_image }.sprite!
+    end
 
     def prepare
       prepare_bg_sprite
