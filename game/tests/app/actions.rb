@@ -56,7 +56,8 @@ def test_move_action_cannot_move_into_wall(_args, assert)
   game_map = build_game_map_with_entities(
     [3, 3] => entity
   )
-  game_map.set_tile(4, 3, Tiles.wall)
+  game_map.set_tile 4, 3, :wall
+  game_map.calculate_tiles
 
   assert.raises_with_message!(Action::Impossible, 'That way is blocked.') do
     MovementAction.new(entity, dx: 1, dy: 0).perform

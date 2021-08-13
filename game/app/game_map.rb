@@ -1,16 +1,31 @@
-class GameMap
-  attr_reader :width, :height, :entities
+class GameMap < DataBackedObject
+  attr_reader :data, :entities
 
-  def initialize(width:, height:, entities:)
-    @width = width
-    @height = height
-    @entities = entities
-    @tiles = Array2D.new(width, height) { Tiles.wall }
+  data_reader :width, :height
 
+  def initialize(data)
+    super()
+    @data = data
+
+    @entities = []
+    @tile_data = Array2D.new(width, height, data.tiles)
     @visible = Array2D.new(width, height) { false }
-    @explored = Array2D.new(width, height) { false }
+    @explored = Array2D.new(width, height, data.explored)
+    calculate_tiles
+  end
 
-    update_transparent_tiles
+  # TODO: Remove?
+  def set_tile(x, y, tile)
+    @tile_data[x, y] = tile
+  end
+
+  def fill_rect(rect, tile)
+    @tile_data.fill_rect(rect, tile)
+  end
+
+  def calculate_tiles
+    @tiles = Array2D.new(width, height, data.tiles.map { |type| Tiles.send(type) })
+    @transparent_tiles = Array2D.new(width, height, @tiles.data.map(&:transparent?))
   end
 
   def id_as_parent
@@ -21,6 +36,14 @@ class GameMap
     self
   end
 
+  def add_entity(entity)
+    @entities << entity
+  end
+
+  def remove_entity(entity)
+    @entities.delete(entity)
+  end
+
   def actors
     @entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
   end
@@ -29,18 +52,24 @@ class GameMap
     @entities.select { |entity| entity.is_a?(Entity::Item) }
   end
 
-  def set_tile(x, y, tile)
-    @tiles[x, y] = tile
-    update_transparent_tiles
+  def entity_at?(x, y)
+    @entities.any? { |entity| entity.x == x && entity.y == y }
   end
 
-  def fill_rect(rect, tile)
-    @tiles.fill_rect(rect, tile)
-    update_transparent_tiles
+  def entities_at(x, y)
+    @entities.select { |entity| entity.x == x && entity.y == y }
+  end
+
+  def items_at(x, y)
+    items.select { |item| item.x == x && item.y == y }
+  end
+
+  def actor_at(x, y)
+    actors.find { |entity| entity.x == x && entity.y == y }
   end
 
   def in_bounds?(x, y)
-    x >= 0 && x < @width && y >= 0 && y < @height
+    x >= 0 && x < width && y >= 0 && y < height
   end
 
   def walkable?(x, y)
@@ -53,6 +82,10 @@ class GameMap
 
   def explored?(x, y)
     @explored[x, y]
+  end
+
+  def to_s
+    "GameMap(#{width}, #{height})"
   end
 
   def positions_in_radius(center:, radius:, &condition)
@@ -91,35 +124,7 @@ class GameMap
     update_rendered_tiles
   end
 
-  def entity_at?(x, y)
-    @entities.any? { |entity| entity.x == x && entity.y == y }
-  end
-
-  def entities_at(x, y)
-    @entities.select { |entity| entity.x == x && entity.y == y }
-  end
-
-  def items_at(x, y)
-    items.select { |item| item.x == x && item.y == y }
-  end
-
-  def actor_at(x, y)
-    actors.find { |entity| entity.x == x && entity.y == y }
-  end
-
-  def add_entity(entity)
-    @entities << entity
-  end
-
-  def remove_entity(entity)
-    @entities.delete(entity)
-  end
-
   private
-
-  def update_transparent_tiles
-    @transparent_tiles = Array2D.new(@width, @height, @tiles.data.map(&:transparent?))
-  end
 
   def update_explored_tiles
     visible = @visible.data
@@ -134,23 +139,27 @@ class GameMap
 
   def update_rendered_tiles
     shroud = Engine::Tile.new(' ', fg: [255, 255, 255], bg: nil)
-    @rendered_tiles = Array2D.new(@width, @height, [].tap { |result|
-      tiles = @tiles.data
-      visible = @visible.data
-      explored = @explored.data
-      index = 0
-      size = tiles.size
-      while index < size
-        tile = tiles[index]
-        result << if visible[index]
-                    tile.light
-                  elsif explored[index]
-                    tile.dark
-                  else
-                    shroud
-                  end
-        index += 1
-      end
-    })
+    @rendered_tiles = Array2D.new(
+      width,
+      height,
+      [].tap { |result|
+        tiles = @tiles.data
+        visible = @visible.data
+        explored = @explored.data
+        index = 0
+        size = tiles.size
+        while index < size
+          tile = tiles[index]
+          result << if visible[index]
+                      tile.light
+                    elsif explored[index]
+                      tile.dark
+                    else
+                      shroud
+                    end
+          index += 1
+        end
+      }
+    )
   end
 end

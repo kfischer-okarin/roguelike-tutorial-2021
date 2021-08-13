@@ -221,8 +221,12 @@ def build_item(attributes = nil)
 end
 
 def build_game_map(width = 10, height = 10)
-  GameMap.new(width: width, height: height, entities: []).tap { |game_map|
-    game_map.fill_rect([0, 0, width, height], Tiles.floor)
+  GameMap.new(
+    width: width,
+    height: height,
+    tiles: Array.new(width * height) { :floor },
+    explored: Array.new(width * height) { false }
+  ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true
     end

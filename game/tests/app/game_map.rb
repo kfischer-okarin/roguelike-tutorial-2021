@@ -31,9 +31,10 @@ def test_game_map_positions_in_effect_radius(_args, assert)
   # 1 oo
   #   0123
   game_map = build_game_map(10, 10)
-  game_map.set_tile 2, 3, Tiles.wall
-  game_map.set_tile 2, 4, Tiles.wall
-  game_map.set_tile 2, 5, Tiles.wall
+  game_map.set_tile 2, 3, :wall
+  game_map.set_tile 2, 4, :wall
+  game_map.set_tile 2, 5, :wall
+  game_map.calculate_tiles
 
   walkable_positions = game_map.positions_in_radius(center: [1, 4], radius: 3) { |position|
     game_map.walkable?(position.x, position.y)

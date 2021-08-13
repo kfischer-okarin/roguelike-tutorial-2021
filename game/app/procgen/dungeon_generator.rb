@@ -14,7 +14,12 @@ module Procgen
     attr_reader :result
 
     def initialize(map_width:, map_height:, parameters:, player:)
-      @result = GameMap.new(width: map_width, height: map_height, entities: [])
+      @result = GameMap.new(
+        width: map_width,
+        height: map_height,
+        tiles: Array.new(map_width * map_height) { :wall },
+        explored: Array.new(map_width * map_height) { false }
+      )
       @parameters = parameters
       @player = player
       @rooms = []
@@ -33,6 +38,7 @@ module Procgen
       @parameters.max_rooms.times do
         try_to_generate_room
       end
+      @result.calculate_tiles
     end
 
     def try_to_generate_room
@@ -80,7 +86,7 @@ module Procgen
 
     def connect_to_previous_room(room)
       Procgen.tunnel_between(@rooms[-1].center, room.center).each do |tunnel_x, tunnel_y|
-        @result.set_tile(tunnel_x, tunnel_y, Tiles.floor)
+        @result.set_tile tunnel_x, tunnel_y, :floor
       end
     end
 
@@ -92,13 +98,8 @@ module Procgen
       end
     end
 
-    def random_number_of_monsters
-      @possible_monster_numbers ||= (0..@parameters.max_monsters_per_room).to_a
-      @possible_monster_numbers.sample
-    end
-
     def add_room_to_dungeon(room)
-      @result.fill_rect(room.inner_rect, Tiles.floor)
+      @result.fill_rect room.inner_rect, :floor
       @rooms << room
     end
   end

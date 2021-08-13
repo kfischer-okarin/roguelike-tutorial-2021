@@ -72,6 +72,7 @@ def setup(args)
     parameters: procgen_parameters,
     player: Entities.player
   )
+  args.state.game_map = game_map.data
 
   $game = Game.new(player: Entities.player)
   $game.game_map = game_map
