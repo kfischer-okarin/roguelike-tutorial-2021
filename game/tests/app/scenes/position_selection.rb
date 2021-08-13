@@ -5,7 +5,8 @@ def test_position_selection_success(_args, assert)
   previous_scene = TestHelper::Spy.new
   $game.push_scene previous_scene
   selected_position = nil
-  position_action = TestHelper::Spy.new
+  position_action = TestHelper::Mock.new
+  position_action.expect_call :perform
   $game.game_map = build_game_map(20, 20)
   Entities.player.place($game.game_map, x: 3, y: 3)
   scene = Scenes::PositionSelection.new(previous_scene) do |position|
@@ -22,7 +23,7 @@ def test_position_selection_success(_args, assert)
   )
 
   assert.equal! selected_position, [4, 2]
-  assert.includes! position_action.calls, [:perform, []]
+  position_action.assert_all_calls_received!(assert)
   assert.equal! pop_scene_calls.size, 1
   assert.includes! previous_scene.calls, [:after_action_performed, []]
 end
