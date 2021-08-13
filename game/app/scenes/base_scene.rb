@@ -6,9 +6,13 @@ module Scenes
       @input_event_handler = build_input_handler
     end
 
+    def handle_input_event(input_event)
+      input_event_handler.handle_input_event(input_event)
+    end
+
     def handle_input_events(input_events)
       input_events.each do |event|
-        action = input_event_handler.handle_input_event(event)
+        action = handle_input_event(event)
         next unless handle_action(action)
 
         after_action_performed
