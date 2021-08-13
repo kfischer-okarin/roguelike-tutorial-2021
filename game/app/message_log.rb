@@ -1,34 +1,38 @@
 class MessageLog
   attr_reader :messages
 
-  def initialize
-    @messages = []
+  def initialize(data)
+    @data = data
+    @messages = data.map { |message_data| Message.new(message_data) }
   end
 
   def add_message(text:, fg: nil, stack: true)
     last_message = @messages.last
     if stack && last_message&.text == text
-      last_message.count += 1
+      last_message.receive_count += 1
       return
     end
 
-    @messages << Message.new(text: text, fg: fg || Colors.white)
+    new_message = Message.new(text: text, fg: fg || Colors.white, receive_count: 1)
+    @messages << new_message
+    @data << new_message.data
   end
 
-  class Message
-    attr_reader :text, :fg
-    attr_accessor :count
+  class Message < DataBackedObject
+    attr_reader :data
 
-    def initialize(text:, fg:)
-      @text = text
-      @fg = fg
-      @count = 1
+    data_reader :text, :fg
+    data_accessor :receive_count
+
+    def initialize(data)
+      super()
+      @data = data
     end
 
     def full_text
-      return @text unless @count > 1
+      return text unless receive_count > 1
 
-      "#{@text} (#{@count})"
+      "#{text} (#{receive_count})"
     end
   end
 end

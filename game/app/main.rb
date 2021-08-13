@@ -53,8 +53,12 @@ def setup(args)
   Entities.data = args.state.entities
   Entities.player = EntityPrototypes.build(:player)
 
-  $message_log = MessageLog.new
-  $message_log.add_message(text: 'Hello and welcome, traveler, to yet another dimension! Press ? at any time for help.', fg: Colors.welcome_text)
+  args.state.message_log = []
+  $message_log = MessageLog.new args.state.message_log
+  $message_log.add_message(
+    text: 'Hello and welcome, traveler, to yet another dimension! Press ? at any time for help.',
+    fg: Colors.welcome_text
+  )
 
   map_width = 80
   map_height = 40
