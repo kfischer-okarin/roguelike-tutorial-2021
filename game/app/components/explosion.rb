@@ -3,9 +3,10 @@ module Components
     data_reader :damage, :radius
 
     def get_action(consumer)
-      $game.select_explosion_area(radius: radius) do |position|
+      area_selection = Scenes::ExplosionAreaSelection.new(radius: radius) do |position|
         UseItemOnPositionAction.new(consumer, entity, position: position)
       end
+      $game.replace_scene area_selection
     end
 
     def activate(_consumer, center)

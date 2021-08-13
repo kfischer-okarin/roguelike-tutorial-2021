@@ -81,7 +81,7 @@ module Scenes
     end
 
     def dispatch_action_for_look
-      $game.select_position(help_topic: 'Look') do
+      push_scene Scenes::PositionSelection.new(help_topic: 'Look') do
         # no op - don't perform action on enter
       end
     end

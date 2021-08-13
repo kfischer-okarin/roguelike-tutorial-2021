@@ -53,6 +53,10 @@ class Game
     @scene = @scene_stack.pop
   end
 
+  def replace_scene(new_scene)
+    @scene = new_scene
+  end
+
   def render(console)
     console.clear
     @scene_stack.each do |scene|
@@ -67,20 +71,6 @@ class Game
       title: title,
       window_x: item_window_x,
       &build_action_for_item
-    )
-  end
-
-  def select_position(help_topic: nil, &build_action_for_position)
-    push_scene Scenes::PositionSelection.new(
-      help_topic: help_topic,
-      &build_action_for_position
-    )
-  end
-
-  def select_explosion_area(radius:, &build_action_for_center)
-    push_scene Scenes::ExplosionAreaSelection.new(
-      radius: radius,
-      &build_action_for_center
     )
   end
 

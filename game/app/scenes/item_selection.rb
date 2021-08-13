@@ -17,7 +17,7 @@ module Scenes
 
     def action_for_item(item)
       @build_action_for_selected_item.call(item).tap { |action|
-        pop_scene if action
+        pop_scene if action&.respond_to? :perform
       }
     end
 

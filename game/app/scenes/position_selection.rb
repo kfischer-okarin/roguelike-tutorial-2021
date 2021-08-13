@@ -20,7 +20,7 @@ module Scenes
 
     def action_for_position(position)
       build_action_for_selected(position).tap { |action|
-        pop_scene if action
+        pop_scene if action&.respond_to? :perform
       }
     end
 

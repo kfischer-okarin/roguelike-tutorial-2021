@@ -3,9 +3,10 @@ module Components
     data_reader :turns
 
     def get_action(consumer)
-      $game.select_position do |position|
+      target_selection = Scenes::PositionSelection.new do |position|
         UseItemOnPositionAction.new(consumer, entity, position: position)
       end
+      $game.replace_scene target_selection
     end
 
     def activate(consumer, position)
