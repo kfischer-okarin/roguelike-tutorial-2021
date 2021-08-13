@@ -86,6 +86,12 @@ def save_game
   $gtk.write_file 'message_log.sav', $gtk.serialize_state($state.message_log)
 end
 
+def delete_save_file
+  $gtk.write_file 'map.sav', 'nil'
+  $gtk.write_file 'entities.sav', 'nil'
+  $gtk.write_file 'message_log.sav', 'nil'
+end
+
 def setup(_args)
   # DragonRuby is fixed at 1280x720 so choosing a resolution that fits neatly
   screen_width = 80  # 80 * 16 = 1280
