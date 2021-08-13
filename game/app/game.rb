@@ -20,7 +20,12 @@ class Game
   end
 
   def handle_input_events(input_events)
-    @scene.handle_input_events(input_events)
+    input_events.each do |event|
+      action = @scene.handle_input_event(event)
+      next unless @scene.handle_action(action)
+
+      advance_turn
+    end
   end
 
   def advance_turn

@@ -18,12 +18,9 @@ module Scenes
     end
 
     def action_for_item(item)
-      @build_action_for_selected_item.call(item)
-    end
-
-    def after_action_performed
-      $game.pop_scene
-      @previous_scene.after_action_performed
+      @build_action_for_selected_item.call(item).tap { |action|
+        $game.pop_scene if action
+      }
     end
 
     protected

@@ -22,10 +22,6 @@ module Scenes
       render_names_at_cursor_position(console)
     end
 
-    def after_action_performed
-      $game.advance_turn
-    end
-
     protected
 
     def build_input_handler

@@ -21,12 +21,9 @@ module Scenes
     end
 
     def action_for_position(position)
-      build_action_for_selected(position)
-    end
-
-    def after_action_performed
-      $game.pop_scene
-      @gameplay_scene.after_action_performed
+      build_action_for_selected(position).tap { |action|
+        $game.pop_scene if action
+      }
     end
 
     protected

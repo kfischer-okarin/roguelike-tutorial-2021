@@ -18,15 +18,6 @@ module Scenes
       end
     end
 
-    def handle_input_events(input_events)
-      input_events.each do |event|
-        action = handle_input_event(event)
-        next unless handle_action(action)
-
-        after_action_performed
-      end
-    end
-
     def handle_action(action)
       return false unless action.respond_to? :perform
 
@@ -35,10 +26,6 @@ module Scenes
     rescue Action::Impossible => e
       $message_log.add_message(text: e.message, fg: Colors.action_impossible)
       false
-    end
-
-    def after_action_performed
-      # no op
     end
 
     protected
