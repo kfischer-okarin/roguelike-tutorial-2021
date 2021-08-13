@@ -1,7 +1,7 @@
 [project]
 name = "roguelike-tutorial-2021"
-title = "Yet Another Roguelike Tutorial"
-version = "0.0.1"
+title = "Outlandish and Hazardous"
+version = "0.10.0"
 authors = ["Kevin Fischer"]
 icon = "metadata/icon.png"
 compile_ruby = false

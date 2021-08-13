@@ -40,13 +40,13 @@ def tick(args)
   render_framerate(args)
 end
 
-def new_game(args)
-  args.state.entities = Entities.build_data
-  Entities.data = args.state.entities
+def new_game
+  $state.entities = Entities.build_data
+  Entities.data = $state.entities
   Entities.player = EntityPrototypes.build(:player)
 
-  args.state.message_log = []
-  $message_log = MessageLog.new args.state.message_log
+  $state.message_log = []
+  $message_log = MessageLog.new $state.message_log
   $message_log.add_message(
     text: 'Hello and welcome, traveler, to yet another dimension! Press ? at any time for help.',
     fg: Colors.welcome_text
@@ -68,7 +68,7 @@ def new_game(args)
     parameters: procgen_parameters,
     player: Entities.player
   )
-  args.state.game_map = game_map.data
+  $state.game_map = game_map.data
 
   $game.player = Entities.player
   $game.game_map = game_map
@@ -85,8 +85,7 @@ def setup(args)
   $console = Engine::Console.new(screen_width, screen_height)
 
   $game = Game.new
-
-  new_game(args)
+  $game.scene = Scenes::MainMenu.new
 end
 
 def render_framerate(args)
@@ -120,6 +119,9 @@ def process_input(gtk_inputs)
     result << { type: :look } if key_down.forward_slash
     result << { type: :help } if key_down.question_mark
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
+    result << { type: :main_menu_new_game } if key_down.n
+    result << { type: :main_menu_continue_game } if key_down.c
+    result << { type: :main_menu_quit_game } if key_down.q
   }
 end
 

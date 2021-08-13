@@ -67,5 +67,13 @@ module Colors
     def item_window_selected
       [128, 128, 0]
     end
+
+    def menu_title
+      [63, 255, 63]
+    end
+
+    def menu_text
+      white
+    end
   end
 end
