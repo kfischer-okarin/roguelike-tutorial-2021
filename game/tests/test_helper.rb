@@ -70,6 +70,27 @@ module GTK
       end
     end
 
+    # Game specific
+
+    def will_advance_turn!
+      @assertion_performed = true
+      advance_turn_calls = mock_method $game, :advance_turn
+
+      yield
+
+      raise 'Turn was not advanced!' if advance_turn_calls.empty?
+    end
+
+    def will_not_advance_turn!
+      @assertion_performed = true
+      advance_turn_calls = mock_method $game, :advance_turn
+
+      yield
+
+      raise 'Turn was advanced!' unless  advance_turn_calls.empty?
+    end
+
+
     private
 
     def exception_description(exception)
