@@ -61,49 +61,27 @@ class Game
     @scene.render(console)
   end
 
-  def show_history
-    push_scene Scenes::HistoryViewer.new
-  end
-
-  def show_inventory
-    item_selection = Scenes::ItemSelection.new(
+  def show_inventory(title, &build_action_for_item)
+    push_scene Scenes::ItemSelection.new(
       inventory: player.inventory,
-      title: 'Select an item to use',
-      window_x: item_window_x
-    ) do |selected_item|
-      selected_item.consumable.get_action(@player)
-    end
-    push_scene item_selection
-  end
-
-  def show_drop_item_menu
-    item_selection = Scenes::ItemSelection.new(
-      inventory: player.inventory,
-      title: 'Select an item to drop',
-      window_x: item_window_x
-    ) do |selected_item|
-      DropItemAction.new(@player, selected_item)
-    end
-    push_scene item_selection
-  end
-
-  def start_look
-    position_selection = Scenes::PositionSelection.new(help_topic: 'Look') do
-      # no op - don't perform action on enter
-    end
-    push_scene position_selection
-  end
-
-  def select_target_position(&build_action_for_selected_position)
-    target_selection = Scenes::PositionSelection.new(
-      &build_action_for_selected_position
+      title: title,
+      window_x: item_window_x,
+      &build_action_for_item
     )
-    push_scene target_selection
+  end
+
+  def select_position(help_topic: nil, &build_action_for_position)
+    push_scene Scenes::PositionSelection.new(
+      help_topic: help_topic,
+      &build_action_for_position
+    )
   end
 
   def select_explosion_area(radius:, &build_action_for_center)
-    area_selection = Scenes::ExplosionAreaSelection.new(radius: radius, &build_action_for_center)
-    push_scene area_selection
+    push_scene Scenes::ExplosionAreaSelection.new(
+      radius: radius,
+      &build_action_for_center
+    )
   end
 
   def show_help(topic)
@@ -129,7 +107,7 @@ class Game
   end
 
   def handle_game_over
-    push_scene GameOver.new
+    push_scene Scenes::GameOver.new
   end
 
   def item_window_x

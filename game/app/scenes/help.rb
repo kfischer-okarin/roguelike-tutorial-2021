@@ -16,7 +16,7 @@ module Scenes
     end
 
     def dispatch_action_for_quit
-      $game.pop_scene
+      pop_scene
     end
 
     private

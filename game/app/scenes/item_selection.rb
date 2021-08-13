@@ -17,13 +17,13 @@ module Scenes
 
     def action_for_item(item)
       @build_action_for_selected_item.call(item).tap { |action|
-        $game.pop_scene if action
+        pop_scene if action
       }
     end
 
     def dispatch_action_for_char_typed(event)
       return $game.show_help('Item Selection') if event.char == '?'
-      return $game.pop_scene unless @item_list.valid_input_char? event.char
+      return pop_scene unless @item_list.valid_input_char? event.char
 
       selected_item = @item_list.item_for_char event.char
       return unless selected_item
@@ -39,7 +39,7 @@ module Scenes
     end
 
     def dispatch_action_for_quit
-      $game.pop_scene
+      pop_scene
     end
   end
 end

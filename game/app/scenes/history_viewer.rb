@@ -1,6 +1,6 @@
 module Scenes
   class HistoryViewer < BaseScene
-    attr_accessor :cursor_index
+    attr_reader :cursor_index
 
     def initialize
       super()
@@ -32,7 +32,7 @@ module Scenes
     end
 
     def dispatch_action_for_quit
-      $game.pop_scene
+      pop_scene
     end
 
     alias dispatch_action_for_view_history dispatch_action_for_quit

@@ -20,7 +20,7 @@ module Scenes
 
     def action_for_position(position)
       build_action_for_selected(position).tap { |action|
-        $game.pop_scene if action
+        pop_scene if action
       }
     end
 
@@ -67,7 +67,7 @@ module Scenes
     alias dispatch_action_for_click dispatch_action_for_confirm
 
     def dispatch_action_for_quit
-      $game.pop_scene
+      pop_scene
     end
 
     def dispatch_action_for_help

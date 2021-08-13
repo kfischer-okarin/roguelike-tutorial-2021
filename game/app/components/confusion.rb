@@ -3,7 +3,7 @@ module Components
     data_reader :turns
 
     def get_action(consumer)
-      $game.select_target_position do |position|
+      $game.select_position do |position|
         UseItemOnPositionAction.new(consumer, entity, position: position)
       end
     end

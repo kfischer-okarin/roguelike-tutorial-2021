@@ -15,5 +15,15 @@ module Scenes
         handler.call
       end
     end
+
+    protected
+
+    def push_scene(scene)
+      $game.push_scene scene
+    end
+
+    def pop_scene
+      $game.pop_scene
+    end
   end
 end

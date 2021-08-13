@@ -65,19 +65,25 @@ module Scenes
     end
 
     def dispatch_action_for_view_history
-      $game.show_history
+      push_scene Scenes::HistoryViewer.new
     end
 
     def dispatch_action_for_inventory
-      $game.show_inventory
+      $game.show_inventory('Select an item to use') do |selected_item|
+        selected_item.consumable.get_action(player)
+      end
     end
 
     def dispatch_action_for_drop
-      $game.show_drop_item_menu
+      $game.show_inventory('Select an item to drop') do |selected_item|
+        DropItemAction.new(player, selected_item)
+      end
     end
 
     def dispatch_action_for_look
-      $game.start_look
+      $game.select_position(help_topic: 'Look') do
+        # no op - don't perform action on enter
+      end
     end
 
     def dispatch_action_for_help
