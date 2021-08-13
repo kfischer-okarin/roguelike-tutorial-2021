@@ -1,6 +1,6 @@
 class Game
-  attr_reader :player, :rng, :game_map
-  attr_accessor :cursor_position, :scene
+  attr_reader :player, :rng, :game_map, :scene
+  attr_accessor :cursor_position
 
   def initialize(player:)
     @player = player
@@ -12,6 +12,11 @@ class Game
   def game_map=(value)
     @game_map = value
     update_fov
+  end
+
+  def scene=(value)
+    @scene = value
+    @scene_stack = []
   end
 
   def handle_input_events(input_events)
