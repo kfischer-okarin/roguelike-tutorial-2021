@@ -33,12 +33,12 @@ module Entities
     end
 
     def player
-      @entity_objects_by_id[@gtk_state.player.entity_id]
+      @entity_objects_by_id[@gtk_state.player_id]
     end
 
     def player=(entity)
       self << entity
-      @gtk_state.player = entity.data
+      @gtk_state.player_id = entity.data.entity_id
     end
   end
 end
