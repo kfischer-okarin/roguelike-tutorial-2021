@@ -1,5 +1,3 @@
-require 'app/scenes/gameplay/input_event_handler.rb'
-
 module Scenes
   class Gameplay < BaseScene
     def initialize(player:)
@@ -22,13 +20,73 @@ module Scenes
       render_names_at_cursor_position(console)
     end
 
-    protected
+    def dispatch_action_for_quit
+      EscapeAction
+    end
 
-    def build_input_handler
-      InputEventHandler.new(player: @player)
+    def dispatch_action_for_up
+      BumpIntoEntityAction.new(player, dx: 0, dy: 1)
+    end
+
+    def dispatch_action_for_down
+      BumpIntoEntityAction.new(player, dx: 0, dy: -1)
+    end
+
+    def dispatch_action_for_left
+      BumpIntoEntityAction.new(player, dx: -1, dy: 0)
+    end
+
+    def dispatch_action_for_right
+      BumpIntoEntityAction.new(player, dx: 1, dy: 0)
+    end
+
+    def dispatch_action_for_up_right
+      BumpIntoEntityAction.new(player, dx: 1, dy: 1)
+    end
+
+    def dispatch_action_for_up_left
+      BumpIntoEntityAction.new(player, dx: -1, dy: 1)
+    end
+
+    def dispatch_action_for_down_right
+      BumpIntoEntityAction.new(player, dx: 1, dy: -1)
+    end
+
+    def dispatch_action_for_down_left
+      BumpIntoEntityAction.new(player, dx: -1, dy: -1)
+    end
+
+    def dispatch_action_for_get
+      PickupAction.new(player)
+    end
+
+    def dispatch_action_for_wait
+      WaitAction
+    end
+
+    def dispatch_action_for_view_history
+      $game.show_history
+    end
+
+    def dispatch_action_for_inventory
+      $game.show_inventory
+    end
+
+    def dispatch_action_for_drop
+      $game.show_drop_item_menu
+    end
+
+    def dispatch_action_for_look
+      $game.start_look
+    end
+
+    def dispatch_action_for_help
+      $game.show_help('Gameplay')
     end
 
     private
+
+    attr_reader :player
 
     def game_map
       $game.game_map

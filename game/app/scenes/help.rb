@@ -15,16 +15,8 @@ module Scenes
       @message_window.render(console)
     end
 
-    protected
-
-    def build_input_handler
-      InputEventHandler.new
-    end
-
-    class InputEventHandler < BaseInputHandler
-      def dispatch_action_for_quit
-        $game.pop_scene
-      end
+    def dispatch_action_for_quit
+      $game.pop_scene
     end
 
     private

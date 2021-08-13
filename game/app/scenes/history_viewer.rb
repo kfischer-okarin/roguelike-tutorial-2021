@@ -1,6 +1,6 @@
 module Scenes
   class HistoryViewer < BaseScene
-    attr_reader :cursor_index
+    attr_accessor :cursor_index
 
     def initialize
       super()
@@ -31,52 +31,39 @@ module Scenes
       @log_console.blit(console, x: 3, y: 3)
     end
 
-    protected
-
-    def build_input_handler
-      InputEventHandler.new(self)
+    def dispatch_action_for_quit
+      $game.pop_scene
     end
 
-    class InputEventHandler < BaseInputHandler
-      def initialize(viewer)
-        super()
-        @viewer = viewer
-      end
+    alias dispatch_action_for_view_history dispatch_action_for_quit
+    alias dispatch_action_for_wait dispatch_action_for_quit
 
-      def dispatch_action_for_quit
-        $game.pop_scene
-      end
+    def dispatch_action_for_up
+      self.cursor_index -= 1
+    end
 
-      alias dispatch_action_for_view_history dispatch_action_for_quit
-      alias dispatch_action_for_wait dispatch_action_for_quit
+    def dispatch_action_for_down
+      self.cursor_index += 1
+    end
 
-      def dispatch_action_for_up
-        @viewer.cursor_index -= 1
-      end
+    def dispatch_action_for_page_up
+      self.cursor_index -= 10
+    end
 
-      def dispatch_action_for_down
-        @viewer.cursor_index += 1
-      end
+    def dispatch_action_for_page_down
+      self.cursor_index += 10
+    end
 
-      def dispatch_action_for_page_up
-        @viewer.cursor_index -= 10
-      end
+    def dispatch_action_for_home
+      self.cursor_index = 0 # will be clamped to real value
+    end
 
-      def dispatch_action_for_page_down
-        @viewer.cursor_index += 10
-      end
+    def dispatch_action_for_end
+      self.cursor_index = message_count - 1
+    end
 
-      def dispatch_action_for_home
-        @viewer.cursor_index = 0 # will be clamped to real value
-      end
-
-      def dispatch_action_for_end
-        @viewer.cursor_index = @viewer.message_count - 1
-      end
-
-      def dispatch_action_for_help
-        $game.show_help('Message Log')
-      end
+    def dispatch_action_for_help
+      $game.show_help('Message Log')
     end
   end
 end

@@ -26,10 +26,6 @@ module Scenes
 
     protected
 
-    def build_input_handler
-      InputEventHandler.new(self, help_topic: @help_topic)
-    end
-
     def build_action_for_selected(selected)
       @build_action_for_selected.call(selected)
     end
@@ -40,50 +36,42 @@ module Scenes
       console.fg[x, y] = Colors.black
     end
 
-    class InputEventHandler < BaseInputHandler
-      def initialize(selection_scene, help_topic:)
-        super()
-        @selection_scene = selection_scene
-        @help_topic = help_topic
-      end
+    def move_cursor_if_possible(dx, dy)
+      new_position = [$game.cursor_position.x + dx, $game.cursor_position.y + dy]
+      return unless valid_position? new_position
 
-      def move_cursor_if_possible(dx, dy)
-        new_position = [$game.cursor_position.x + dx, $game.cursor_position.y + dy]
-        return unless @selection_scene.valid_position? new_position
+      $game.cursor_position = new_position
+    end
 
-        $game.cursor_position = new_position
-      end
+    def dispatch_action_for_right
+      move_cursor_if_possible(1, 0)
+    end
 
-      def dispatch_action_for_right
-        move_cursor_if_possible(1, 0)
-      end
+    def dispatch_action_for_left
+      move_cursor_if_possible(-1, 0)
+    end
 
-      def dispatch_action_for_left
-        move_cursor_if_possible(-1, 0)
-      end
+    def dispatch_action_for_up
+      move_cursor_if_possible(0, 1)
+    end
 
-      def dispatch_action_for_up
-        move_cursor_if_possible(0, 1)
-      end
+    def dispatch_action_for_down
+      move_cursor_if_possible(0, -1)
+    end
 
-      def dispatch_action_for_down
-        move_cursor_if_possible(0, -1)
-      end
+    def dispatch_action_for_confirm
+      selected_position = ScreenLayout.console_to_map_position $game.cursor_position
+      action_for_position selected_position
+    end
 
-      def dispatch_action_for_confirm
-        selected_position = ScreenLayout.console_to_map_position $game.cursor_position
-        @selection_scene.action_for_position selected_position
-      end
+    alias dispatch_action_for_click dispatch_action_for_confirm
 
-      alias dispatch_action_for_click dispatch_action_for_confirm
+    def dispatch_action_for_quit
+      $game.pop_scene
+    end
 
-      def dispatch_action_for_quit
-        $game.pop_scene
-      end
-
-      def dispatch_action_for_help
-        $game.show_help(@help_topic)
-      end
+    def dispatch_action_for_help
+      $game.show_help(@help_topic)
     end
   end
 end
