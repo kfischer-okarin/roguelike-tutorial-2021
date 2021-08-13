@@ -1,9 +1,7 @@
 require 'tests/test_helper.rb'
 
 def test_position_selection_success(_args, assert)
-  pop_scene_calls = mock_method($game, :pop_scene)
-  previous_scene = TestHelper::Spy.new
-  $game.push_scene previous_scene
+  previous_scene = $game.scene
   selected_position = nil
   position_action = TestHelper::Mock.new
   position_action.expect_call :perform
@@ -13,19 +11,21 @@ def test_position_selection_success(_args, assert)
     selected_position = position
     position_action
   end
+  $game.push_scene scene
 
-  scene.handle_input_events(
-    [
-      { type: :right },
-      { type: :down },
-      { type: :confirm }
-    ]
-  )
+  assert.will_advance_turn! do
+    $game.handle_input_events(
+      [
+        { type: :right },
+        { type: :down },
+        { type: :confirm }
+      ]
+    )
+  end
 
   assert.equal! selected_position, [4, 2]
   position_action.assert_all_calls_received!(assert)
-  assert.equal! pop_scene_calls.size, 1
-  assert.includes! previous_scene.calls, [:after_action_performed, []]
+  assert.equal! $game.scene, previous_scene
 end
 
 def test_position_selection_cannot_select_outside_map(_args, assert)
@@ -36,8 +36,9 @@ def test_position_selection_cannot_select_outside_map(_args, assert)
     selected_position = position
     nil
   end
+  $game.push_scene scene
 
-  scene.handle_input_events(
+  $game.handle_input_events(
     [
       { type: :up },
       { type: :up },
@@ -52,23 +53,23 @@ def test_position_selection_cannot_select_outside_map(_args, assert)
 end
 
 def test_position_selection_quit_input_returns_to_previous_scene(_args, assert)
-  pop_scene_calls = mock_method($game, :pop_scene)
-  previous_scene = TestHelper::Spy.new
-  $game.push_scene previous_scene
+  previous_scene = $game.scene
   selected_position = nil
   game_map = build_game_map(20, 20)
   Entities.player.place(game_map, x: 3, y: 3)
   scene = Scenes::PositionSelection.new(previous_scene) do |position|
     selected_position = position
   end
+  $game.push_scene scene
 
-  scene.handle_input_events(
-    [
-      { type: :quit }
-    ]
-  )
+  assert.will_not_advance_turn! do
+    $game.handle_input_events(
+      [
+        { type: :quit }
+      ]
+    )
+  end
 
   assert.equal! selected_position, nil
-  assert.equal! pop_scene_calls.size, 1
-  assert.true! previous_scene.calls.empty?
+  assert.equal! $game.scene, previous_scene
 end

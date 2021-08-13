@@ -319,4 +319,5 @@ before_each do |args|
   Entities.player = build_player
   $message_log = MessageLog.new
   $game = Game.new(player: Entities.player)
+  $game.scene = Scenes::Gameplay.new(player: Entities.player)
 end
