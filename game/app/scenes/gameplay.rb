@@ -13,7 +13,6 @@ module Scenes
         bg: Colors.hp_bar_empty
       )
       @message_log = UI::MessageLog.new(x: 21, y: 0, width: 40, height: 5)
-      update_fov
     end
 
     def render(console)
@@ -24,9 +23,7 @@ module Scenes
     end
 
     def after_action_performed
-      handle_enemy_turns
-      update_fov
-      handle_game_over unless @player.alive?
+      $game.advance_turn
     end
 
     protected
@@ -39,22 +36,6 @@ module Scenes
 
     def game_map
       $game.game_map
-    end
-
-    def handle_enemy_turns
-      game_map.actors.each do |entity|
-        entity.ai.perform_action
-      rescue Action::Impossible
-        # no op
-      end
-    end
-
-    def update_fov
-      game_map.update_fov(x: @player.x, y: @player.y, radius: 8)
-    end
-
-    def handle_game_over
-      $game.scene = GameOver.new(self)
     end
 
     def render_game_map(console)

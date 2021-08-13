@@ -1,6 +1,6 @@
 class Game
-  attr_reader :player, :rng
-  attr_accessor :cursor_position, :scene, :game_map
+  attr_reader :player, :rng, :game_map
+  attr_accessor :cursor_position, :scene
 
   def initialize(player:)
     @player = player
@@ -9,8 +9,19 @@ class Game
     @rng = RNG.new
   end
 
+  def game_map=(value)
+    @game_map = value
+    update_fov
+  end
+
   def handle_input_events(input_events)
     @scene.handle_input_events(input_events)
+  end
+
+  def advance_turn
+    handle_enemy_turns
+    update_fov
+    handle_game_over unless @player.alive?
   end
 
   def push_scene(next_scene)
@@ -84,6 +95,22 @@ class Game
   end
 
   private
+
+  def handle_enemy_turns
+    game_map.actors.each do |entity|
+      entity.ai.perform_action
+    rescue Action::Impossible
+      # no op
+    end
+  end
+
+  def update_fov
+    game_map.update_fov(x: player.x, y: player.y, radius: 8)
+  end
+
+  def handle_game_over
+    push_scene GameOver.new(@scene)
+  end
 
   def item_window_x
     @player.x <= 30 ? 40 : 0
