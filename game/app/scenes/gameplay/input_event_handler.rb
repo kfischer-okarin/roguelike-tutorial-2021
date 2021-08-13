@@ -53,7 +53,7 @@ module Scenes
       end
 
       def dispatch_action_for_view_history
-        $game.show_history($console)
+        $game.show_history
       end
 
       def dispatch_action_for_inventory

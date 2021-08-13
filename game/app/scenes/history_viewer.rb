@@ -2,12 +2,11 @@ module Scenes
   class HistoryViewer < BaseScene
     attr_reader :cursor_index
 
-    def initialize(previous_scene:, console:)
-      @previous_scene = previous_scene
+    def initialize
       super()
       @messages = $message_log.messages
       @cursor_index = @messages.size - 1
-      @log_console = Engine::Console.new(console.width - 6, console.height - 6)
+      @log_console = Engine::Console.new($console.width - 6, $console.height - 6)
       @message_log = UI::MessageLog.new(x: 1, y: 1, width: @log_console.width - 2, height: @log_console.height - 2)
     end
 

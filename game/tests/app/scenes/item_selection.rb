@@ -8,7 +8,7 @@ def test_item_selection_success(_args, assert)
   selected_item = nil
   item_action = TestHelper::Mock.new
   item_action.expect_call :perform
-  scene = Scenes::ItemSelection.new(previous_scene, inventory: actor.inventory) do |item|
+  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
     selected_item = item
     item_action
   end
@@ -35,7 +35,7 @@ def test_item_selection_via_click(_args, assert)
   selected_item = nil
   item_action = TestHelper::Mock.new
   item_action.expect_call :perform
-  scene = Scenes::ItemSelection.new(previous_scene, inventory: actor.inventory) do |item|
+  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
     selected_item = item
     item_action
   end
@@ -58,7 +58,7 @@ end
 def test_item_selection_cannot_selected_non_existing_item(_args, assert)
   actor = build_actor items: [build_item, build_item]
   selected_item = nil
-  scene = Scenes::ItemSelection.new(nil, inventory: actor.inventory) do |item|
+  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
     selected_item = item
   end
   $game.push_scene scene
@@ -79,7 +79,7 @@ def test_item_selection_non_item_input_returns_to_previous_scene(_args, assert)
   previous_scene = $game.scene
   actor = build_actor items: [build_item, build_item]
   selected_item = nil
-  scene = Scenes::ItemSelection.new(previous_scene, inventory: actor.inventory) do |item|
+  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
     selected_item = item
   end
   $game.push_scene scene
@@ -100,7 +100,7 @@ def test_item_selection_quit_input_returns_to_previous_scene(_args, assert)
   previous_scene = $game.scene
   actor = build_actor items: [build_item, build_item]
   selected_item = nil
-  scene = Scenes::ItemSelection.new(previous_scene, inventory: actor.inventory) do |item|
+  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
     selected_item = item
   end
   $game.push_scene scene

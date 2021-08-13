@@ -1,8 +1,7 @@
 module Scenes
   class PositionSelection < BaseScene
-    def initialize(gameplay_scene, help_topic: nil, &build_action_for_selected)
+    def initialize(help_topic: nil, &build_action_for_selected)
       @build_action_for_selected = build_action_for_selected
-      @gameplay_scene = gameplay_scene
       $game.cursor_position = ScreenLayout.map_to_console_position [$game.player.x, $game.player.y]
       @help_topic = help_topic || 'Target Selection'
       super()

@@ -1,9 +1,8 @@
 module Scenes
   class ItemSelection < BaseScene
-    def initialize(previous_scene, inventory:, title: nil, window_x: 0, &build_action_for_selected_item)
+    def initialize(inventory:, title: nil, window_x: 0, &build_action_for_selected_item)
       @inventory = inventory
       @build_action_for_selected_item = build_action_for_selected_item
-      @previous_scene = previous_scene
       @item_list = UI::ItemList.new(
         @inventory,
         top: 44, x: window_x,

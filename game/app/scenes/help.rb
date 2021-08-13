@@ -1,7 +1,6 @@
 module Scenes
   class Help < BaseScene
-    def initialize(previous_scene, topic:)
-      @previous_scene = previous_scene
+    def initialize(topic:)
       super()
       @topic = topic
       @message_window = UI::MessageWindow.new(

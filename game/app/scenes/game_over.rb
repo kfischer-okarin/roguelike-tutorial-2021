@@ -2,11 +2,6 @@ module Scenes
   class GameOver < BaseScene
     attr_reader :input_event_handler
 
-    def initialize(gameplay_scene)
-      super()
-      @gameplay_scene = gameplay_scene
-    end
-
     protected
 
     def build_input_handler

@@ -1,7 +1,7 @@
 module Scenes
   class ExplosionAreaSelection < PositionSelection
-    def initialize(gameplay_scene, radius:, &build_action_for_selected)
-      super(gameplay_scene, &build_action_for_selected)
+    def initialize(radius:, &build_action_for_selected)
+      super(&build_action_for_selected)
       @radius = radius
       @target_positions = {}
     end
