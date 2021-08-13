@@ -24,7 +24,6 @@ require 'app/screen_layout.rb'
 def tick(args)
   setup(args) if args.tick_count.zero?
 
-  Entities.gtk_state = args.state
   $render_context.gtk_outputs = args.outputs
 
   begin
@@ -50,7 +49,8 @@ def setup(args)
   $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
   $console = Engine::Console.new(screen_width, screen_height)
 
-  Entities.setup(args.state)
+  args.state.entities = Entities.build_data
+  Entities.data = args.state.entities
   Entities.player = EntityPrototypes.build(:player)
 
   $message_log = MessageLog.new

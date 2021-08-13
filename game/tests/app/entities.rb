@@ -1,13 +1,5 @@
 require 'tests/test_helper.rb'
 
-def test_entities_setup_resets_entities(args, assert)
-  build_entity
-
-  Entities.setup(args.state)
-
-  assert.equal! Entities.each.to_a, []
-end
-
 def test_entities_add(_args, assert)
   entity = build_entity
 

@@ -319,7 +319,8 @@ GTK::Tests.prepend TestExtension
 
 before_each do |args|
   GTK::Entity.strict_entities.clear
-  Entities.setup args.state
+  args.state.entities = Entities.build_data
+  Entities.data = args.state.entities
   Entities.player = build_player
   $message_log = MessageLog.new
   $game = Game.new(player: Entities.player)

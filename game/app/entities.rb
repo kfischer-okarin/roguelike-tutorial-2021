@@ -2,27 +2,30 @@ module Entities
   class << self
     include Enumerable
 
-    def gtk_state=(value)
-      @entity_objects.each(&:reset_reference) if @gtk_state && @gtk_state.object_id != value.object_id
-      @gtk_state = value
-      @entities_by_id = @gtk_state.entities_by_id
+    def build_data
+      $state.new_entity_strict(
+        :entities,
+        entities_by_id: {},
+        player_id: nil
+      )
     end
 
-    def setup(gtk_state)
-      @gtk_state = nil
-      gtk_state.entities_by_id = {}
-      self.gtk_state = gtk_state
+    def data=(value)
+      @data = value
       @entity_objects_by_id = {}
+      @data.entities_by_id.each_value do |entity_data|
+        @entity_objects_by_id[entity_data.entity_id] = Entity.from(entity_data)
+      end
       @children = {}
     end
 
     def <<(entity)
-      @gtk_state.entities_by_id[entity.id] = entity.data
+      @data.entities_by_id[entity.id] = entity.data
       @entity_objects_by_id[entity.id] = entity
     end
 
     def delete(entity)
-      @gtk_state.entities_by_id.delete entity.id
+      @data.entities_by_id.delete entity.id
       @entity_objects_by_id.delete entity.id
     end
 
@@ -39,16 +42,16 @@ module Entities
     end
 
     def data_for(entity_id)
-      @entities_by_id[entity_id]
+      @data.entities_by_id[entity_id]
     end
 
     def player
-      @entity_objects_by_id[@gtk_state.player_id]
+      @entity_objects_by_id[@data.player_id]
     end
 
     def player=(entity)
       self << entity
-      @gtk_state.player_id = entity.data.entity_id
+      @data.player_id = entity.data.entity_id
     end
   end
 end
