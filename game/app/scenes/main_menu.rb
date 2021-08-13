@@ -10,6 +10,10 @@ module Scenes
       new_game
     end
 
+    def dispatch_action_for_main_menu_continue_game
+      load_game
+    end
+
     def dispatch_action_for_main_menu_quit_game
       $game.quit
     end
