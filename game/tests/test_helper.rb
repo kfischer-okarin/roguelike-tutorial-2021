@@ -208,12 +208,23 @@ def build_game_map(width = 10, height = 10)
   }
 end
 
-def build_game_map_with_entities(entities_by_position)
+def build_game_map_with_entities(*entities)
+  entities_by_position = entities[0].is_a?(Hash) ? entities[0] : assign_random_positions(entities)
   width = entities_by_position.keys.map(&:x).max + 3
   height = entities_by_position.keys.map(&:y).max + 3
   build_game_map(width, height).tap { |game_map|
     entities_by_position.each do |position, entity|
       entity.place(game_map, x: position.x, y: position.y)
+    end
+  }
+end
+
+def assign_random_positions(entities)
+  {}.tap { |result|
+    entities.each do |entity|
+      position = nil
+      position = [(rand * 10).floor, (rand * 10).floor] until position && !result.key?(position)
+      result[position] = entity
     end
   }
 end
