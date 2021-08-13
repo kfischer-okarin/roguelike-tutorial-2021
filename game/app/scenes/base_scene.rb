@@ -6,6 +6,10 @@ module Scenes
       @input_event_handler = build_input_handler
     end
 
+    def render(console)
+      # no op
+    end
+
     def handle_input_event(input_event)
       method_name = :"dispatch_action_for_#{input_event.type}"
       return unless input_event_handler.respond_to? method_name

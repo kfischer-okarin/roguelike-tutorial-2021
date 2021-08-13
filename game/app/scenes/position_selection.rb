@@ -9,7 +9,6 @@ module Scenes
     end
 
     def render(console)
-      @gameplay_scene.render(console)
       return unless valid_position? $game.cursor_position
 
       render_selection(console)

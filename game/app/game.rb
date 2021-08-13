@@ -45,6 +45,9 @@ class Game
 
   def render(console)
     console.clear
+    @scene_stack.each do |scene|
+      scene.render(console)
+    end
     @scene.render(console)
   end
 

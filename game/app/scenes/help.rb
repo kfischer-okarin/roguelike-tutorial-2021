@@ -13,7 +13,6 @@ module Scenes
     end
 
     def render(console)
-      @previous_scene.render(console)
       @message_window.render(console)
     end
 

@@ -21,8 +21,6 @@ module Scenes
     end
 
     def render(console)
-      @previous_scene.render(console)
-
       @log_console.draw_frame(x: 0, y: 0, width: @log_console.width, height: @log_console.height)
       @log_console.print_box_centered(
         x: 0, y: 0, width: @log_console.width, height: 1,

@@ -7,10 +7,6 @@ module Scenes
       @gameplay_scene = gameplay_scene
     end
 
-    def render(console)
-      @gameplay_scene.render(console)
-    end
-
     protected
 
     def build_input_handler
