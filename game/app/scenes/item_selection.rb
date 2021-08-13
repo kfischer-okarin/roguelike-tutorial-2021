@@ -40,14 +40,8 @@ module Scenes
       end
 
       def dispatch_action_for_char_typed(event)
-        if event.char == '?'
-          $game.show_help('Item Selection')
-          return
-        end
-        unless @selection_ui.valid_input_char? event.char
-          $game.pop_scene
-          return
-        end
+        return $game.show_help('Item Selection') if event.char == '?'
+        return $game.pop_scene unless @selection_ui.valid_input_char? event.char
 
         selected_item = @selection_ui.item_for_char event.char
         return unless selected_item
@@ -64,7 +58,6 @@ module Scenes
 
       def dispatch_action_for_quit
         $game.pop_scene
-        nil
       end
     end
   end

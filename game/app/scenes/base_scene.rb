@@ -28,7 +28,7 @@ module Scenes
     end
 
     def handle_action(action)
-      return false unless action
+      return false unless action.respond_to? :perform
 
       action.perform
       true

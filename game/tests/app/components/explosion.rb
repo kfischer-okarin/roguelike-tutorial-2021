@@ -62,10 +62,9 @@ def test_explosion_get_action_starts_explosion_area_selection(_args, assert)
   item = build_item type: :explosion, radius: 3, damage: 12
   npc = build_actor(items: [item])
 
-  returned_action = item.consumable.get_action(npc)
+  item.consumable.get_action(npc)
 
   assert.equal! $game.scene.class, Scenes::ExplosionAreaSelection
-  assert.nil! returned_action
 
   returned_action = $game.scene.action_for_position [5, 4]
 

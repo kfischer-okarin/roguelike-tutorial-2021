@@ -61,22 +61,18 @@ module Scenes
 
       def dispatch_action_for_right
         move_cursor_if_possible(1, 0)
-        nil
       end
 
       def dispatch_action_for_left
         move_cursor_if_possible(-1, 0)
-        nil
       end
 
       def dispatch_action_for_up
         move_cursor_if_possible(0, 1)
-        nil
       end
 
       def dispatch_action_for_down
         move_cursor_if_possible(0, -1)
-        nil
       end
 
       def dispatch_action_for_confirm
@@ -88,12 +84,10 @@ module Scenes
 
       def dispatch_action_for_quit
         $game.pop_scene
-        nil
       end
 
       def dispatch_action_for_help
         $game.show_help(@help_topic)
-        nil
       end
     end
   end

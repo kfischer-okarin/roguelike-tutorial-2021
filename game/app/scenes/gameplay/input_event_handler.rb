@@ -54,27 +54,22 @@ module Scenes
 
       def dispatch_action_for_view_history
         $game.show_history($console)
-        nil
       end
 
       def dispatch_action_for_inventory
         $game.show_inventory
-        nil
       end
 
       def dispatch_action_for_drop
         $game.show_drop_item_menu
-        nil
       end
 
       def dispatch_action_for_look
         $game.start_look
-        nil
       end
 
       def dispatch_action_for_help
         $game.show_help('Gameplay')
-        nil
       end
     end
   end

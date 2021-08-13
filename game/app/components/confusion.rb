@@ -6,7 +6,6 @@ module Components
       $game.select_target_position do |position|
         UseItemOnPositionAction.new(consumer, entity, position: position)
       end
-      nil
     end
 
     def activate(consumer, position)

@@ -26,7 +26,6 @@ module Scenes
     class InputEventHandler < BaseInputHandler
       def dispatch_action_for_quit
         $game.pop_scene
-        nil
       end
     end
 

@@ -48,7 +48,6 @@ module Scenes
 
       def dispatch_action_for_quit
         $game.pop_scene
-        nil
       end
 
       alias dispatch_action_for_view_history dispatch_action_for_quit
@@ -56,37 +55,30 @@ module Scenes
 
       def dispatch_action_for_up
         @viewer.cursor_index -= 1
-        nil
       end
 
       def dispatch_action_for_down
         @viewer.cursor_index += 1
-        nil
       end
 
       def dispatch_action_for_page_up
         @viewer.cursor_index -= 10
-        nil
       end
 
       def dispatch_action_for_page_down
         @viewer.cursor_index += 10
-        nil
       end
 
       def dispatch_action_for_home
         @viewer.cursor_index = 0 # will be clamped to real value
-        nil
       end
 
       def dispatch_action_for_end
         @viewer.cursor_index = @viewer.message_count - 1
-        nil
       end
 
       def dispatch_action_for_help
         $game.show_help('Message Log')
-        nil
       end
     end
   end

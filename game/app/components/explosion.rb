@@ -6,7 +6,6 @@ module Components
       $game.select_explosion_area(radius: radius) do |position|
         UseItemOnPositionAction.new(consumer, entity, position: position)
       end
-      nil
     end
 
     def activate(_consumer, center)
