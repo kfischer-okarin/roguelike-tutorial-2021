@@ -13,11 +13,21 @@ module Entities
       gtk_state.entities_by_id = {}
       self.gtk_state = gtk_state
       @entity_objects_by_id = {}
+      @children = {}
     end
 
     def <<(entity)
       @gtk_state.entities_by_id[entity.id] = entity.data
       @entity_objects_by_id[entity.id] = entity
+    end
+
+    def delete(entity)
+      @gtk_state.entities_by_id.delete entity.id
+      @entity_objects_by_id.delete entity.id
+    end
+
+    def children_of(parent)
+      @children[parent] ||= []
     end
 
     def get(id)

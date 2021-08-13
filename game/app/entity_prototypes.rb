@@ -16,7 +16,7 @@ module EntityPrototypes
         {
           blocks_movement: true,
           render_order: RenderOrder::ACTOR,
-          inventory: { items: [] },
+          inventory: {},
           ai: { type: :enemy, data: {} }
         }.merge(data)
       )

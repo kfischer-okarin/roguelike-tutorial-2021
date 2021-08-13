@@ -1,5 +1,5 @@
 class GameMap < DataBackedObject
-  attr_reader :data, :entities
+  attr_reader :data
 
   data_reader :width, :height
 
@@ -7,7 +7,6 @@ class GameMap < DataBackedObject
     super()
     @data = data
 
-    @entities = []
     @tile_data = Array2D.new(width, height, data.tiles)
     @visible = Array2D.new(width, height) { false }
     @explored = Array2D.new(width, height, data.explored)
@@ -36,28 +35,32 @@ class GameMap < DataBackedObject
     self
   end
 
+  def entities
+    Entities.children_of(self)
+  end
+
   def add_entity(entity)
-    @entities << entity
+    entities << entity
   end
 
   def remove_entity(entity)
-    @entities.delete(entity)
+    entities.delete(entity)
   end
 
   def actors
-    @entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
+    entities.select { |entity| entity.is_a?(Entity::Actor) && entity.alive? }
   end
 
   def items
-    @entities.select { |entity| entity.is_a?(Entity::Item) }
+    entities.select { |entity| entity.is_a?(Entity::Item) }
   end
 
   def entity_at?(x, y)
-    @entities.any? { |entity| entity.x == x && entity.y == y }
+    entities.any? { |entity| entity.x == x && entity.y == y }
   end
 
   def entities_at(x, y)
-    @entities.select { |entity| entity.x == x && entity.y == y }
+    entities.select { |entity| entity.x == x && entity.y == y }
   end
 
   def items_at(x, y)
@@ -105,7 +108,7 @@ class GameMap < DataBackedObject
     console.assign_tiles(0, offset_y || 0, @rendered_tiles)
 
     RenderOrder.each do |render_order|
-      @entities.select { |entity| entity.render_order == render_order }.each do |entity|
+      entities.select { |entity| entity.render_order == render_order }.each do |entity|
         next unless visible?(entity.x, entity.y)
 
         console.print(x: entity.x, y: entity.y + offset_y, string: entity.char, fg: entity.color)

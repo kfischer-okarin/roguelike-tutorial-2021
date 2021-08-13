@@ -22,6 +22,7 @@ module Components
     def consume
       item_container = entity.parent
       item_container.remove_entity entity
+      Entities.delete entity
     end
   end
 end

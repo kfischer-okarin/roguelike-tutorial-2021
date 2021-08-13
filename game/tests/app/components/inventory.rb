@@ -1,14 +1,5 @@
 require 'tests/test_helper.rb'
 
-def test_inventory_add_entity(_args, assert)
-  actor = build_actor
-  item = build_item
-
-  actor.inventory.add_entity(item)
-
-  assert.includes! actor.data.inventory.items, item.id
-end
-
 def test_inventory_items(_args, assert)
   actor = build_actor
   item = build_item

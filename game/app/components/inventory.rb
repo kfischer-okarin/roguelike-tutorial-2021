@@ -5,15 +5,15 @@ module Components
     end
 
     def add_entity(entity)
-      data.items << entity.id
+      items << entity
     end
 
     def remove_entity(entity)
-      data.items.delete entity.id
+      items.delete entity
     end
 
     def items
-      data.items.map { |entity_id| Entities.get(entity_id) }
+      Entities.children_of(self)
     end
 
     def drop(item)
