@@ -18,13 +18,6 @@ module WaitAction
   end
 end
 
-# Quits the game
-module EscapeAction
-  def self.perform
-    $game.quit
-  end
-end
-
 class PickupAction < Action
   def perform
     item = items_at_own_position.first

@@ -75,7 +75,18 @@ def new_game
   $game.scene = Scenes::Gameplay.new(player: Entities.player)
 end
 
-def setup(args)
+def save_game
+  $gtk.write_file 'map.sav', [
+    $state.game_map.width.to_s,
+    $state.game_map.height.to_s,
+    $state.game_map.tiles.map(&:inspect).join(','),
+    $state.game_map.explored.map(&:inspect).join(',')
+  ].join("\n")
+  $gtk.write_file 'entities.sav', $gtk.serialize_state($state.entities)
+  $gtk.write_file 'message_log.sav', $gtk.serialize_state($state.message_log)
+end
+
+def setup(_args)
   # DragonRuby is fixed at 1280x720 so choosing a resolution that fits neatly
   screen_width = 80  # 80 * 16 = 1280
   screen_height = 45 # 45 * 16 = 720

@@ -21,7 +21,8 @@ module Scenes
     end
 
     def dispatch_action_for_quit
-      EscapeAction
+      save_game
+      $game.quit
     end
 
     def dispatch_action_for_up
