@@ -1,9 +1,14 @@
 module Procgen
   class RoomEntitiesGenerator
-    def initialize(rng, max_monsters_per_room:, max_items_per_room:)
-      @rng = rng
+    attr_writer :rng
+
+    def initialize(max_monsters_per_room:, max_items_per_room:)
       @max_monsters_per_room = max_monsters_per_room
       @max_items_per_room = max_items_per_room
+    end
+
+    def rng
+      @rng ||= RNG.new
     end
 
     def generate_for(room)
@@ -15,7 +20,7 @@ module Procgen
     end
 
     def add_monsters(result, area)
-      @rng.random_int_between(0, @max_monsters_per_room).each do
+      rng.random_int_between(0, @max_monsters_per_room).each do
         x, y = @rng.random_position_in_rect(area)
         result << {
           x: x,
@@ -26,7 +31,7 @@ module Procgen
     end
 
     def add_items(result, area)
-      @rng.random_int_between(0, @max_items_per_room).each do
+      rng.random_int_between(0, @max_items_per_room).each do
         x, y = @rng.random_position_in_rect(area)
         type = case @rng.rand
                when 0...0.7

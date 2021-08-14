@@ -28,10 +28,10 @@ def test_room_entities(_args, assert)
   # item 4 type -> grenade
   rng.expect_call :rand, return_value: 0.7
   generator = Procgen::RoomEntitiesGenerator.new(
-    rng,
     max_monsters_per_room: 2,
     max_items_per_room: 5
   )
+  generator.rng = rng
 
   result = generator.generate_for(room)
 

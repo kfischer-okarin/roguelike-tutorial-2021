@@ -33,7 +33,6 @@ module Procgen
       @player = player
       @rooms = []
       @entities_generator = RoomEntitiesGenerator.new(
-        RNG.new,
         max_monsters_per_room: parameters.max_monsters_per_room,
         max_items_per_room: parameters.max_items_per_room
       )
