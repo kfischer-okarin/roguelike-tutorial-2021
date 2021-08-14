@@ -1,14 +1,9 @@
 module Procgen
-  class RoomEntitiesGenerator
-    attr_writer :rng
-
+  class RoomEntitiesGenerator < Generator
     def initialize(max_monsters_per_room:, max_items_per_room:)
+      super()
       @max_monsters_per_room = max_monsters_per_room
       @max_items_per_room = max_items_per_room
-    end
-
-    def rng
-      @rng ||= RNG.new
     end
 
     def generate_for(room)

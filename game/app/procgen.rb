@@ -1,4 +1,5 @@
 require 'app/procgen/rectangular_room.rb'
+require 'app/procgen/generator.rb'
 require 'app/procgen/room_entities_generator.rb'
 require 'app/procgen/rooms_generator.rb'
 require 'app/procgen/dungeon_generator.rb'

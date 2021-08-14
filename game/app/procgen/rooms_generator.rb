@@ -1,17 +1,12 @@
 module Procgen
-  class RoomsGenerator
-    attr_writer :rng
-
+  class RoomsGenerator < Generator
     def initialize(map_width:, map_height:, max_rooms:, min_size:, max_size:)
+      super()
       @map_width = map_width
       @map_height = map_height
       @max_rooms = max_rooms
       @min_size = min_size
       @max_size = max_size
-    end
-
-    def rng
-      @rng ||= RNG.new
     end
 
     def generate
