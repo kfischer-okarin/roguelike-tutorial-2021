@@ -42,41 +42,6 @@ def tick(args)
   render_framerate(args)
 end
 
-def new_game
-  $state.entities = Entities.build_data
-  Entities.data = $state.entities
-  Entities.player = EntityPrototypes.build(:player)
-
-  $state.message_log = []
-  $message_log = MessageLog.new $state.message_log
-  $message_log.add_message(
-    text: 'Hello and welcome, traveler, to yet another dimension! Press ? at any time for help.',
-    fg: Colors.welcome_text
-  )
-
-  map_width = 80
-  map_height = 40
-
-  procgen_parameters = Procgen::DungeonGenerator::Parameters.new(
-    max_rooms: 10,
-    room_size_range: (6..10),
-    max_monsters_per_room: 2,
-    max_items_per_room: 2
-  )
-
-  game_map = Procgen.generate_dungeon(
-    map_width: map_width,
-    map_height: map_height,
-    parameters: procgen_parameters,
-    player: Entities.player
-  )
-  $state.game_map = game_map.data
-
-  $game.player = Entities.player
-  $game.game_map = game_map
-  $game.scene = Scenes::Gameplay.new(player: Entities.player)
-end
-
 def setup(_args)
   # DragonRuby is fixed at 1280x720 so choosing a resolution that fits neatly
   screen_width = 80  # 80 * 16 = 1280
