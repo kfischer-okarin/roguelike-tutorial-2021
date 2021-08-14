@@ -37,7 +37,8 @@ module Scenes
 
       procgen_parameters = Procgen::DungeonGenerator::Parameters.new(
         max_rooms: 10,
-        room_size_range: (6..10),
+        min_room_size: 6,
+        max_room_size: 10,
         max_monsters_per_room: 2,
         max_items_per_room: 2
       )

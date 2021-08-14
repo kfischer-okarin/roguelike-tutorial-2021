@@ -25,6 +25,12 @@ class DataBackedObject
     end
   end
 
+  def require_data_keys!(keys)
+    keys.each do |key|
+      raise ArgumentError, "Missing keyword: #{key}" unless data.key? key
+    end
+  end
+
   def to_s
     "#{self.class}(#{data.inspect})"
   end
