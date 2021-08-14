@@ -82,10 +82,9 @@ def test_pickup_action(_args, assert)
   actor = build_actor
   item = build_item name: 'Potion'
   game_map = build_game_map_with_entities(
-    [3, 3] => actor,
+    [3, 3] => [actor, item],
     [1, 1] => build_item
   )
-  item.place(game_map, x: 3, y: 3)
 
   PickupAction.new(actor).perform
 

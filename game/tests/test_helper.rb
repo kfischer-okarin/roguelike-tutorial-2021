@@ -234,24 +234,42 @@ def build_game_map(width = 10, height = 10)
 end
 
 def build_game_map_with_entities(*entities)
-  entities_by_position = entities[0].is_a?(Hash) ? entities[0] : assign_random_positions(entities)
+  entities_by_position = TestHelper.assign_random_positions_if_necessary(entities)
   width = entities_by_position.keys.map(&:x).max + 3
   height = entities_by_position.keys.map(&:y).max + 3
   build_game_map(width, height).tap { |game_map|
-    entities_by_position.each do |position, entity|
-      entity.place(game_map, x: position.x, y: position.y)
+    entities_by_position.each do |position, entities_at_position|
+      TestHelper.ensure_array(entities_at_position).each do |entity|
+        entity.place(game_map, x: position.x, y: position.y)
+      end
     end
   }
 end
 
-def assign_random_positions(entities)
-  {}.tap { |result|
-    entities.each do |entity|
-      position = nil
-      position = [(rand * 10).floor, (rand * 10).floor] until position && !result.key?(position)
-      result[position] = entity
+module TestHelper
+  class << self
+    def assign_random_positions_if_necessary(entities)
+      return entities[0] if entities[0].is_a? Hash
+
+      assign_random_positions(entities)
     end
-  }
+
+    def assign_random_positions(entities)
+      {}.tap { |result|
+        entities.each do |entity|
+          position = nil
+          position = [(rand * 10).floor, (rand * 10).floor] until position && !result.key?(position)
+          result[position] = entity
+        end
+      }
+    end
+
+    def ensure_array(value)
+      return value if value.is_a? Array
+
+      [value]
+    end
+  end
 end
 
 def make_positions_non_visible(game_map, positions)
