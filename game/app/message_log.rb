@@ -19,8 +19,6 @@ class MessageLog
   end
 
   class Message < DataBackedObject
-    attr_reader :data
-
     data_reader :text, :fg
     data_accessor :receive_count
 

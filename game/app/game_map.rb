@@ -1,6 +1,4 @@
 class GameMap < DataBackedObject
-  attr_reader :data
-
   data_reader :width, :height
 
   def initialize(data)

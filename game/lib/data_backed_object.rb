@@ -1,4 +1,6 @@
 class DataBackedObject
+  attr_reader :data
+
   class << self
     def data_reader(*attributes)
       attributes.each do |attribute|
