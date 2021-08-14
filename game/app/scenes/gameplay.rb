@@ -21,7 +21,7 @@ module Scenes
     end
 
     def dispatch_action_for_quit
-      save_game
+      SaveGame.save
       $game.quit
     end
 

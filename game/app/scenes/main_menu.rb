@@ -11,7 +11,7 @@ module Scenes
     end
 
     def dispatch_action_for_main_menu_continue_game
-      load_game
+      SaveGame.load
     end
 
     def dispatch_action_for_main_menu_quit_game

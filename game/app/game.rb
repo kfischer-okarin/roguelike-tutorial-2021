@@ -97,7 +97,7 @@ class Game
   end
 
   def handle_game_over
-    delete_save_file
+    SaveGame.delete
     push_scene Scenes::GameOver.new
   end
 
