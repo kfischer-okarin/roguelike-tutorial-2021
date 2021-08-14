@@ -17,8 +17,6 @@ module SaveGame
 
     def load
       loaded_map_data = $gtk.read_file 'map.sav'
-      return if loaded_map_data == 'nil'
-
       width, height, tiles, explored = loaded_map_data.split("\n")
       $state.game_map.width = width.to_i
       $state.game_map.height = height.to_i
@@ -45,6 +43,11 @@ module SaveGame
 
       $state.message_log = $gtk.deserialize_state $gtk.read_file('message_log.sav')
       $message_log = MessageLog.new $state.message_log.messages
+    end
+
+    def exists?
+      map_data = $gtk.read_file 'map.sav'
+      map_data && map_data != 'nil'
     end
 
     def delete

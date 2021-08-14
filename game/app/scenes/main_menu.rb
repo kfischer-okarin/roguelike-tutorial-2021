@@ -11,7 +11,7 @@ module Scenes
     end
 
     def dispatch_action_for_main_menu_continue_game
-      SaveGame.load
+      SaveGame.load if SaveGame.exists?
     end
 
     def dispatch_action_for_main_menu_quit_game
@@ -34,16 +34,16 @@ module Scenes
     end
 
     def render_menu(console)
-      [
-        '[N] Play a new game',
-        '[C] Continue last game',
-        '[Q] Quit'
-      ].each_with_index do |text, index|
-        x = console.width.idiv(2) - 12
-        y = console.height.idiv(2) - 2 - index
-        console.draw_rect(x: x, y: y, width: 24, height: 1, bg: [0, 0, 0, 150])
-        console.print(x: x, y: y, string: text, fg: Colors.menu_text)
-      end
+      render_menu_entry(console, 0, '[N] Play a new game')
+      render_menu_entry(console, 1, '[C] Continue last game') if SaveGame.exists?
+      render_menu_entry(console, 2, '[Q] Quit')
+    end
+
+    def render_menu_entry(console, index, text)
+      x = console.width.idiv(2) - 12
+      y = console.height.idiv(2) - 2 - index
+      console.draw_rect(x: x, y: y, width: 24, height: 1, bg: [0, 0, 0, 150])
+      console.print(x: x, y: y, string: text, fg: Colors.menu_text)
     end
   end
 end
