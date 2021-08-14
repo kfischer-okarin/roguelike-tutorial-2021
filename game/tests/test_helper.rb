@@ -108,6 +108,19 @@ module GTK
       equal! actual_actions, [nil]
     end
 
+    def will_change_scene_to!(scene_object_or_class)
+      previous_scene = $game.scene
+
+      yield
+
+      not_equal! $game.scene, previous_scene, "Scene didn't change"
+      if scene_object_or_class.is_a? Scenes::BaseScene
+        equal! $game.scene, scene_object_or_class
+      else
+        equal! $game.scene.class, scene_object_or_class
+      end
+    end
+
     private
 
     def exception_description(exception)
@@ -295,6 +308,20 @@ def make_positions_non_visible(game_map, positions)
     return false if positions.include? [x, y]
 
     original_method.call(x, y)
+  end
+end
+
+def with_replaced_method(object, name, implementation)
+  original_method = object.method(name)
+  object.define_singleton_method(name, &implementation)
+  yield
+  object.define_singleton_method(name, &original_method)
+end
+
+def with_mocked_method(object, name)
+  calls = []
+  with_replaced_method(object, name, ->(*args) { calls << args }) do
+    yield calls
   end
 end
 
