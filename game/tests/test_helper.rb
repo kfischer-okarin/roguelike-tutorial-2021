@@ -4,14 +4,30 @@ module GTK
       @assertion_performed = true
       return if collection.include? element
 
-      raise "Collection:\n  #{collection.inspect}\n\ndid not contain:\n  #{element}\n#{message}."
+      raise "#{collection_description(collection)}\n\ndid not contain:\n  #{element}\n#{message}."
+    end
+
+    def includes_all!(collection, elements, message = nil)
+      @assertion_performed = true
+      missing_elements = elements.reject { |element| collection.include? element }
+      return if missing_elements.empty?
+
+      raise "#{collection_description(collection)}\n\ndid not contain:\n  #{elements.inspect}\n#{message}."
     end
 
     def includes_no!(collection, element, message = nil)
       @assertion_performed = true
       return unless collection.include? element
 
-      raise "#{collection_description(collection)}was not expected to contain exactly:\n  #{element}\n#{message}."
+      raise "#{collection_description(collection)}was not expected to contain:\n  #{element}\n#{message}."
+    end
+
+    def includes_none_of!(collection, elements, message = nil)
+      @assertion_performed = true
+      included_elements = elements.select { |element| collection.include? element }
+      return if included_elements.empty?
+
+      raise "#{collection_description(collection)}\n\nwas not expected to contain:\n  #{elements.inspect}\n#{message}."
     end
 
     def contains_exactly!(collection, elements, message = nil)

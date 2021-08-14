@@ -24,6 +24,8 @@ module Entities
     end
 
     def delete(entity)
+      delete_children_of entity
+
       @data.entities_by_id.delete entity.id
       @entity_objects_by_id.delete entity.id
     end
@@ -51,6 +53,17 @@ module Entities
     def player=(entity)
       self << entity
       @data.player_id = entity.data.entity_id
+    end
+
+    private
+
+    def delete_children_of(entity)
+      return unless entity.respond_to? :inventory
+
+      children_of(entity.inventory).each do |child_entity|
+        delete child_entity
+      end
+      @children.delete entity.inventory
     end
   end
 end
