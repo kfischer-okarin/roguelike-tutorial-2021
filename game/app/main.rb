@@ -2,6 +2,7 @@ require 'lib/array_2d.rb'
 require 'lib/data_backed_object.rb'
 require 'lib/priority_queue.rb'
 require 'lib/engine.rb'
+require 'lib/serializer.rb'
 
 require 'app/rng.rb'
 require 'app/colors.rb'
