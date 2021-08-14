@@ -84,17 +84,33 @@ SERIALIZED
   )
 end
 
+def test_serializer_serialize_entity(args, assert)
+  entity = args.state.new_entity_strict(:player, hp: 12, max_hp: 13)
+  expected = <<-SERIALIZED
+{:type=>:entity}
+{:entity_id=>#{entity.entity_id}, :entity_name=>:player, :entity_type=>:player, :created_at=>-1, :global_created_at_elapsed=>-1, :entity_strict=>true, :entity_keys_by_ref=>{:entity_type=>:entity_name, :global_created_at_elapsed=>:created_at}, :hp=>12, :max_hp=>13}
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    { type: :entity },
+    entity,
+    expected,
+    compare_by: ->(value) { value.to_hash }
+  )
+end
 
 module SerializationTest
   class << self
-    def assert_serialized_value!(assert, schema, value, expected)
+    def assert_serialized_value!(assert, schema, value, expected, compare_by: nil)
       serialized = Serializer.serialize(schema, value)
 
       assert.equal! serialized, expected.strip, 'Serialized value was different'
 
       deserialized = Serializer.deserialize serialized
 
-      assert.equal! deserialized, value
+      transform = compare_by || ->(a) { a }
+      assert.equal! transform.call(deserialized), transform.call(value), 'Deserialized value was different'
     end
   end
 end

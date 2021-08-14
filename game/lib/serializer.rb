@@ -124,11 +124,22 @@ module Serializer
     end
   end
 
+  class EntitySerializer < BaseSerializer
+    def serialize(value)
+      $gtk.serialize_state value
+    end
+
+    def deserialize(value)
+      $gtk.deserialize_state value
+    end
+  end
+
   SERIALIZER_CLASSES = {
     int: IntSerializer,
     string: StringSerializer,
     symbol: SymbolSerializer,
     boolean: BooleanSerializer,
-    typed_array: TypedArraySerializer
+    typed_array: TypedArraySerializer,
+    entity: EntitySerializer
   }
 end
