@@ -20,6 +20,7 @@ require 'app/game_tile.rb'
 require 'app/tiles.rb'
 require 'app/procgen.rb'
 require 'app/game_map.rb'
+require 'app/game_world.rb'
 require 'app/screen_layout.rb'
 require 'app/save_game.rb'
 

@@ -32,27 +32,20 @@ module Scenes
         fg: Colors.welcome_text
       )
 
-      map_width = 80
-      map_height = 40
-
-      procgen_parameters = Procgen::DungeonGenerator::Parameters.new(
-        max_rooms: 10,
-        min_room_size: 6,
-        max_room_size: 10,
-        max_monsters_per_room: 2,
-        max_items_per_room: 2
+      $game.game_world = GameWorld.new(
+        map_width: 80,
+        map_height: 40,
+        procgen_parameters: Procgen::DungeonGenerator::Parameters.new(
+          max_rooms: 10,
+          min_room_size: 6,
+          max_room_size: 10,
+          max_monsters_per_room: 2,
+          max_items_per_room: 2
+        )
       )
-
-      game_map = Procgen.generate_dungeon(
-        map_width: map_width,
-        map_height: map_height,
-        parameters: procgen_parameters,
-        player: Entities.player
-      )
-      $state.game_map = game_map.data
 
       $game.player = Entities.player
-      $game.game_map = game_map
+      $game.generate_next_floor
       $game.scene = Scenes::Gameplay.new(player: Entities.player)
     end
 

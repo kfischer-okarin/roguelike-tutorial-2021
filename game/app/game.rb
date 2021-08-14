@@ -1,12 +1,16 @@
 class Game
   attr_reader :rng, :game_map, :scene
-  attr_accessor :cursor_position, :player
+  attr_accessor :cursor_position, :player, :game_world
 
   def initialize
     @player = player
     @scene_stack = []
     @cursor_position = [0, 0]
     @rng = RNG.new
+  end
+
+  def generate_next_floor
+    game_world.generate_next_floor
   end
 
   def game_map=(value)

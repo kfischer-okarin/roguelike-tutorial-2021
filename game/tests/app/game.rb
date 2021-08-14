@@ -35,6 +35,27 @@ def test_game_log_impossible_actions(_args, assert)
   assert.includes! log_messages, 'Something did not work.'
 end
 
+def test_game_generate_next_floor_deletes_all_non_player_related_entities(_args, assert)
+  owned_item = build_item
+  owned_item.place(Entities.player.inventory)
+  other_item = build_item
+  enemy_owned_item = build_item
+  enemy = build_actor(items: [enemy_owned_item])
+  $game.game_map = build_game_map_with_entities(Entities.player, other_item, enemy)
+  generated_game_map = nil
+  generate_dungeon_stub = lambda { |*_args|
+    generated_game_map = build_game_map_with_entities(Entities.player)
+  }
+
+  with_replaced_method Procgen, :generate_dungeon, generate_dungeon_stub do
+    $game.generate_next_floor
+  end
+
+  assert.includes_all! Entities, [Entities.player, owned_item]
+  assert.includes_none_of! Entities, [other_item, enemy, enemy_owned_item]
+  assert.equal! $game.game_map, generated_game_map
+end
+
 module GameTests
   class << self
     def build_test_scene

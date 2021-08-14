@@ -15,7 +15,7 @@ def test_main_menu_new_game(_args, assert)
   end
 
   assert.not_equal! Entities.player, player_before, 'No new player was generated'
-  assert.equal! Entities.each.to_a, [Entities.player]
+  assert.equal! Entities.to_a, [Entities.player]
   assert.not_equal! generated_game_map, nil, 'No map was generated'
   assert.equal! $game.game_map, generated_game_map
 end
