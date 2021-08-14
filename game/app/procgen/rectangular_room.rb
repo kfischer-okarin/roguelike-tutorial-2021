@@ -22,5 +22,17 @@ module Procgen
     def intersects?(other)
       @x <= other.right && @right >= other.x && @y <= other.top && @top >= other.y
     end
+
+    def ==(other)
+      x == other.x && y == other.y && w == other.w && h == other.h
+    end
+
+    def to_s
+      "RectangularRoom(#{x}, #{y}, #{w}, #{h})"
+    end
+
+    def inspect
+      to_s
+    end
   end
 end

@@ -32,10 +32,20 @@ module Procgen
       @parameters = parameters
       @player = player
       @rooms = []
+      rng = RNG.new
       @entities_generator = RoomEntitiesGenerator.new(
         max_monsters_per_room: parameters.max_monsters_per_room,
         max_items_per_room: parameters.max_items_per_room
       )
+      @entities_generator.rng = rng
+      @rooms_generator = RoomsGenerator.new(
+        map_width: map_width,
+        map_height: map_height,
+        max_rooms: parameters.max_rooms,
+        min_size: parameters.min_room_size,
+        max_size: parameters.max_room_size
+      )
+      @rooms_generator.rng = rng
 
       generate
     end
@@ -43,48 +53,19 @@ module Procgen
     private
 
     def generate
-      @parameters.max_rooms.times do
-        try_to_generate_room
+      @rooms = @rooms_generator.generate
+
+      add_player_to_room @rooms.first
+
+      @rooms.each do |room|
+        construct_room room
       end
+
+      (1..(@rooms.size - 1)).each do |index|
+        connect_rooms @rooms[index - 1], @rooms[index]
+      end
+
       @result.calculate_tiles
-    end
-
-    def try_to_generate_room
-      new_room = build_random_room
-      return if existing_room_overlaps? new_room
-
-      if first_room?
-        add_player_to_room new_room
-      else
-        connect_to_previous_room new_room
-      end
-
-      place_entities(new_room)
-
-      add_room_to_dungeon new_room
-    end
-
-    def build_random_room
-      room_width, room_height = rand_room_size
-
-      x = (rand * (@result.width - room_width - 1)).floor
-      y = (rand * (@result.height - room_height - 1)).floor
-
-      RectangularRoom.new(x, y, room_width, room_height)
-    end
-
-    def rand_room_size
-      @room_sizes ||= @parameters.room_size_range.to_a
-
-      [@room_sizes.sample, @room_sizes.sample]
-    end
-
-    def existing_room_overlaps?(room)
-      @rooms.any? { |existing_room| existing_room.intersects? room }
-    end
-
-    def first_room?
-      @rooms.empty?
     end
 
     def add_player_to_room(room)
@@ -92,8 +73,14 @@ module Procgen
       @player.place(@result, x: room_center.x, y: room_center.y)
     end
 
-    def connect_to_previous_room(room)
-      Procgen.tunnel_between(@rooms[-1].center, room.center).each do |tunnel_x, tunnel_y|
+    def construct_room(room)
+      place_entities(room)
+
+      add_room_to_dungeon room
+    end
+
+    def connect_rooms(room1, room2)
+      Procgen.tunnel_between(room1.center, room2.center).each do |tunnel_x, tunnel_y|
         @result.set_tile tunnel_x, tunnel_y, :floor
       end
     end
@@ -108,7 +95,6 @@ module Procgen
 
     def add_room_to_dungeon(room)
       @result.fill_rect room.inner_rect, :floor
-      @rooms << room
     end
   end
 end
