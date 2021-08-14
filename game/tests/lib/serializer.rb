@@ -42,6 +42,20 @@ SERIALIZED
   )
 end
 
+def test_serializer_serialize_typed_array(_args, assert)
+  expected = <<-SERIALIZED
+{:type=>:typed_array, :element_type=>:int}
+1,2,3,4,5,6,7,8,12
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    { type: :typed_array, element_type: :int },
+    [1, 2, 3, 4, 5, 6, 7, 8, 12],
+    expected
+  )
+end
+
 
 module SerializationTest
   class << self

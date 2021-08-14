@@ -3,12 +3,22 @@ module Serializer
     def serialize(schema, value)
       [
         $gtk.serialize_state(schema),
-        value.to_s
+        serializer_for(schema).serialize(value)
       ].join("\n")
     end
 
     def deserialize(value)
       Deserialization.new(value).result
+    end
+
+    def serializer_for(schema)
+      serializer_class(schema[:type]).new(schema)
+    end
+
+    private
+
+    def serializer_class(type)
+      SERIALIZER_CLASSES.fetch(type)
     end
   end
 
@@ -44,19 +54,70 @@ module Serializer
     end
 
     def read_typed_value(value, schema)
-      send(:"read_#{schema[:type]}", value, schema)
+      Serializer.serializer_for(schema).deserialize(value)
+    end
+  end
+
+  class BaseSerializer
+    def initialize(schema)
+      @schema = schema
+    end
+  end
+
+  class IntSerializer < BaseSerializer
+    def serialize(value)
+      value.to_s
     end
 
-    def read_int(value, _schema)
+    def deserialize(value)
       value.to_i
     end
+  end
 
-    def read_string(value, _schema)
+  class StringSerializer < BaseSerializer
+    def serialize(value)
       value
     end
 
-    def read_symbol(value, _schema)
+    def deserialize(value)
+      value
+    end
+  end
+
+  class SymbolSerializer < BaseSerializer
+    def serialize(value)
+      value.to_s
+    end
+
+    def deserialize(value)
       value.to_sym
     end
   end
+
+  class TypedArraySerializer < BaseSerializer
+    def serialize(value)
+      value.map { |element|
+        element_serializer.serialize(element)
+      }.join(',')
+    end
+
+    def deserialize(value)
+      value.split(',').map { |element|
+        element_serializer.deserialize(element)
+      }
+    end
+
+    private
+
+    def element_serializer
+      @element_serializer ||= Serializer.serializer_for(type: @schema[:element_type])
+    end
+  end
+
+  SERIALIZER_CLASSES = {
+    int: IntSerializer,
+    string: StringSerializer,
+    symbol: SymbolSerializer,
+    typed_array: TypedArraySerializer
+  }
 end
