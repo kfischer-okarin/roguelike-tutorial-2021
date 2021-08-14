@@ -8,7 +8,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :int },
     3,
     expected
   )
@@ -22,7 +21,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :string },
     'Rick',
     expected
   )
@@ -36,7 +34,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :symbol },
     :hp,
     expected
   )
@@ -50,7 +47,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :boolean },
     true,
     expected
   )
@@ -64,7 +60,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :boolean },
     false,
     expected
   )
@@ -78,7 +73,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :typed_array, element_type: :int },
     [1, 2, 3, 4, 5, 6, 7, 8, 12],
     expected
   )
@@ -93,7 +87,6 @@ SERIALIZED
 
   SerializationTest.assert_serialized_value!(
     assert,
-    { type: :entity },
     entity,
     expected,
     compare_by: ->(value) { value.to_hash }
@@ -102,8 +95,8 @@ end
 
 module SerializationTest
   class << self
-    def assert_serialized_value!(assert, schema, value, expected, compare_by: nil)
-      serialized = Serializer.serialize(schema, value)
+    def assert_serialized_value!(assert, value, expected, compare_by: nil)
+      serialized = Serializer.serialize(value)
 
       assert.equal! serialized, expected.strip, 'Serialized value was different'
 

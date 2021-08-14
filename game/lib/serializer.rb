@@ -1,10 +1,45 @@
 module Serializer
   class << self
-    def serialize(schema, value)
+    def serialize(value)
+      schema = determine_schema(value)
       [
         $gtk.serialize_state(schema),
         serializer_for(schema).serialize(value)
       ].join("\n")
+    end
+
+    def determine_schema(value)
+      simple_type = simple_value_type(value)
+      return { type: simple_type } if simple_type
+
+      case value
+      when GTK::StrictEntity, GTK::OpenEntity
+        { type: :entity }
+      when Array
+        simple_array_type = array_type(value)
+        { type: :typed_array, element_type: simple_array_type }
+      end
+    end
+
+    def simple_value_type(value)
+      case value
+      when Integer
+        :int
+      when String
+        :string
+      when Symbol
+        :symbol
+      when true, false
+        :boolean
+      end
+    end
+
+    def array_type(array)
+      first_element_type = simple_value_type array[0]
+      return unless first_element_type
+      return unless array.all? { |value| simple_value_type(value) == first_element_type }
+
+      first_element_type
     end
 
     def deserialize(value)
