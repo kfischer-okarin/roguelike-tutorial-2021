@@ -42,6 +42,34 @@ SERIALIZED
   )
 end
 
+def test_serializer_serialize_true(_args, assert)
+  expected = <<-SERIALIZED
+{:type=>:boolean}
+t
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    { type: :boolean },
+    true,
+    expected
+  )
+end
+
+def test_serializer_serialize_false(_args, assert)
+  expected = <<-SERIALIZED
+{:type=>:boolean}
+f
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    { type: :boolean },
+    false,
+    expected
+  )
+end
+
 def test_serializer_serialize_typed_array(_args, assert)
   expected = <<-SERIALIZED
 {:type=>:typed_array, :element_type=>:int}

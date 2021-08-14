@@ -94,6 +94,16 @@ module Serializer
     end
   end
 
+  class BooleanSerializer < BaseSerializer
+    def serialize(value)
+      value ? 't' : 'f'
+    end
+
+    def deserialize(value)
+      value == 't'
+    end
+  end
+
   class TypedArraySerializer < BaseSerializer
     def serialize(value)
       value.map { |element|
@@ -118,6 +128,7 @@ module Serializer
     int: IntSerializer,
     string: StringSerializer,
     symbol: SymbolSerializer,
+    boolean: BooleanSerializer,
     typed_array: TypedArraySerializer
   }
 end
