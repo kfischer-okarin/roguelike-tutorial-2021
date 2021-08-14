@@ -3,11 +3,10 @@ module Entities
     include Enumerable
 
     def build_data
-      $state.new_entity_strict(
-        :entities,
+      {
         entities_by_id: {},
         player_id: nil
-      )
+      }
     end
 
     def data=(value)

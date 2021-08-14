@@ -47,8 +47,8 @@ def new_game
   Entities.data = $state.entities
   Entities.player = EntityPrototypes.build(:player)
 
-  $state.message_log = { messages: [] }
-  $message_log = MessageLog.new $state.message_log.messages
+  $state.message_log = []
+  $message_log = MessageLog.new $state.message_log
   $message_log.add_message(
     text: 'Hello and welcome, traveler, to yet another dimension! Press ? at any time for help.',
     fg: Colors.welcome_text
