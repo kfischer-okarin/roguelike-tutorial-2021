@@ -90,6 +90,23 @@ module GTK
       raise 'Turn was advanced!' unless  advance_turn_calls.empty?
     end
 
+    def will_produce_action!(input_event, expected_action)
+      handle_action_calls = spy_method $game, :handle_action
+
+      $game.handle_input_events([input_event])
+
+      actual_actions = handle_action_calls.map { |call| call[0] }
+      equal! actual_actions, [expected_action]
+    end
+
+    def will_produce_no_action!(input_event)
+      handle_action_calls = spy_method $game, :handle_action
+
+      $game.handle_input_events([input_event])
+
+      actual_actions = handle_action_calls.map { |call| call[0] }
+      equal! actual_actions, [nil]
+    end
 
     private
 
@@ -296,6 +313,16 @@ end
 def mock_method(object, name)
   [].tap { |calls|
     replace_method(object, name) { |*args| calls << args }
+  }
+end
+
+def spy_method(object, name)
+  original_method = object.method(name)
+  [].tap { |calls|
+    replace_method(object, name) { |*args|
+      calls << args
+      original_method.call(*args)
+    }
   }
 end
 

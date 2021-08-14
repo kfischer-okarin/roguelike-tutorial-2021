@@ -32,6 +32,8 @@ module Scenes
 Explore and survive. Move into enemies to attack them.
 
 Arrow Keys - Movement
+     Enter - Interact with current position (Get item)
+         g - Get Item
          i - Open inventory
          d - Drop item
          v - Show message log

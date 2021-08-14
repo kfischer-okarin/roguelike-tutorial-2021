@@ -11,3 +11,20 @@ def test_gameplay_scene_ai_impossible_actions_are_ignored(_args, assert)
     $game.advance_turn
   end
 end
+
+def test_gameplay_interact_on_item_picks_up_item(_args, assert)
+  $game.game_map = build_game_map_with_entities(
+    [2, 2] => [Entities.player, build_item]
+  )
+
+  assert.will_produce_action!(
+    { type: :interact },
+    PickupAction.new(Entities.player)
+  )
+end
+
+def test_gameplay_interact_on_empty_does_nothing(_args, assert)
+  $game.game_map = build_game_map_with_entities(Entities.player)
+
+  assert.will_produce_no_action!({ type: :interact })
+end

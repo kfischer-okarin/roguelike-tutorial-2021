@@ -61,6 +61,10 @@ module Scenes
       PickupAction.new(player)
     end
 
+    def dispatch_action_for_interact
+      PickupAction.new(player) unless game_map.items_at(player.x, player.y).empty?
+    end
+
     def dispatch_action_for_wait
       WaitAction
     end
