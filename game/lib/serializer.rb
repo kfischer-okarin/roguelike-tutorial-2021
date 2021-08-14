@@ -5,7 +5,7 @@ module Serializer
       [
         $gtk.serialize_state(schema),
         serializer_for(schema).serialize(value)
-      ].join("\n")
+      ].join("\n").strip
     end
 
     def determine_schema(value)
@@ -17,7 +17,11 @@ module Serializer
         { type: :entity }
       when Array
         simple_array_type = array_type(value)
-        { type: :typed_array, element_type: simple_array_type }
+        return { type: :typed_array, element_type: simple_array_type } if simple_array_type
+
+        { type: :array, size: value.size }
+      when Hash
+        { type: :hash, size: value.size }
       end
     end
 
@@ -71,9 +75,7 @@ module Serializer
     def read_next_value
       schema = read_schema
       next_line
-      read_typed_value(current_line, schema).tap {
-        next_line
-      }
+      read_typed_value(current_line, schema)
     end
 
     def read_schema
@@ -89,7 +91,25 @@ module Serializer
     end
 
     def read_typed_value(value, schema)
-      Serializer.serializer_for(schema).deserialize(value)
+      case schema[:type]
+      when :array
+        [].tap { |result|
+          schema[:size].times do
+            result << read_next_value
+          end
+        }
+      when :hash
+        {}.tap { |result|
+          schema[:size].times do
+            key = read_next_value
+            result[key] = read_next_value
+          end
+        }
+      else
+        Serializer.serializer_for(schema).deserialize(value).tap {
+          next_line
+        }
+      end
     end
   end
 
@@ -169,12 +189,41 @@ module Serializer
     end
   end
 
+  class ArraySerializer < BaseSerializer
+    def serialize(value)
+      value.map { |element|
+        Serializer.serialize(element)
+      }.join("\n")
+    end
+
+    def deserialize(_value)
+      raise 'Should never be called'
+    end
+  end
+
+  class HashSerializer < BaseSerializer
+    def serialize(value)
+      value.map { |key, element|
+        [
+          Serializer.serialize(key),
+          Serializer.serialize(element)
+        ].join("\n")
+      }.join("\n")
+    end
+
+    def deserialize(_value)
+      raise 'Should never be called'
+    end
+  end
+
   SERIALIZER_CLASSES = {
     int: IntSerializer,
     string: StringSerializer,
     symbol: SymbolSerializer,
     boolean: BooleanSerializer,
     typed_array: TypedArraySerializer,
-    entity: EntitySerializer
+    entity: EntitySerializer,
+    array: ArraySerializer,
+    hash: HashSerializer
   }
 end

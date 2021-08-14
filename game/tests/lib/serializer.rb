@@ -93,6 +93,62 @@ SERIALIZED
   )
 end
 
+def test_serializer_serialize_array(args, assert)
+  expected = <<-SERIALIZED
+{:type=>:array, :size=>3}
+{:type=>:string}
+Morty
+{:type=>:symbol}
+somewhere
+{:type=>:int}
+33
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    ['Morty', :somewhere, 33],
+    expected
+  )
+end
+
+def test_serializer_serialize_empty_array(args, assert)
+  expected = <<-SERIALIZED
+{:type=>:array, :size=>0}
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    [],
+    expected
+  )
+end
+
+def test_serializer_serialize_hash(args, assert)
+  expected = <<-SERIALIZED
+{:type=>:hash, :size=>3}
+{:type=>:symbol}
+name
+{:type=>:string}
+Jeff
+{:type=>:symbol}
+combatant
+{:type=>:array, :size=>2}
+{:type=>:symbol}
+hp
+{:type=>:int}
+1
+{:type=>:symbol}
+inventory
+{:type=>:array, :size=>0}
+SERIALIZED
+
+  SerializationTest.assert_serialized_value!(
+    assert,
+    { name: 'Jeff', combatant: [:hp, 1], inventory: [] },
+    expected
+  )
+end
+
 module SerializationTest
   class << self
     def assert_serialized_value!(assert, value, expected, compare_by: nil)
