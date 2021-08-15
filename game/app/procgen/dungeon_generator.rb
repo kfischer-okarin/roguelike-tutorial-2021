@@ -46,6 +46,8 @@ module Procgen
         max_size: parameters.max_room_size
       )
       @rooms_generator.rng = rng
+      @corridor_generator = CorridorGenerator.new
+      @corridor_generator.rng = rng
 
       generate
     end
@@ -61,9 +63,7 @@ module Procgen
         construct_room room
       end
 
-      (1..(@rooms.size - 1)).each do |index|
-        connect_rooms @rooms[index - 1], @rooms[index]
-      end
+      connect_rooms
 
       @result.calculate_tiles
     end
@@ -79,9 +79,11 @@ module Procgen
       add_room_to_dungeon room
     end
 
-    def connect_rooms(room1, room2)
-      Procgen.tunnel_between(room1.center, room2.center).each do |tunnel_x, tunnel_y|
-        @result.set_tile tunnel_x, tunnel_y, :floor
+    def connect_rooms
+      @corridor_generator.generate_for(@rooms).each do |corridor|
+        Engine::LineOfSight.bresenham(corridor.from, corridor.to).each do |tunnel_x, tunnel_y|
+          @result.set_tile tunnel_x, tunnel_y, :floor
+        end
       end
     end
 
