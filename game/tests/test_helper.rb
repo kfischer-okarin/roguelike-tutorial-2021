@@ -266,11 +266,15 @@ def build_item(attributes = nil)
   build_entity(final_attributes)
 end
 
-def build_game_map(width = 10, height = 10)
+def build_game_map(width = 10, height = 10, tiles: nil)
+  game_map_tiles = Array.new(width * height) { :floor }
+  (tiles || {}).each do |position, tile|
+    game_map_tiles[position.y * width + position.x] = tile
+  end
   GameMap.new(
     width: width,
     height: height,
-    tiles: Array.new(width * height) { :floor }
+    tiles: game_map_tiles
   ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true

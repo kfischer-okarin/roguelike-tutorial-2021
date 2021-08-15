@@ -10,9 +10,11 @@ module Procgen
     end
 
     def build
-      GameMap.new(width: @width, height: @height).tap { |result|
-        place_rooms result
-        place_corridors result
+      GameMap.new(
+        width: @width,
+        height: @height,
+        tiles: build_tiles
+      ).tap { |result|
         place_player_in_first_room result
         place_entities result
         result.calculate_tiles
@@ -21,25 +23,33 @@ module Procgen
 
     private
 
-    def place_rooms(game_map)
+    def build_tiles
+      (Array.new(@width * @height) { :wall }).tap { |result|
+        tiles_2d = Array2D.new(@width, @height, result)
+        place_rooms tiles_2d
+        place_corridors tiles_2d
+      }
+    end
+
+    def place_rooms(tiles_2d)
       @rooms.each do |room|
-        place_room game_map, room
+        place_room tiles_2d, room
       end
     end
 
-    def place_room(game_map, room)
-      game_map.fill_rect room.inner_rect, :floor
+    def place_room(tiles_2d, room)
+      tiles_2d.fill_rect room.inner_rect, :floor
     end
 
-    def place_corridors(game_map)
+    def place_corridors(tiles_2d)
       @corridors.each do |corridor|
-        place_corridor game_map, corridor
+        place_corridor tiles_2d, corridor
       end
     end
 
-    def place_corridor(game_map, corridor)
+    def place_corridor(tiles_2d, corridor)
       Engine::LineOfSight.bresenham(corridor.from, corridor.to).each do |tunnel_x, tunnel_y|
-        game_map.set_tile tunnel_x, tunnel_y, :floor
+        tiles_2d[tunnel_x, tunnel_y] = :floor
       end
     end
 

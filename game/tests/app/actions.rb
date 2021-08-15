@@ -53,15 +53,13 @@ end
 
 def test_move_action_cannot_move_into_wall(_args, assert)
   entity = build_entity
-  game_map = build_game_map_with_entities(
-    [3, 3] => entity
-  )
-  game_map.set_tile 4, 3, :wall
-  game_map.calculate_tiles
+  game_map = build_game_map(5, 5, tiles: { [4, 3] => :wall })
+  entity.place(game_map, x: 3, y: 3)
 
   assert.raises_with_message!(Action::Impossible, 'That way is blocked.') do
     MovementAction.new(entity, dx: 1, dy: 0).perform
   end
+
   assert.equal! entity.x, 3
   assert.equal! entity.y, 3
 end
@@ -127,6 +125,16 @@ def test_use_item_on_position_action_activates_consumable(_args, assert)
   UseItemOnPositionAction.new(actor, item, position: [3, 3]).perform
 
   assert.includes! item.consumable.calls, [:activate, [actor, [3, 3]]]
+end
+
+def test_drop_item_action_drops_from_inventory(_args, assert)
+  actor = build_actor
+  item = build_item
+  stub_attribute_with_mock(actor, :inventory)
+
+  DropItemAction.new(actor, item).perform
+
+  assert.includes! actor.inventory.calls, [:drop, [item]]
 end
 
 def test_drop_item_action_drops_from_inventory(_args, assert)

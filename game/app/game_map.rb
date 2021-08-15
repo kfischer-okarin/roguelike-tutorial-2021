@@ -13,17 +13,8 @@ class GameMap < DataBackedObject
     calculate_tiles
   end
 
-  # TODO: Remove?
-  def set_tile(x, y, tile)
-    @tile_data[x, y] = tile
-  end
-
-  def fill_rect(rect, tile)
-    @tile_data.fill_rect(rect, tile)
-  end
-
   def calculate_tiles
-    @tiles = Array2D.new(width, height, data.tiles.map { |type| Tiles.send(type) })
+    @tiles = Array2D.new(width, height, @tile_data.data.map { |type| Tiles.send(type) })
     @transparent_tiles = Array2D.new(width, height, @tiles.data.map(&:transparent?))
   end
 
