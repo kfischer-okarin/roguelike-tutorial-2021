@@ -22,11 +22,11 @@ module Procgen
 
     attr_reader :result
 
-    def initialize(map_width:, map_height:, parameters:, player:)
+    def initialize(map_width:, map_height:, parameters:, player:, seed:)
       @map_width = map_width
       @map_height = map_height
       @player = player
-      rng = RNG.new
+      rng = RNG.new(seed)
       @entities_generator = RoomEntitiesGenerator.new(
         max_monsters_per_room: parameters.max_monsters_per_room,
         max_items_per_room: parameters.max_items_per_room

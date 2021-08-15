@@ -9,8 +9,14 @@ require 'app/procgen/dungeon_generator.rb'
 
 module Procgen
   class << self
-    def generate_dungeon(parameters:, map_width:, map_height:, player:)
-      generator = DungeonGenerator.new(map_width: map_width, map_height: map_height, parameters: parameters, player: player)
+    def generate_dungeon(parameters:, map_width:, map_height:, player:, seed:)
+      generator = DungeonGenerator.new(
+        map_width: map_width,
+        map_height: map_height,
+        parameters: parameters,
+        player: player,
+        seed: seed
+      )
       generator.result
     end
   end

@@ -1,6 +1,5 @@
 class GameWorld < DataBackedObject
-  data_reader :map_width, :map_height, :procgen_parameters
-  data_accessor :current_floor
+  data_reader :map_width, :map_height, :procgen_parameters, :current_floor, :seed
 
   def initialize(data)
     super()
@@ -12,6 +11,7 @@ class GameWorld < DataBackedObject
     ]
 
     self.current_floor ||= 0
+    self.seed ||= RNG.new_string_seed
   end
 
   def generate_next_floor
@@ -22,12 +22,15 @@ class GameWorld < DataBackedObject
       map_width: map_width,
       map_height: map_height,
       parameters: procgen_parameters,
-      player: Entities.player
+      player: Entities.player,
+      seed: "#{seed}#{current_floor}"
     )
     $state.game_map = $game.game_map.data
   end
 
   private
+
+  data_writer :current_floor, :seed
 
   def delete_all_player_unrelated_entities
     return unless $game.game_map

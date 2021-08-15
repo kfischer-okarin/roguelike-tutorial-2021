@@ -1,9 +1,22 @@
 class RNG
   attr_reader :seed
 
+  SEED_CHARS = (('0'..'9').to_a + ('A'..'Z').to_a).freeze
+
+  def self.int_seed_from_string_seed(seed)
+    seed.chars.reduce(0) { |result, char|
+      result * SEED_CHARS.size + SEED_CHARS.index(char)
+    }
+  end
+
+  def self.new_string_seed
+    length = 4 + (rand * 3).floor
+    (1..length).map { SEED_CHARS.sample }.join
+  end
+
   def initialize(seed = nil)
-    @seed = seed
-    @random = Random.new(seed)
+    @seed = seed || RNG.new_string_seed
+    @random = Random.new RNG.int_seed_from_string_seed(@seed)
   end
 
   def random_int_between(min, max)
