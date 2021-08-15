@@ -23,10 +23,9 @@ module Procgen
     attr_reader :result
 
     def initialize(map_width:, map_height:, parameters:, player:)
-      @result = GameMap.new(width: map_width, height: map_height)
-      @parameters = parameters
+      @map_width = map_width
+      @map_height = map_height
       @player = player
-      @rooms = []
       rng = RNG.new
       @entities_generator = RoomEntitiesGenerator.new(
         max_monsters_per_room: parameters.max_monsters_per_room,
@@ -50,48 +49,20 @@ module Procgen
     private
 
     def generate
-      @rooms = @rooms_generator.generate
+      rooms = @rooms_generator.generate
+      corridors = @corridor_generator.generate_for(rooms)
+      entities = rooms.flat_map { |room| @entities_generator.generate_for(room) }
 
-      add_player_to_room @rooms.first
+      builder = DungeonBuilder.new(
+        player: @player,
+        width: @map_width,
+        height: @map_height,
+        rooms: rooms,
+        corridors: corridors,
+        entities: entities
+      )
 
-      @rooms.each do |room|
-        construct_room room
-      end
-
-      connect_rooms
-
-      @result.calculate_tiles
-    end
-
-    def add_player_to_room(room)
-      room_center = room.center
-      @player.place(@result, x: room_center.x, y: room_center.y)
-    end
-
-    def construct_room(room)
-      place_entities(room)
-
-      add_room_to_dungeon room
-    end
-
-    def connect_rooms
-      @corridor_generator.generate_for(@rooms).each do |corridor|
-        Engine::LineOfSight.bresenham(corridor.from, corridor.to).each do |tunnel_x, tunnel_y|
-          @result.set_tile tunnel_x, tunnel_y, :floor
-        end
-      end
-    end
-
-    def place_entities(room)
-      @entities_generator.generate_for(room).each do |entity|
-        next if @result.entity_at?(entity[:x], entity[:y])
-
-        EntityPrototypes.build(entity[:type]).place(@result, x: entity[:x], y: entity[:y])
-      end
-    end
-
-    def add_room_to_dungeon(room)
-      @result.fill_rect room.inner_rect, :floor
+      @result = builder.build
     end
   end
 end
