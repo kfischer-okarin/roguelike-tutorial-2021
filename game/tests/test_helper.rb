@@ -274,7 +274,8 @@ def build_game_map(width = 10, height = 10, tiles: nil)
   GameMap.new(
     width: width,
     height: height,
-    tiles: game_map_tiles
+    tiles: game_map_tiles,
+    downstairs_location: [0, 0]
   ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true

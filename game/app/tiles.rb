@@ -19,9 +19,16 @@ module Tiles
            light: { char: ' ', fg: [255, 255, 255], bg: [200, 180, 50] },
            walkable: true,
            transparent: true
+
   new_tile :wall,
            dark: { char: ' ', fg: [255, 255, 255], bg: [0, 0, 100] },
            light: { char: ' ', fg: [255, 255, 255], bg: [130, 110, 50] },
            walkable: false,
            transparent: false
+
+  new_tile :down_stairs,
+           dark: { char: '>', fg: [0, 0, 100], bg: [50, 50, 150] },
+           light: { char: '>', fg: [255, 255, 255], bg: [200, 180, 50] },
+           walkable: true,
+           transparent: true
 end

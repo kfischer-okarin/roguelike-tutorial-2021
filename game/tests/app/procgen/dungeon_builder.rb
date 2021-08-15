@@ -37,4 +37,6 @@ def test_dungeon_builder_place_room(_args, assert)
     { name: 'Grenade', x: 10, y: 15 },
     { name: 'Player', x: 5, y: 5 }
   ]
+  assert.equal! result.downstairs_location, [13, 23]
+  assert.equal! result.data.tiles[23 * 30 + 13], :down_stairs
 end
