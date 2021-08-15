@@ -23,12 +23,7 @@ module Procgen
     attr_reader :result
 
     def initialize(map_width:, map_height:, parameters:, player:)
-      @result = GameMap.new(
-        width: map_width,
-        height: map_height,
-        tiles: Array.new(map_width * map_height) { :wall },
-        explored: Array.new(map_width * map_height) { false }
-      )
+      @result = GameMap.new(width: map_width, height: map_height)
       @parameters = parameters
       @player = player
       @rooms = []

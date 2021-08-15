@@ -270,8 +270,7 @@ def build_game_map(width = 10, height = 10)
   GameMap.new(
     width: width,
     height: height,
-    tiles: Array.new(width * height) { :floor },
-    explored: Array.new(width * height) { false }
+    tiles: Array.new(width * height) { :floor }
   ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true

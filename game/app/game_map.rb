@@ -5,9 +5,11 @@ class GameMap < DataBackedObject
     super()
     @data = data
 
-    @tile_data = Array2D.new(width, height, data.tiles)
+    data[:tiles] ||= Array.new(width * height) { :wall }
+    data[:explored] ||= Array.new(width * height) { false }
+    @tile_data = Array2D.new(width, height, data[:tiles])
     @visible = Array2D.new(width, height) { false }
-    @explored = Array2D.new(width, height, data.explored)
+    @explored = Array2D.new(width, height, data[:explored])
     calculate_tiles
   end
 
