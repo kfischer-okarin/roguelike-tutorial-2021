@@ -53,7 +53,7 @@ end
 
 def test_move_action_cannot_move_into_wall(_args, assert)
   entity = build_entity
-  game_map = build_game_map(5, 5, tiles: { [4, 3] => :wall })
+  game_map = build_game_map(width: 5, height: 5, tiles: { [4, 3] => :wall })
   entity.place(game_map, x: 3, y: 3)
 
   assert.raises_with_message!(Action::Impossible, 'That way is blocked.') do
@@ -66,7 +66,7 @@ end
 
 def test_move_action_cannot_move_beyond_map_bounds(_args, assert)
   entity = build_entity
-  game_map = build_game_map(4, 4)
+  game_map = build_game_map(width: 4, height: 4)
   entity.place(game_map, x: 3, y: 3)
 
   assert.raises_with_message!(Action::Impossible, 'That way is blocked.') do

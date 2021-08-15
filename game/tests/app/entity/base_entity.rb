@@ -2,7 +2,7 @@ require 'tests/test_helper.rb'
 
 def test_base_entity_place_in_game_map(_args, assert)
   entity = build_entity
-  game_map = build_game_map(10, 10)
+  game_map = build_game_map(width: 10, height: 10)
 
   entity.place(game_map, x: 4, y: 4)
 

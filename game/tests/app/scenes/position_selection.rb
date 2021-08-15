@@ -5,7 +5,7 @@ def test_position_selection_success(_args, assert)
   selected_position = nil
   position_action = TestHelper::Mock.new
   position_action.expect_call :perform
-  $game.game_map = build_game_map(20, 20)
+  $game.game_map = build_game_map(width: 20, height: 20)
   Entities.player.place($game.game_map, x: 3, y: 3)
   scene = Scenes::PositionSelection.new do |position|
     selected_position = position
@@ -29,7 +29,7 @@ def test_position_selection_success(_args, assert)
 end
 
 def test_position_selection_cannot_select_outside_map(_args, assert)
-  $game.game_map = build_game_map(20, 20)
+  $game.game_map = build_game_map(width: 20, height: 20)
   Entities.player.place($game.game_map, x: 1, y: 18)
   selected_position = nil
   scene = Scenes::PositionSelection.new do |position|
@@ -55,7 +55,7 @@ end
 def test_position_selection_quit_input_returns_to_previous_scene(_args, assert)
   previous_scene = $game.scene
   selected_position = nil
-  game_map = build_game_map(20, 20)
+  game_map = build_game_map(width: 20, height: 20)
   Entities.player.place(game_map, x: 3, y: 3)
   scene = Scenes::PositionSelection.new do |position|
     selected_position = position

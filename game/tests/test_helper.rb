@@ -266,7 +266,7 @@ def build_item(attributes = nil)
   build_entity(final_attributes)
 end
 
-def build_game_map(width = 10, height = 10, tiles: nil)
+def build_game_map(width: 10, height: 10, tiles: nil, downstairs_location: nil)
   game_map_tiles = Array.new(width * height) { :floor }
   (tiles || {}).each do |position, tile|
     game_map_tiles[position.y * width + position.x] = tile
@@ -275,7 +275,7 @@ def build_game_map(width = 10, height = 10, tiles: nil)
     width: width,
     height: height,
     tiles: game_map_tiles,
-    downstairs_location: [0, 0]
+    downstairs_location: downstairs_location || [0, 0]
   ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true
@@ -287,7 +287,7 @@ def build_game_map_with_entities(*entities)
   entities_by_position = TestHelper.assign_random_positions_if_necessary(entities)
   width = entities_by_position.keys.map(&:x).max + 3
   height = entities_by_position.keys.map(&:y).max + 3
-  build_game_map(width, height).tap { |game_map|
+  build_game_map(width: width, height: height).tap { |game_map|
     entities_by_position.each do |position, entities_at_position|
       TestHelper.ensure_array(entities_at_position).each do |entity|
         entity.place(game_map, x: position.x, y: position.y)
