@@ -18,6 +18,7 @@ module Scenes
       render_hp_bar(console)
       render_message_log(console)
       render_names_at_cursor_position(console)
+      render_dimension_name(console)
     end
 
     def dispatch_action_for_quit
@@ -118,7 +119,7 @@ module Scenes
     def render_hp_bar(console)
       @hp_bar.current_value = @player.combatant.hp
       @hp_bar.maximum_value = @player.combatant.max_hp
-      @hp_bar.render(console, x: 1, y: 4)
+      @hp_bar.render(console, x: 0, y: 4)
     end
 
     def render_message_log(console)
@@ -132,6 +133,11 @@ module Scenes
 
       names_at_cursor_position = game_map.entities_at(cursor_x, cursor_y).map(&:name).join(', ').capitalize
       console.print(x: 21, y: 5, string: names_at_cursor_position)
+    end
+
+    def render_dimension_name(console)
+      console.print(x: 1, y: 2, string: 'Dimension:')
+      console.print(x: 1, y: 1, string: "#{$game.game_world.seed}-#{$game.game_world.current_floor}")
     end
   end
 end
