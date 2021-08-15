@@ -1,5 +1,5 @@
 class GameWorld < DataBackedObject
-  data_reader :map_width, :map_height, :procgen_parameters, :current_floor, :seed
+  data_reader :map_width, :map_height, :current_floor, :seed
 
   def initialize(data)
     super()
@@ -12,6 +12,10 @@ class GameWorld < DataBackedObject
 
     self.current_floor ||= 0
     self.seed ||= RNG.new_string_seed
+  end
+
+  def procgen_parameters
+    Procgen::DungeonGenerator::Parameters.new(data.procgen_parameters)
   end
 
   def generate_next_floor

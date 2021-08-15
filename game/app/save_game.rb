@@ -1,9 +1,11 @@
 module SaveGame
-  FILENAME = 'save_game.sav'
+  FILENAME = 'save_game.sav'.freeze
 
   class << self
     def save
       save_game_data = {
+        game_world: $state.game_world,
+        current_floor: $state.game_world.current_floor,
         map: $state.game_map,
         entities: $state.entities,
         message_log: $state.message_log
@@ -27,8 +29,12 @@ module SaveGame
       $state.message_log = save_game_data[:message_log]
       $message_log = MessageLog.new $state.message_log
 
+      $state.game_world = save_game_data[:game_world]
+      game_world = GameWorld.new($state.game_world)
+
       $game.player = Entities.player
       $game.game_map = game_map
+      $game.game_world = game_world
       $game.scene = Scenes::Gameplay.new(player: Entities.player)
     end
 
