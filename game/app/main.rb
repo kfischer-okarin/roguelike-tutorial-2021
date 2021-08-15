@@ -87,6 +87,7 @@ def process_input(gtk_inputs)
     result << { type: :click } if mouse.down
     result << { type: :look } if key_down.forward_slash
     result << { type: :help } if key_down.question_mark
+    result << { type: :enter_portal } if key_down.greater_than
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
     result << { type: :main_menu_new_game } if key_down.n
     result << { type: :main_menu_continue_game } if key_down.c

@@ -68,6 +68,21 @@ class DropItemAction < Action
   end
 end
 
+class EnterPortalAction < Action
+  def perform
+    raise Action::Impossible, 'There is no portal here.' unless on_portal_location?
+
+    $game.generate_next_floor
+    $message_log.add_message(text: 'You enter the portal.', fg: Colors.enter_portal)
+  end
+
+  private
+
+  def on_portal_location?
+    @entity.game_map.portal_location == [@entity.x, @entity.y]
+  end
+end
+
 class ActionWithDirection < Action
   def initialize(entity, dx:, dy:)
     super(entity)

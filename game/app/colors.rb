@@ -75,5 +75,9 @@ module Colors
     def menu_text
       white
     end
+
+    def enter_portal
+      [159, 63, 255]
+    end
   end
 end

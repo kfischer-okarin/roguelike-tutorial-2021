@@ -146,3 +146,27 @@ def test_drop_item_action_drops_from_inventory(_args, assert)
 
   assert.includes! actor.inventory.calls, [:drop, [item]]
 end
+
+def test_enter_portal_action_on_portal_enters_next_floor(_args, assert)
+  game_map = build_game_map(width: 10, height: 10, portal_location: [3, 4])
+  actor = build_actor
+  actor.place(game_map, x: 3, y: 4)
+
+  with_mocked_method($game, :generate_next_floor) do |generate_next_floor_calls|
+    EnterPortalAction.new(actor).perform
+
+    assert.equal! generate_next_floor_calls.size, 1
+  end
+
+  assert.includes! log_messages, 'You enter the portal.'
+end
+
+def test_enter_portal_action_impossible_on_non_portal_position(_args, assert)
+  game_map = build_game_map(width: 10, height: 10, portal_location: [3, 4])
+  actor = build_actor
+  actor.place(game_map, x: 4, y: 4)
+
+  assert.raises_with_message! Action::Impossible, 'There is no portal here.' do
+    EnterPortalAction.new(actor).perform
+  end
+end

@@ -23,8 +23,27 @@ def test_gameplay_interact_on_item_picks_up_item(_args, assert)
   )
 end
 
+def test_gameplay_interact_on_portal_location_enters_portall(_args, assert)
+  $game.game_map = build_game_map(width: 10, height: 10, portal_location: [5, 5])
+  Entities.player.place($game.game_map, x: 5, y: 5)
+
+  assert.will_produce_action!(
+    { type: :interact },
+    EnterPortalAction.new(Entities.player)
+  )
+end
+
 def test_gameplay_interact_on_empty_does_nothing(_args, assert)
   $game.game_map = build_game_map_with_entities(Entities.player)
 
   assert.will_produce_no_action!({ type: :interact })
+end
+
+def test_gameplay_enter_portal_action(_args, assert)
+  $game.game_map = build_game_map_with_entities(Entities.player)
+
+  assert.will_produce_action!(
+    { type: :enter_portal },
+    EnterPortalAction.new(Entities.player)
+  )
 end

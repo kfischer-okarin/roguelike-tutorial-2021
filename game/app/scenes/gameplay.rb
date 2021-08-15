@@ -62,7 +62,11 @@ module Scenes
     end
 
     def dispatch_action_for_interact
-      PickupAction.new(player) unless game_map.items_at(player.x, player.y).empty?
+      if !game_map.items_at(player.x, player.y).empty?
+        PickupAction.new(player)
+      elsif game_map.portal_location == [player.x, player.y]
+        EnterPortalAction.new(player)
+      end
     end
 
     def dispatch_action_for_wait
@@ -93,6 +97,10 @@ module Scenes
 
     def dispatch_action_for_help
       $game.show_help('Gameplay')
+    end
+
+    def dispatch_action_for_enter_portal
+      EnterPortalAction.new(player)
     end
 
     private

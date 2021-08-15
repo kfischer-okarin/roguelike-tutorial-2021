@@ -107,21 +107,21 @@ module GTK
     end
 
     def will_produce_action!(input_event, expected_action)
-      handle_action_calls = spy_method $game, :handle_action
+      with_mocked_method $game, :handle_action do |handle_action_calls|
+        $game.handle_input_events([input_event])
 
-      $game.handle_input_events([input_event])
-
-      actual_actions = handle_action_calls.map { |call| call[0] }
-      equal! actual_actions, [expected_action]
+        actual_actions = handle_action_calls.map { |call| call[0] }
+        equal! actual_actions, [expected_action]
+      end
     end
 
     def will_produce_no_action!(input_event)
-      handle_action_calls = spy_method $game, :handle_action
+      with_mocked_method $game, :handle_action do |handle_action_calls|
+        $game.handle_input_events([input_event])
 
-      $game.handle_input_events([input_event])
-
-      actual_actions = handle_action_calls.map { |call| call[0] }
-      equal! actual_actions, [nil]
+        actual_actions = handle_action_calls.map { |call| call[0] }
+        equal! actual_actions, [nil]
+      end
     end
 
     def will_change_scene_to!(scene_object_or_class)
