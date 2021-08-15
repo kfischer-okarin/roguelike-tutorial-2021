@@ -26,7 +26,7 @@ module Tiles
            walkable: false,
            transparent: false
 
-  new_tile :down_stairs,
+  new_tile :portal,
            dark: { char: '>', fg: [0, 0, 100], bg: [50, 50, 150] },
            light: { char: '>', fg: [255, 255, 255], bg: [200, 180, 50] },
            walkable: true,

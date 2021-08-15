@@ -266,7 +266,7 @@ def build_item(attributes = nil)
   build_entity(final_attributes)
 end
 
-def build_game_map(width: 10, height: 10, tiles: nil, downstairs_location: nil)
+def build_game_map(width: 10, height: 10, tiles: nil, portal_location: nil)
   game_map_tiles = Array.new(width * height) { :floor }
   (tiles || {}).each do |position, tile|
     game_map_tiles[position.y * width + position.x] = tile
@@ -275,7 +275,7 @@ def build_game_map(width: 10, height: 10, tiles: nil, downstairs_location: nil)
     width: width,
     height: height,
     tiles: game_map_tiles,
-    downstairs_location: downstairs_location || [0, 0]
+    portal_location: portal_location || [0, 0]
   ).tap { |game_map|
     game_map.define_singleton_method :visible? do |_x, _y|
       true

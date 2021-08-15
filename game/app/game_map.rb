@@ -1,5 +1,5 @@
 class GameMap < DataBackedObject
-  data_reader :width, :height, :downstairs_location
+  data_reader :width, :height, :portal_location
 
   def initialize(data)
     super()

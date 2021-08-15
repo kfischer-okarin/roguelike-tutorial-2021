@@ -14,7 +14,7 @@ module Procgen
         width: @width,
         height: @height,
         tiles: build_tiles,
-        downstairs_location: downstairs_location
+        portal_location: portal_location
       ).tap { |result|
         place_player_in_first_room result
         place_entities result
@@ -29,12 +29,12 @@ module Procgen
         tiles_2d = Array2D.new(@width, @height, result)
         place_rooms tiles_2d
         place_corridors tiles_2d
-        tiles_2d[downstairs_location.x, downstairs_location.y] = :down_stairs
+        tiles_2d[portal_location.x, portal_location.y] = :portal
       }
     end
 
-    def downstairs_location
-      @downstairs_location ||= @rooms.last.center
+    def portal_location
+      @portal_location ||= @rooms.last.center
     end
 
     def place_rooms(tiles_2d)
