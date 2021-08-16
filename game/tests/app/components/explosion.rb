@@ -13,7 +13,7 @@ def test_explosion_damages_all_actors_in_radius(_args, assert)
 
   item.consumable.activate npc, [6, 6]
 
-  assert.contains_exactly! log_messages, [
+  assert.includes_all! log_messages, [
     'The NPC is engulfed in a fiery explosion, taking 12 damage!',
     'The Orc is engulfed in a fiery explosion, taking 12 damage!',
     'Orc is dead!'

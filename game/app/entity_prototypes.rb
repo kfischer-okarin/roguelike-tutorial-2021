@@ -51,12 +51,14 @@ EntityPrototypes.define_actor :player,
 EntityPrototypes.define_actor :mutant_spider,
                               name: 'Mutant Spider',
                               char: 's', color: [63, 127, 63],
-                              combatant: { hp: 10, defense: 0, power: 3 }
+                              combatant: { hp: 10, defense: 0, power: 3 },
+                              received_xp: 35
 
 EntityPrototypes.define_actor :cyborg_bearman,
                               name: 'Cyborg Bearman',
                               char: 'B', color: [0, 127, 0],
-                              combatant: { hp: 16, defense: 1, power: 4 }
+                              combatant: { hp: 16, defense: 1, power: 4 },
+                              received_xp: 100
 
 EntityPrototypes.define_item  :bandages,
                               name: 'Bandages',

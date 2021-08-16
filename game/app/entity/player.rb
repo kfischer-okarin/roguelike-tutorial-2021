@@ -17,5 +17,9 @@ module Entity
     def death_message_color
       Colors.player_death
     end
+
+    def add_own_xp_to_player_xp
+      # do nothing
+    end
   end
 end

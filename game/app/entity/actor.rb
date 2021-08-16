@@ -31,6 +31,7 @@ module Entity
       self.name = "remains of #{name}"
 
       $message_log.add_message(text: message, fg: death_message_color)
+      add_own_xp_to_player_xp
     end
 
     def reset_reference
@@ -51,6 +52,10 @@ module Entity
 
     def death_message_color
       Colors.enemy_death
+    end
+
+    def add_own_xp_to_player_xp
+      $game.player.level.add_xp data.received_xp
     end
   end
 end

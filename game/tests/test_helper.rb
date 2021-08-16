@@ -241,7 +241,8 @@ def build_actor(attributes = nil)
       power: values.delete(:power) || 5
     },
     inventory: { items: [] },
-    ai: { type: :enemy, data: {} }
+    ai: { type: :enemy, data: {} },
+    received_xp: 0
   }
   final_attributes[:combatant][:max_hp] = values.delete(:max_hp) || final_attributes[:combatant][:hp]
   final_attributes.update(values)
