@@ -45,7 +45,8 @@ EntityPrototypes.define_actor :player,
                               name: 'Player',
                               char: '@', color: [255, 255, 255],
                               combatant: { hp: 30, defense: 2, power: 5 },
-                              ai: { type: :none, data: {} }
+                              ai: { type: :none, data: {} },
+                              level: { level_up_base: 200, level_up_factor: 150 }
 
 EntityPrototypes.define_actor :mutant_spider,
                               name: 'Mutant Spider',

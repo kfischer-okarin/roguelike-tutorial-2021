@@ -4,6 +4,10 @@ module Entity
       Colors.player_attack
     end
 
+    def level
+      @level ||= Components::Level.new(self, data.level)
+    end
+
     protected
 
     def death_message
