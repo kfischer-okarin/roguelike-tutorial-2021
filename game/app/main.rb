@@ -64,6 +64,7 @@ def process_input(gtk_inputs)
   key_down = gtk_inputs.keyboard.key_down
   mouse = gtk_inputs.mouse
   [].tap { |result|
+    result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
     result << { type: :quit } if key_down.escape
     result << { type: :up } if key_down.up || key_down.k
     result << { type: :down } if key_down.down || key_down.j
@@ -88,7 +89,6 @@ def process_input(gtk_inputs)
     result << { type: :look } if key_down.forward_slash
     result << { type: :help } if key_down.question_mark
     result << { type: :enter_portal } if key_down.greater_than
-    result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
     result << { type: :main_menu_new_game } if key_down.n
     result << { type: :main_menu_continue_game } if key_down.c
     result << { type: :main_menu_quit_game } if key_down.q
