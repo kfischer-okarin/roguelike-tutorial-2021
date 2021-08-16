@@ -32,23 +32,28 @@ module Scenes
 Explore and survive. Move into enemies to attack them.
 
 Arrow Keys - Movement
-     Enter - Interact with current position (Get item)
+     Enter - Interact with current
+             position
+             (Get item, Enter Portal)
          g - Get Item
          i - Open inventory
          d - Drop item
          v - Show message log
          / - Look around (Keyboard)
+         > - Enter Portal
 . or Space - Wait
 
 
-? - Show help of current screen
+  ? - Show help of current screen
 ESC - Return to previous screen
 TEXT
 
     define_help_text 'Message Log',
 <<-TEXT
-     Up/Down - Scroll up/down one line
-Page Up/Down - Scroll up/down ten lines
+     Up/Down - Scroll up/down
+               one line
+Page Up/Down - Scroll up/down ten
+               lines
         Home - Scroll to top
          End - Scroll to bottom
 
