@@ -5,5 +5,5 @@ devid=kfischer_okarin
 devtitle=Kevin Fischer
 gameid=roguelike-tutorial-2021
 gametitle=Outlandish and Hazardous
-version=0.10.0
+version=0.11.0
 icon=metadata/icon.png
