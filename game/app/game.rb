@@ -79,6 +79,10 @@ class Game
     )
   end
 
+  def show_character_screen
+    push_scene Scenes::CharacterScreen.new(window_x: ui_window_x)
+  end
+
   def show_help(topic)
     push_scene Scenes::Help.new(topic: topic)
   end

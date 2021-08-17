@@ -96,6 +96,10 @@ module Scenes
       end
     end
 
+    def dispatch_action_for_character_screen
+      $game.show_character_screen
+    end
+
     def dispatch_action_for_help
       $game.show_help('Gameplay')
     end

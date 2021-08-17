@@ -35,6 +35,7 @@ Arrow Keys - Movement
      Enter - Interact with current
              position
              (Get item, Enter Portal)
+         c - Show Character Screen
          g - Get Item
          i - Open inventory
          d - Drop item
@@ -82,6 +83,13 @@ Select a position to target with the arrow keys or by pointing the mouse at it.
 
 Enter or Mouse click - Select the position
 ESC - Return to game
+TEXT
+
+    define_help_text 'Character Screen',
+<<-TEXT
+Shows the current stats of the player.
+
+ESC or c  - Return to game
 TEXT
 
     def help_text(topic)
