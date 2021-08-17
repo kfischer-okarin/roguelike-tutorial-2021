@@ -60,3 +60,47 @@ def test_level_increase_level(_args, assert)
   assert.equal! player.level.current_level, 3
   assert.equal! player.level.current_xp, 50
 end
+
+def test_level_increase_max_hp(_args, assert)
+  player = build_player
+  hp_before = player.combatant.hp
+  max_hp_before = player.combatant.max_hp
+
+  with_mocked_method player.level, :increase_level do |increase_level_calls|
+    player.level.increase_max_hp
+
+    assert.equal! increase_level_calls.size, 1, 'increase level was not called'
+  end
+
+  assert.includes! log_messages, 'Your health improves!'
+  assert.equal! player.combatant.hp, hp_before + 20
+  assert.equal! player.combatant.max_hp, max_hp_before + 20
+end
+
+def test_level_increase_power(_args, assert)
+  player = build_player
+  power_before = player.combatant.power
+
+  with_mocked_method player.level, :increase_level do |increase_level_calls|
+    player.level.increase_power
+
+    assert.equal! increase_level_calls.size, 1, 'increase level was not called'
+  end
+
+  assert.includes! log_messages, 'You feel stronger!'
+  assert.equal! player.combatant.power, power_before + 1
+end
+
+def test_level_increase_defense(_args, assert)
+  player = build_player
+  defense_before = player.combatant.defense
+
+  with_mocked_method player.level, :increase_level do |increase_level_calls|
+    player.level.increase_defense
+
+    assert.equal! increase_level_calls.size, 1, 'increase level was not called'
+  end
+
+  assert.includes! log_messages, 'Your movements are getting swifter!'
+  assert.equal! player.combatant.defense, defense_before + 1
+end

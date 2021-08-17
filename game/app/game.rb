@@ -46,6 +46,7 @@ class Game
     handle_enemy_turns
     update_fov
     handle_game_over unless @player.alive?
+    handle_level_up if @player.level.requires_level_up?
   end
 
   def push_scene(next_scene)
@@ -73,7 +74,7 @@ class Game
     push_scene Scenes::ItemSelection.new(
       inventory: player.inventory,
       title: title,
-      window_x: item_window_x,
+      window_x: ui_window_x,
       &build_action_for_item
     )
   end
@@ -105,7 +106,11 @@ class Game
     push_scene Scenes::GameOver.new
   end
 
-  def item_window_x
+  def handle_level_up
+    push_scene Scenes::LevelUp.new(window_x: ui_window_x)
+  end
+
+  def ui_window_x
     @player.x <= 30 ? 40 : 0
   end
 end

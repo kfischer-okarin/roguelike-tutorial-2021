@@ -137,6 +137,14 @@ module GTK
       end
     end
 
+    def will_not_change_scene!
+      previous_scene = $game.scene
+
+      yield
+
+      equal! $game.scene, previous_scene, 'Scene was not supposed to change'
+    end
+
     private
 
     def exception_description(exception)
