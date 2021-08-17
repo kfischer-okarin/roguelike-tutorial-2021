@@ -55,7 +55,7 @@ def test_item_selection_via_click(_args, assert)
   assert.equal! $game.scene, previous_scene
 end
 
-def test_item_selection_cannot_selected_non_existing_item(_args, assert)
+def test_item_selection_cannot_select_non_existing_item(_args, assert)
   actor = build_actor items: [build_item, build_item]
   selected_item = nil
   scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
@@ -73,27 +73,6 @@ def test_item_selection_cannot_selected_non_existing_item(_args, assert)
 
   assert.equal! selected_item, nil
   assert.equal! $game.scene, scene
-end
-
-def test_item_selection_non_item_input_returns_to_previous_scene(_args, assert)
-  previous_scene = $game.scene
-  actor = build_actor items: [build_item, build_item]
-  selected_item = nil
-  scene = Scenes::ItemSelection.new(inventory: actor.inventory) do |item|
-    selected_item = item
-  end
-  $game.push_scene scene
-
-  assert.will_not_advance_turn! do
-    $game.handle_input_events(
-      [
-        { type: :char_typed, char: '3' }
-      ]
-    )
-  end
-
-  assert.equal! selected_item, nil
-  assert.equal! $game.scene, previous_scene
 end
 
 def test_item_selection_quit_input_returns_to_previous_scene(_args, assert)

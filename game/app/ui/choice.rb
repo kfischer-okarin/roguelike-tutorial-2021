@@ -24,7 +24,8 @@ module UI
     def choice_index_for_char_typed_event(event)
       return unless valid_input_char? event[:char]
 
-      event.char.ord - 'a'.ord
+      index = event.char.ord - 'a'.ord
+      return index if index < @choices.size
     end
 
     def choice_y(index)

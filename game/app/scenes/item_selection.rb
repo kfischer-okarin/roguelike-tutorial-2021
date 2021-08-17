@@ -34,7 +34,7 @@ module Scenes
       return $game.show_help('Item Selection') if event.char == '?'
 
       selected_item_index = @item_choice.choice_index_for_char_typed_event(event)
-      return pop_scene unless selected_item_index
+      return unless selected_item_index
 
       action_for_item @inventory.items[selected_item_index]
     end
