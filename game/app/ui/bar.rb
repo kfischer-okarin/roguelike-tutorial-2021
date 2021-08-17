@@ -12,7 +12,7 @@ module UI
     end
 
     def render(console, x:, y:)
-      bar_width = ((@current_value / @maximum_value) * @total_width).to_i
+      bar_width = [((@current_value / @maximum_value) * @total_width).to_i, @total_width].min
       console.draw_rect(x: x, y: y, width: @total_width, height: 1, bg: @bg)
       console.draw_rect(x: x, y: y, width: bar_width, height: 1, bg: @fg)
       console.print(

@@ -16,16 +16,24 @@ module Colors
       [63, 255, 63]
     end
 
-    def hp_bar_filled
-      [0, 96, 0]
-    end
-
     def bar_text
       white
     end
 
+    def hp_bar_filled
+      [0, 96, 0]
+    end
+
     def hp_bar_empty
       [64, 16, 16]
+    end
+
+    def xp_bar_filled
+      [96, 96, 0]
+    end
+
+    def xp_bar_empty
+      [16, 16, 0]
     end
 
     def welcome_text

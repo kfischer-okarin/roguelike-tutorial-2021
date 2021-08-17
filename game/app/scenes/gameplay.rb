@@ -10,12 +10,20 @@ module Scenes
         fg: Colors.hp_bar_filled,
         bg: Colors.hp_bar_empty
       )
+      @xp_bar = UI::Bar.new(
+        name: 'XP',
+        maximum_value: @player.level.experience_to_next_level,
+        total_width: 20,
+        fg: Colors.xp_bar_filled,
+        bg: Colors.xp_bar_empty
+      )
       @message_log = UI::MessageLog.new(x: 21, y: 0, width: 40, height: 5)
     end
 
     def render(console)
       render_game_map(console)
       render_hp_bar(console)
+      render_xp_bar(console)
       render_message_log(console)
       render_names_at_cursor_position(console)
       render_dimension_name(console)
@@ -126,6 +134,12 @@ module Scenes
       @hp_bar.render(console, x: 0, y: 4)
     end
 
+    def render_xp_bar(console)
+      @xp_bar.current_value = @player.level.current_xp
+      @xp_bar.maximum_value = @player.level.experience_to_next_level
+      @xp_bar.render(console, x: 0, y: 3)
+    end
+
     def render_message_log(console)
       @message_log.messages = $message_log.messages
       @message_log.render(console)
@@ -140,8 +154,8 @@ module Scenes
     end
 
     def render_dimension_name(console)
-      console.print(x: 1, y: 2, string: 'Dimension:')
-      console.print(x: 1, y: 1, string: "#{$game.game_world.seed}-#{$game.game_world.current_floor}")
+      console.print(x: 1, y: 1, string: 'Dimension:')
+      console.print(x: 1, y: 0, string: "#{$game.game_world.seed}-#{$game.game_world.current_floor}")
     end
   end
 end
