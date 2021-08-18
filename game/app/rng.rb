@@ -35,7 +35,18 @@ class RNG
   end
 
   def random_element_from(collection)
-    random_index = (@random.rand * collection.size).floor
+    random_index = random_int_between(0, collection.size - 1)
     collection[random_index]
+  end
+
+  def random_from_weighted_elements(weighted_elements)
+    max_value = weighted_elements.values.inject(&:+) - 1
+
+    random_value = random_int_between(0, max_value)
+    current_value = 0
+    weighted_elements.each do |element, weight|
+      current_value += weight
+      return element if random_value < current_value
+    end
   end
 end
