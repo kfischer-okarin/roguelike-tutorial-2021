@@ -22,7 +22,14 @@ class GameWorld < DataBackedObject
         min_room_size: 6,
         max_room_size: 10,
         max_monsters_per_room: @max_monsters_per_room.value_for_floor(floor),
-        max_items_per_room: @max_items_per_room.value_for_floor(floor)
+        max_items_per_room: @max_items_per_room.value_for_floor(floor),
+        monster_weights: { mutant_spider: 8, cyborg_bearman: 2 },
+        item_weights: {
+          bandages: 7,
+          grenade: 1,
+          neurosonic_emitter: 1,
+          megavolt_capsule: 1
+        }
       )
     end
   end

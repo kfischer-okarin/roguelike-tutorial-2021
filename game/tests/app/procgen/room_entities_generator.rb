@@ -36,7 +36,9 @@ def test_room_entities(_args, assert)
   rng.expect_call :random_from_weighted_elements, args:[item_weights], return_value: :grenade
   generator = Procgen::RoomEntitiesGenerator.new(
     max_monsters_per_room: 2,
-    max_items_per_room: 5
+    max_items_per_room: 5,
+    monster_weights: monster_weights,
+    item_weights: item_weights
   )
   generator.rng = rng
 

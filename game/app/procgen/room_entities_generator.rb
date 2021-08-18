@@ -1,16 +1,11 @@
 module Procgen
   class RoomEntitiesGenerator < Generator
-    def initialize(max_monsters_per_room:, max_items_per_room:)
+    def initialize(max_monsters_per_room:, max_items_per_room:, monster_weights:, item_weights:)
       super()
       @max_monsters_per_room = max_monsters_per_room
       @max_items_per_room = max_items_per_room
-      @monster_weights = { mutant_spider: 8, cyborg_bearman: 2 }
-      @item_weights = {
-        bandages: 7,
-        grenade: 1,
-        neurosonic_emitter: 1,
-        megavolt_capsule: 1
-      }
+      @monster_weights = monster_weights
+      @item_weights = item_weights
     end
 
     def generate_for(room)

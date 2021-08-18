@@ -1,14 +1,23 @@
 module Procgen
   class DungeonGenerator
     class Parameters
-      attr_reader :max_rooms, :min_room_size, :max_room_size, :max_monsters_per_room, :max_items_per_room
+      attr_reader :max_rooms, :min_room_size, :max_room_size, :max_monsters_per_room, :max_items_per_room,
+                  :monster_weights, :item_weights
 
-      def initialize(max_rooms:, min_room_size:, max_room_size:, max_monsters_per_room:, max_items_per_room:)
+      def initialize(max_rooms:,
+                     min_room_size:,
+                     max_room_size:,
+                     max_monsters_per_room:,
+                     max_items_per_room:,
+                     monster_weights:,
+                     item_weights:)
         @max_rooms = max_rooms
         @min_room_size = min_room_size
         @max_room_size = max_room_size
         @max_monsters_per_room = max_monsters_per_room
         @max_items_per_room = max_items_per_room
+        @monster_weights = monster_weights
+        @item_weights = item_weights
       end
     end
 
@@ -21,7 +30,9 @@ module Procgen
       rng = RNG.new(seed)
       @entities_generator = RoomEntitiesGenerator.new(
         max_monsters_per_room: parameters.max_monsters_per_room,
-        max_items_per_room: parameters.max_items_per_room
+        max_items_per_room: parameters.max_items_per_room,
+        monster_weights: parameters.monster_weights,
+        item_weights: parameters.item_weights
       )
       @entities_generator.rng = rng
       @rooms_generator = RoomsGenerator.new(
