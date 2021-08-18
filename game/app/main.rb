@@ -61,20 +61,21 @@ def render_framerate(args)
 end
 
 def process_input(gtk_inputs)
-  key_down = gtk_inputs.keyboard.key_down
+  keyboard = gtk_inputs.keyboard
+  key_down = keyboard.key_down
   mouse = gtk_inputs.mouse
   [].tap { |result|
     result << { type: :character_screen } if key_down.c
     result << { type: :char_typed, char: gtk_inputs.text[0] } unless gtk_inputs.text.empty?
     result << { type: :quit } if key_down.escape
-    result << { type: :up } if key_down.up || key_down.k
-    result << { type: :down } if key_down.down || key_down.j
-    result << { type: :left } if key_down.left || key_down.h
-    result << { type: :right } if key_down.right || key_down.l
-    result << { type: :up_right } if key_down.u
-    result << { type: :up_left } if key_down.y
-    result << { type: :down_right } if key_down.n
-    result << { type: :down_left } if key_down.b
+    result << { type: :up } if down_or_held(keyboard, :up) || down_or_held(keyboard, :k)
+    result << { type: :down } if down_or_held(keyboard, :down) || down_or_held(keyboard, :j)
+    result << { type: :left } if down_or_held(keyboard, :left) || down_or_held(keyboard, :h)
+    result << { type: :right } if down_or_held(keyboard, :right) || down_or_held(keyboard, :l)
+    result << { type: :up_right } if down_or_held(keyboard, :u)
+    result << { type: :up_left } if down_or_held(keyboard, :y)
+    result << { type: :down_right } if down_or_held(keyboard, :n)
+    result << { type: :down_left } if down_or_held(keyboard, :b)
     result << { type: :wait } if key_down.space || key_down.period
     result << { type: :view_history } if key_down.v
     result << { type: :page_up } if key_down.pageup
@@ -94,6 +95,10 @@ def process_input(gtk_inputs)
     result << { type: :main_menu_continue_game } if key_down.c
     result << { type: :main_menu_quit_game } if key_down.q
   }
+end
+
+def down_or_held(keyboard, key)
+  keyboard.key_down.send(key) || keyboard.key_held.send(key) && $args.state.tick_count.mod_zero?(10)
 end
 
 $gtk.reset
