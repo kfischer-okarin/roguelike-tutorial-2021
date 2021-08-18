@@ -4,6 +4,13 @@ module Procgen
       super()
       @max_monsters_per_room = max_monsters_per_room
       @max_items_per_room = max_items_per_room
+      @monster_weights = { mutant_spider: 8, cyborg_bearman: 2 }
+      @item_weights = {
+        bandages: 7,
+        grenade: 1,
+        neurosonic_emitter: 1,
+        megavolt_capsule: 1
+      }
     end
 
     def generate_for(room)
@@ -16,28 +23,16 @@ module Procgen
 
     def add_monsters(result, area)
       rng.random_int_between(0, @max_monsters_per_room).each do
-        x, y = @rng.random_position_in_rect(area)
-        result << {
-          x: x,
-          y: y,
-          type: @rng.rand < 0.8 ? :mutant_spider : :cyborg_bearman
-        }
+        x, y = @rng.random_position_in_rect area
+        type = @rng.random_from_weighted_elements @monster_weights
+        result << { x: x, y: y, type: type }
       end
     end
 
     def add_items(result, area)
       rng.random_int_between(0, @max_items_per_room).each do
-        x, y = @rng.random_position_in_rect(area)
-        type = case @rng.rand
-               when 0...0.7
-                 :bandages
-               when 0.7...0.8
-                 :grenade
-               when 0.8...0.9
-                 :neurosonic_emitter
-               else
-                 :megavolt_capsule
-               end
+        x, y = @rng.random_position_in_rect area
+        type = @rng.random_from_weighted_elements @item_weights
         result << { x: x, y: y, type: type }
       end
     end
