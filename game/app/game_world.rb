@@ -1,21 +1,12 @@
 class GameWorld < DataBackedObject
-  data_reader :map_width, :map_height, :current_floor, :seed
+  data_reader :current_floor, :seed
 
   def initialize(data)
     super()
     @data = data
-    require_data_keys! %i[
-      map_width
-      map_height
-      procgen_parameters
-    ]
 
     self.current_floor ||= 0
     self.seed ||= RNG.new_string_seed
-  end
-
-  def procgen_parameters
-    Procgen::DungeonGenerator::Parameters.new(data.procgen_parameters)
   end
 
   def generate_next_floor
@@ -23,9 +14,15 @@ class GameWorld < DataBackedObject
     delete_all_player_unrelated_entities
 
     $game.game_map = Procgen.generate_dungeon(
-      map_width: map_width,
-      map_height: map_height,
-      parameters: procgen_parameters,
+      map_width: 80,
+      map_height: 40,
+      parameters: Procgen::DungeonGenerator::Parameters.new(
+        max_rooms: 10,
+        min_room_size: 6,
+        max_room_size: 10,
+        max_monsters_per_room: 2,
+        max_items_per_room: 2
+      ),
       player: Entities.player,
       seed: "#{seed}#{current_floor}"
     )

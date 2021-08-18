@@ -427,16 +427,7 @@ before_each do |args|
   $message_log = MessageLog.new args.state.message_log
   $game = Game.new
   $game.player = Entities.player
-  $game.game_world = GameWorld.new(
-    map_width: 20,
-    map_height: 20,
-    procgen_parameters: {
-      max_rooms: 10,
-      min_room_size: 6,
-      max_room_size: 10,
-      max_monsters_per_room: 2,
-      max_items_per_room: 2
-    }
-  )
+  args.state.game_world = {}
+  $game.game_world = GameWorld.new(args.state.game_world)
   $game.scene = Scenes::Gameplay.new(player: Entities.player)
 end

@@ -1,22 +1,14 @@
 module Procgen
   class DungeonGenerator
-    class Parameters < DataBackedObject
-      data_reader :max_rooms, :min_room_size, :max_room_size, :max_monsters_per_room, :max_items_per_room
+    class Parameters
+      attr_reader :max_rooms, :min_room_size, :max_room_size, :max_monsters_per_room, :max_items_per_room
 
-      def initialize(data)
-        super()
-        @data = data
-        require_data_keys! %i[
-          max_rooms
-          min_room_size
-          max_room_size
-          max_monsters_per_room
-          max_items_per_room
-        ]
-      end
-
-      def room_size_range
-        (min_room_size..max_room_size)
+      def initialize(max_rooms:, min_room_size:, max_room_size:, max_monsters_per_room:, max_items_per_room:)
+        @max_rooms = max_rooms
+        @min_room_size = min_room_size
+        @max_room_size = max_room_size
+        @max_monsters_per_room = max_monsters_per_room
+        @max_items_per_room = max_items_per_room
       end
     end
 

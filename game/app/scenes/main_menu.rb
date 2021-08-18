@@ -32,18 +32,8 @@ module Scenes
         fg: Colors.welcome_text
       )
 
-      $game.game_world = GameWorld.new(
-        map_width: 80,
-        map_height: 40,
-        procgen_parameters: {
-          max_rooms: 10,
-          min_room_size: 6,
-          max_room_size: 10,
-          max_monsters_per_room: 2,
-          max_items_per_room: 2
-        }
-      )
-      $state.game_world = $game.game_world.data
+      $state.game_world = {}
+      $game.game_world = GameWorld.new($state.game_world)
 
       $game.player = Entities.player
       $game.generate_next_floor
