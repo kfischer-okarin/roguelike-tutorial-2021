@@ -1,3 +1,5 @@
+require 'app/game_world/parameters_by_floor.rb'
+
 class GameWorld < DataBackedObject
   data_reader :current_floor, :seed
 
@@ -16,13 +18,7 @@ class GameWorld < DataBackedObject
     $game.game_map = Procgen.generate_dungeon(
       map_width: 80,
       map_height: 40,
-      parameters: Procgen::DungeonGenerator::Parameters.new(
-        max_rooms: 10,
-        min_room_size: 6,
-        max_room_size: 10,
-        max_monsters_per_room: 2,
-        max_items_per_room: 2
-      ),
+      parameters: parameters_for_floor(current_floor),
       player: Entities.player,
       seed: "#{seed}#{current_floor}"
     )
@@ -42,5 +38,23 @@ class GameWorld < DataBackedObject
     entities_to_delete.each do |entity|
       Entities.delete entity
     end
+  end
+
+  def parameters_for_floor(floor)
+    parameters_by_floor.for_floor floor
+  end
+
+  def parameters_by_floor
+    @parameters_by_floor ||= ParametersByFloor.new(
+      max_items_per_room: {
+        1 => 1,
+        4 => 2
+      },
+      max_monsters_per_room: {
+        1 => 2,
+        4 => 3,
+        6 => 5
+      }
+    )
   end
 end
