@@ -4,7 +4,7 @@ def test_define_actor(_args, assert)
   EntityPrototypes.define_actor :monster,
                                 name: 'Monster',
                                 char: 'm', color: [100, 0, 0],
-                                combatant: { hp: 10, defense: 2, power: 3 }
+                                combatant: { hp: 10, base_defense: 2, base_power: 3 }
   entity = EntityPrototypes.build(:monster)
 
   assert.has_attributes! entity, char: 'm',
@@ -12,7 +12,7 @@ def test_define_actor(_args, assert)
                                  blocks_movement?: true,
                                  render_order: RenderOrder::ACTOR
 
-  assert.has_attributes! entity.combatant, hp: 10, max_hp: 10, defense: 2, power: 3
+  assert.has_attributes! entity.combatant, hp: 10, max_hp: 10, base_defense: 2, base_power: 3
   assert.has_attributes! entity.inventory, items: []
 end
 

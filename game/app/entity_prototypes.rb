@@ -45,20 +45,20 @@ end
 EntityPrototypes.define_actor :player,
                               name: 'Player',
                               char: '@', color: [255, 255, 255],
-                              combatant: { hp: 30, defense: 2, power: 5 },
+                              combatant: { hp: 30, base_defense: 2, base_power: 5 },
                               ai: { type: :none, data: {} },
                               level: { level_up_base: 200, level_up_factor: 150 }
 
 EntityPrototypes.define_actor :mutant_spider,
                               name: 'Mutant Spider',
                               char: 's', color: [63, 127, 63],
-                              combatant: { hp: 10, defense: 0, power: 3 },
+                              combatant: { hp: 10, base_defense: 0, base_power: 3 },
                               received_xp: 35
 
 EntityPrototypes.define_actor :cyborg_bearman,
                               name: 'Cyborg Bearman',
                               char: 'B', color: [0, 127, 0],
-                              combatant: { hp: 16, defense: 1, power: 4 },
+                              combatant: { hp: 16, base_defense: 1, base_power: 4 },
                               received_xp: 100
 
 EntityPrototypes.define_item  :bandages,
@@ -80,3 +80,4 @@ EntityPrototypes.define_item  :grenade,
                               name: 'Grenade',
                               char: '~', color: [255, 0, 0],
                               consumable: { type: :explosion, damage: 12, radius: 3 }
+

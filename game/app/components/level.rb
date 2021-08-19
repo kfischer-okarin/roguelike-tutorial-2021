@@ -34,7 +34,7 @@ module Components
     end
 
     def increase_power
-      entity.combatant.power += 1
+      entity.combatant.base_power += 1
 
       $message_log.add_message(text: 'You feel stronger!')
 
@@ -42,7 +42,7 @@ module Components
     end
 
     def increase_defense
-      entity.combatant.defense += 1
+      entity.combatant.base_defense += 1
 
       $message_log.add_message(text: 'Your movements are getting swifter!')
 

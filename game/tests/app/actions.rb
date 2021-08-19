@@ -1,8 +1,8 @@
 require 'tests/test_helper.rb'
 
 def test_melee_action_deal_damage(_args, assert)
-  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 5
-  defender = build_actor name: 'Defender', hp: 30, defense: 1, power: 3
+  attacker = build_actor name: 'Attacker', hp: 30, base_defense: 2, base_power: 5
+  defender = build_actor name: 'Defender', hp: 30, base_defense: 1, base_power: 3
   build_game_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
@@ -15,8 +15,8 @@ def test_melee_action_deal_damage(_args, assert)
 end
 
 def test_melee_action_deal_no_damage(_args, assert)
-  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 1
-  defender = build_actor name: 'Defender', hp: 30, defense: 5, power: 3
+  attacker = build_actor name: 'Attacker', hp: 30, base_defense: 2, base_power: 1
+  defender = build_actor name: 'Defender', hp: 30, base_defense: 5, base_power: 3
   build_game_map_with_entities(
     [3, 3] => attacker,
     [3, 4] => defender
@@ -29,7 +29,7 @@ def test_melee_action_deal_no_damage(_args, assert)
 end
 
 def test_melee_action_nothing_to_attack(_args, assert)
-  attacker = build_actor name: 'Attacker', hp: 30, defense: 2, power: 1
+  attacker = build_actor name: 'Attacker', hp: 30, base_defense: 2, base_power: 1
   build_game_map_with_entities(
     [3, 3] => attacker
   )
