@@ -1,7 +1,7 @@
 require 'tests/test_helper.rb'
 
 def test_lightning_damage_hits_closest_actor(_args, assert)
-  item = build_item type: :lightning_damage, amount: 5, maximum_range: 5
+  item = build_item consumable: { type: :lightning_damage, amount: 5, maximum_range: 5 }
   npc = build_actor items: [item]
   closer_monster = build_actor name: 'Close Monster', hp: 30
   far_monster = build_actor name: 'Far Monster', hp: 30
@@ -20,7 +20,7 @@ def test_lightning_damage_hits_closest_actor(_args, assert)
 end
 
 def test_lightning_damage_cannot_hit_outside_maximum_range(_args, assert)
-  item = build_item type: :lightning_damage, amount: 5, maximum_range: 2
+  item = build_item consumable: { type: :lightning_damage, amount: 5, maximum_range: 2 }
   npc = build_actor items: [item]
   far_monster = build_actor hp: 30
   build_game_map_with_entities(
@@ -36,7 +36,7 @@ def test_lightning_damage_cannot_hit_outside_maximum_range(_args, assert)
 end
 
 def test_lightning_damage_cannot_hit_without_target(_args, assert)
-  item = build_item type: :lightning_damage, amount: 5, maximum_range: 2
+  item = build_item consumable: { type: :lightning_damage, amount: 5, maximum_range: 2 }
   npc = build_actor items: [item]
   build_game_map_with_entities(
     [5, 5] => npc
@@ -49,7 +49,7 @@ def test_lightning_damage_cannot_hit_without_target(_args, assert)
 end
 
 def test_lightning_damage_cannot_hit_non_visible_targets(_args, assert)
-  item = build_item type: :lightning_damage, amount: 5, maximum_range: 2
+  item = build_item consumable: { type: :lightning_damage, amount: 5, maximum_range: 2 }
   npc = build_actor items: [item]
   closer_monster = build_actor hp: 30
   game_map = build_game_map_with_entities(
@@ -66,7 +66,7 @@ def test_lightning_damage_cannot_hit_non_visible_targets(_args, assert)
 end
 
 def test_lightning_damage_shows_correct_name_when_killing_enemy(_args, assert)
-  item = build_item type: :lightning_damage, amount: 30, maximum_range: 2
+  item = build_item consumable: { type: :lightning_damage, amount: 30, maximum_range: 2 }
   npc = build_actor items: [item]
   monster = build_actor name: 'Monster', hp: 10
   build_game_map_with_entities(
@@ -85,7 +85,7 @@ def test_lightning_damage_shows_correct_name_when_killing_enemy(_args, assert)
 end
 
 def test_healing_get_action_returns_use_action(_args, assert)
-  item = build_item type: :lightning_damage, amount: 30, maximum_range: 2
+  item = build_item consumable: { type: :lightning_damage, amount: 30, maximum_range: 2 }
   consumer = build_actor
 
   action = item.get_action(consumer)

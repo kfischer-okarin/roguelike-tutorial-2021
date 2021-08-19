@@ -1,7 +1,7 @@
 require 'tests/test_helper.rb'
 
 def test_confusion_changes_ai_to_confused(_args, assert)
-  item = build_item type: :confusion, turns: 10
+  item = build_item consumable: { type: :confusion, turns: 10 }
   npc = build_actor(items: [item])
   orc = build_actor name: 'Orc'
   build_game_map_with_entities(
@@ -19,7 +19,7 @@ def test_confusion_changes_ai_to_confused(_args, assert)
 end
 
 def test_confusion_get_action_starts_position_selection(_args, assert)
-  item = build_item type: :confusion, turns: 10
+  item = build_item consumable: { type: :confusion, turns: 10 }
   npc = build_actor(items: [item])
 
   item.get_action(npc)
@@ -32,7 +32,7 @@ def test_confusion_get_action_starts_position_selection(_args, assert)
 end
 
 def test_confusion_cannot_target_non_visible_position(_args, assert)
-  item = build_item type: :confusion, turns: 10
+  item = build_item consumable: { type: :confusion, turns: 10 }
   npc = build_actor(items: [item])
   game_map = build_game_map_with_entities(
     [3, 3] => npc
@@ -45,7 +45,7 @@ def test_confusion_cannot_target_non_visible_position(_args, assert)
 end
 
 def test_confusion_must_target_actor(_args, assert)
-  item = build_item type: :confusion, turns: 10
+  item = build_item consumable: { type: :confusion, turns: 10 }
   npc = build_actor(items: [item])
   build_game_map_with_entities(
     [3, 3] => npc
@@ -57,7 +57,7 @@ def test_confusion_must_target_actor(_args, assert)
 end
 
 def test_confusion_cannot_target_self(_args, assert)
-  item = build_item type: :confusion, turns: 10
+  item = build_item consumable: { type: :confusion, turns: 10 }
   npc = build_actor(items: [item])
   build_game_map_with_entities(
     [3, 3] => npc

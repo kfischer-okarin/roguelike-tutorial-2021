@@ -1,7 +1,7 @@
 require 'tests/test_helper.rb'
 
 def test_healing_heals_consumer_hp(_args, assert)
-  potion = build_item name: 'Potion', type: :healing, amount: 3
+  potion = build_item name: 'Potion', consumable: { type: :healing, amount: 3 }
   npc = build_actor hp: 20, items: [potion]
   npc.combatant.take_damage(10)
 
@@ -13,7 +13,7 @@ def test_healing_heals_consumer_hp(_args, assert)
 end
 
 def test_healing_heals_until_max_hp(_args, assert)
-  potion = build_item name: 'Potion', type: :healing, amount: 20
+  potion = build_item name: 'Potion', consumable: { type: :healing, amount: 20 }
   npc = build_actor hp: 20, items: [potion]
   npc.combatant.take_damage(5)
 
@@ -25,7 +25,7 @@ def test_healing_heals_until_max_hp(_args, assert)
 end
 
 def test_healing_consuming_with_max_hp_is_impossible(_args, assert)
-  potion = build_item name: 'Potion', type: :healing, amount: 1
+  potion = build_item name: 'Potion', consumable: { type: :healing, amount: 1 }
   npc = build_actor hp: 20, items: [potion]
 
   assert.raises_with_message! Action::Impossible, 'Your health is already full.' do
@@ -35,7 +35,7 @@ def test_healing_consuming_with_max_hp_is_impossible(_args, assert)
 end
 
 def test_healing_get_action_returns_use_action(_args, assert)
-  potion = build_item type: :healing, amount: 1
+  potion = build_item consumable: { type: :healing, amount: 1 }
   consumer = build_actor
 
   action = potion.get_action(consumer)

@@ -1,7 +1,7 @@
 require 'tests/test_helper.rb'
 
 def test_explosion_damages_all_actors_in_radius(_args, assert)
-  item = build_item type: :explosion, radius: 3, damage: 12
+  item = build_item consumable: { type: :explosion, radius: 3, damage: 12 }
   npc = build_actor(name: 'NPC', items: [item], hp: 20)
   orc = build_actor name: 'Orc', hp: 8
   other_enemy = build_actor hp: 6
@@ -25,7 +25,7 @@ def test_explosion_damages_all_actors_in_radius(_args, assert)
 end
 
 def test_explosion_impossible_without_targets_in_area(_args, assert)
-  item = build_item type: :explosion, radius: 3, damage: 12
+  item = build_item consumable: { type: :explosion, radius: 3, damage: 12 }
   npc = build_actor(name: 'NPC', items: [item], hp: 20)
   enemy = build_actor hp: 8
   build_game_map_with_entities(
@@ -43,7 +43,7 @@ def test_explosion_impossible_without_targets_in_area(_args, assert)
 end
 
 def test_explosion_impossible_to_target_non_visible_position(_args, assert)
-  item = build_item type: :explosion, radius: 3, damage: 12
+  item = build_item consumable: { type: :explosion, radius: 3, damage: 12 }
   npc = build_actor(name: 'NPC', items: [item], hp: 20)
   game_map = build_game_map_with_entities(
     [3, 3] => npc
@@ -59,7 +59,7 @@ def test_explosion_impossible_to_target_non_visible_position(_args, assert)
 end
 
 def test_explosion_get_action_starts_explosion_area_selection(_args, assert)
-  item = build_item type: :explosion, radius: 3, damage: 12
+  item = build_item consumable: { type: :explosion, radius: 3, damage: 12 }
   npc = build_actor(items: [item])
 
   item.get_action(npc)

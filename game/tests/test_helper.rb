@@ -270,8 +270,7 @@ def build_item(attributes = nil)
   final_attributes = {
     name: values.delete(:name) || 'Item',
     blocks_movement: false,
-    consumable: values.empty? ? { type: :healing, amount: 5 } : values
-  }
+  }.merge(values.empty? ? { consumable: { type: :healing, amount: 5 } } : values)
   build_entity(final_attributes)
 end
 
