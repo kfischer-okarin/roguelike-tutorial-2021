@@ -10,6 +10,10 @@ module Components
       (weapon&.equippable&.defense_bonus || 0) + (armor&.equippable&.defense_bonus || 0)
     end
 
+    def equipped?(item)
+      item && (weapon == item || armor == item)
+    end
+
     def equip(item)
       equipped_item = get_slot(item.equippable.slot)
       unequip equipped_item if equipped_item

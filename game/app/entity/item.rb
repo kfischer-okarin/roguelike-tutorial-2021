@@ -1,25 +1,31 @@
 module Entity
   class Item < BaseEntity
     def consumable
-      @consumable ||= Components::Consumable.from(self, data.consumable)
+      @consumable ||= Components::Consumable.from(self, data.consumable) if data.respond_to? :consumable
     end
 
     def equippable
-      @equippable ||= Components::Equippable.new(self, data.equippable) if data.equippable
+      @equippable ||= Components::Equippable.new(self, data.equippable) if data.respond_to? :equippable
     end
 
     def activate(user)
-      consumable.activate(user) if consumable
+      target_component.activate(user)
     end
 
     def get_action(user)
-      consumable.get_action(user) if consumable
+      target_component.get_action(user)
     end
 
     def reset_reference
       super
       @consumable = nil
       @equippable = nil
+    end
+
+    private
+
+    def target_component
+      consumable || equippable
     end
   end
 end

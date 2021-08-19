@@ -2,6 +2,17 @@ module Components
   class Equippable < BaseComponent
     data_reader :slot
 
+    def activate(equipper)
+      equipment = equipper.equipment
+      return equipment.unequip entity if equipment.equipped? entity
+
+      equipper.equipment.equip entity
+    end
+
+    def get_action(equipper)
+      UseItemAction.new(equipper, entity)
+    end
+
     def equipped_by
       Entities.get(data.equipped_by)
     end

@@ -109,12 +109,22 @@ end
 
 def test_use_item_action_activates_consumable(_args, assert)
   actor = build_actor
-  item = build_item
-  stub_attribute_with_mock(item, :consumable)
+  item = build_item(consumable: { type: :healing })
+  with_mocked_method item.consumable, :activate do |activate_calls|
+    UseItemAction.new(actor, item).perform
 
-  UseItemAction.new(actor, item).perform
+    assert.equal! activate_calls, [[actor]]
+  end
+end
 
-  assert.includes! item.consumable.calls, [:activate, [actor]]
+def test_use_item_action_activates_equippable(_args, assert)
+  actor = build_actor
+  item = build_item(equippable: {})
+  with_mocked_method item.equippable, :activate do |activate_calls|
+    UseItemAction.new(actor, item).perform
+
+    assert.equal! activate_calls, [[actor]]
+  end
 end
 
 def test_use_item_on_position_action_activates_consumable(_args, assert)
