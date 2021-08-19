@@ -15,7 +15,6 @@ module Entities
       @data.entities_by_id.each_value do |entity_data|
         @entity_objects_by_id[entity_data.entity_id] = Entity.from(entity_data)
       end
-      @children = {}
     end
 
     def <<(entity)
@@ -28,10 +27,6 @@ module Entities
 
       @data.entities_by_id.delete entity.id
       @entity_objects_by_id.delete entity.id
-    end
-
-    def children_of(parent)
-      @children[parent] ||= []
     end
 
     def get(id)
@@ -58,12 +53,9 @@ module Entities
     private
 
     def delete_children_of(entity)
-      return unless entity.respond_to? :inventory
-
-      children_of(entity.inventory).each do |child_entity|
+      entity.child_entities.each do |child_entity|
         delete child_entity
       end
-      @children.delete entity.inventory
     end
   end
 end

@@ -13,7 +13,7 @@ module Components
     end
 
     def items
-      Entities.children_of(self)
+      @items ||= []
     end
 
     def drop(item)

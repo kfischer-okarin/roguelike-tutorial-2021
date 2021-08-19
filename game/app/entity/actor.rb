@@ -44,6 +44,10 @@ module Entity
       Colors.enemy_attack
     end
 
+    def child_entities
+      inventory.items
+    end
+
     protected
 
     def death_message

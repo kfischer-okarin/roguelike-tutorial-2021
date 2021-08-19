@@ -1,4 +1,6 @@
 class GameMap < DataBackedObject
+  attr_reader :entities
+
   data_reader :width, :height, :portal_location
 
   def initialize(data)
@@ -10,6 +12,7 @@ class GameMap < DataBackedObject
     @tile_data = Array2D.new(width, height, data[:tiles])
     @visible = Array2D.new(width, height) { false }
     @explored = Array2D.new(width, height, data[:explored])
+    @entities = []
     calculate_tiles
   end
 
@@ -24,10 +27,6 @@ class GameMap < DataBackedObject
 
   def game_map
     self
-  end
-
-  def entities
-    Entities.children_of(self)
   end
 
   def add_entity(entity)

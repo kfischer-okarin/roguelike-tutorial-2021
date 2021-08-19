@@ -49,6 +49,10 @@ module Entity
       self.y += dy
     end
 
+    def child_entities
+      []
+    end
+
     private
 
     def parent_from(parent_data)
