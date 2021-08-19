@@ -10,7 +10,7 @@ module Entity
 
       if data.respond_to? :combatant
         Actor.new(data.entity_id, data)
-      elsif data.respond_to? :consumable
+      elsif data.respond_to?(:consumable) || data.respond_to?(:equippable)
         Item.new(data.entity_id, data)
       else
         BaseEntity.new(data.entity_id, data)

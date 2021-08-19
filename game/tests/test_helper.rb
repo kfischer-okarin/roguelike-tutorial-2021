@@ -250,7 +250,8 @@ def build_actor(attributes = nil)
     },
     inventory: { items: [] },
     ai: { type: :enemy, data: {} },
-    received_xp: 0
+    received_xp: 0,
+    equipment: {}
   }
   final_attributes[:combatant][:max_hp] = values.delete(:max_hp) || final_attributes[:combatant][:hp]
   final_attributes.update(values)

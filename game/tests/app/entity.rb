@@ -40,6 +40,14 @@ def test_entity_from_returns_item_for_data_with_consumable(args, assert)
   assert.equal! entity.class, Entity::Item
 end
 
+def test_entity_from_returns_item_for_data_with_equippable(args, assert)
+  data = args.state.new_entity_strict(:item, equippable: { power_bonus: 2 })
+
+  entity = Entity.from(data)
+
+  assert.equal! entity.class, Entity::Item
+end
+
 def test_entity_from_returns_base_entity_for_unknown_data(args, assert)
   data = args.state.new_entity_strict(:somebody, unknown_stuff: 'abc')
 

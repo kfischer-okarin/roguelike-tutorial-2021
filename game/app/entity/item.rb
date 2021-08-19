@@ -4,6 +4,10 @@ module Entity
       @consumable ||= Components::Consumable.from(self, data.consumable)
     end
 
+    def equippable
+      @equippable ||= Components::Equippable.new(self, data.equippable) if data.equippable
+    end
+
     def activate(user)
       consumable.activate(user) if consumable
     end
@@ -15,6 +19,7 @@ module Entity
     def reset_reference
       super
       @consumable = nil
+      @equippable = nil
     end
   end
 end

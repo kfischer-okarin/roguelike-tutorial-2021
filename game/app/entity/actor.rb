@@ -17,6 +17,10 @@ module Entity
       @inventory ||= Components::Inventory.new(self, data.inventory)
     end
 
+    def equipment
+      @equipment ||= Components::Equipment.new(self, data.equipment)
+    end
+
     def alive?
       !combatant.dead?
     end
