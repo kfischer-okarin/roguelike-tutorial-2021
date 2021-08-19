@@ -12,6 +12,7 @@ module Components
 
     def equip(item)
       set_slot(item.equippable.slot, item)
+      item.equippable.equipped_by = entity
     end
 
     def set_slot(slot, item)

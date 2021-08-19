@@ -7,6 +7,7 @@ def test_equipment_equip_weapon(_args, assert)
   actor.equipment.equip(item)
 
   assert.equal! actor.equipment.weapon, item
+  assert.equal! item.equippable.equipped_by, actor
 end
 
 def test_equipment_equip_armor(_args, assert)
@@ -16,6 +17,7 @@ def test_equipment_equip_armor(_args, assert)
   actor.equipment.equip(item)
 
   assert.equal! actor.equipment.armor, item
+  assert.equal! item.equippable.equipped_by, actor
 end
 
 def test_equipment_power_bonus(_args, assert)
