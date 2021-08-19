@@ -9,7 +9,7 @@ module Scenes
       @window_w = @title.size + 4
       @window_top = 44
       @item_choice = UI::Choice.new(
-        choices: @inventory.items.map(&:name),
+        choices: inventory_items,
         x: @window_x + 1, top: @window_top - 1, w: @window_w - 2
       )
       super()
@@ -48,6 +48,17 @@ module Scenes
 
     def dispatch_action_for_quit
       pop_scene
+    end
+
+    private
+
+    def inventory_items
+      equipment = @inventory.entity.equipment
+      @inventory.items.map { |item|
+        next "#{item.name} (E)" if equipment.equipped? item
+
+        item.name
+      }
     end
   end
 end
