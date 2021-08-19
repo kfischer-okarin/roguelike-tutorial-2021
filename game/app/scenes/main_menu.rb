@@ -23,7 +23,13 @@ module Scenes
     def new_game
       $state.entities = Entities.build_data
       Entities.data = $state.entities
-      Entities.player = EntityPrototypes.build(:player)
+      Entities.player = EntityPrototypes.build :player
+      kitchen_knife = EntityPrototypes.build :kitchen_knife
+      kitchen_knife.place Entities.player.inventory
+      Entities.player.equipment.set_slot :weapon, kitchen_knife
+      leather_jacket = EntityPrototypes.build :leather_jacket
+      leather_jacket.place Entities.player.inventory
+      Entities.player.equipment.set_slot :armor, leather_jacket
 
       $state.message_log = []
       $message_log = MessageLog.new $state.message_log

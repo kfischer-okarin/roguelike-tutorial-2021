@@ -45,7 +45,7 @@ end
 EntityPrototypes.define_actor :player,
                               name: 'Player',
                               char: '@', color: [255, 255, 255],
-                              combatant: { hp: 30, base_defense: 2, base_power: 5 },
+                              combatant: { hp: 30, base_defense: 1, base_power: 2 },
                               ai: { type: :none, data: {} },
                               level: { level_up_base: 200, level_up_factor: 150 }
 
@@ -81,3 +81,22 @@ EntityPrototypes.define_item  :grenade,
                               char: '~', color: [255, 0, 0],
                               consumable: { type: :explosion, damage: 12, radius: 3 }
 
+EntityPrototypes.define_item  :kitchen_knife,
+                              name: 'Kitchen Knife',
+                              char: '/', color: [0, 191, 255],
+                              equippable: { slot: :weapon, power_bonus: 2 }
+
+EntityPrototypes.define_item  :steel_pipe,
+                              name: 'Steel Pipe',
+                              char: '/', color: [0, 191, 255],
+                              equippable: { slot: :weapon, power_bonus: 4 }
+
+EntityPrototypes.define_item  :leather_jacket,
+                              name: 'Leather Jacket',
+                              char: '[', color: [139, 69, 19],
+                              equippable: { slot: :armor, defense_bonus: 1 }
+
+EntityPrototypes.define_item  :light_trooper_vest,
+                              name: 'Light Trooper Vest',
+                              char: '[', color: [139, 69, 19],
+                              equippable: { slot: :armor, defense_bonus: 3 }

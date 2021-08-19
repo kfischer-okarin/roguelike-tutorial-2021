@@ -58,8 +58,8 @@ class GameWorld < DataBackedObject
       item_weights: {
         1 => { bandages: 35 },
         2 => { neurosonic_emitter: 10 },
-        4 => { megavolt_capsule: 25 },
-        6 => { grenade: 25 }
+        4 => { megavolt_capsule: 25, steel_pipe: 5 },
+        6 => { grenade: 25, light_trooper_vest: 15 }
       },
       monster_weights: {
         1 => { mutant_spider: 80 },
