@@ -88,7 +88,7 @@ module Scenes
 
     def dispatch_action_for_inventory
       $game.show_inventory('Select an item to use') do |selected_item|
-        selected_item.consumable.get_action(player)
+        selected_item.get_action(player)
       end
     end
 

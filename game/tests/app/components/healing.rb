@@ -38,7 +38,7 @@ def test_healing_get_action_returns_use_action(_args, assert)
   potion = build_item type: :healing, amount: 1
   consumer = build_actor
 
-  action = potion.consumable.get_action(consumer)
+  action = potion.get_action(consumer)
 
   assert.equal! action, UseItemAction.new(consumer, potion)
 end

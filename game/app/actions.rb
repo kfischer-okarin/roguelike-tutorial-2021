@@ -41,7 +41,7 @@ class UseItemAction < Action
   end
 
   def perform
-    @item.consumable.activate @entity
+    @item.activate @entity
   end
 end
 

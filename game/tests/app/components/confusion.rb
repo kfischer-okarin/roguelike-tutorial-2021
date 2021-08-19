@@ -22,7 +22,7 @@ def test_confusion_get_action_starts_position_selection(_args, assert)
   item = build_item type: :confusion, turns: 10
   npc = build_actor(items: [item])
 
-  item.consumable.get_action(npc)
+  item.get_action(npc)
 
   assert.equal! $game.scene.class, Scenes::PositionSelection
 

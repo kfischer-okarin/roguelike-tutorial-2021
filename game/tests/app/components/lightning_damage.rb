@@ -88,7 +88,7 @@ def test_healing_get_action_returns_use_action(_args, assert)
   item = build_item type: :lightning_damage, amount: 30, maximum_range: 2
   consumer = build_actor
 
-  action = item.consumable.get_action(consumer)
+  action = item.get_action(consumer)
 
   assert.equal! action, UseItemAction.new(consumer, item)
 end
