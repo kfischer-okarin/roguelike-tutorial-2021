@@ -254,9 +254,10 @@ def build_actor(attributes = nil)
     equipment: {}
   }
   final_attributes[:combatant][:max_hp] = values.delete(:max_hp) || final_attributes[:combatant][:hp]
+  items = values.delete(:items) || []
   final_attributes.update(values)
   build_entity(final_attributes).tap { |result|
-    (values[:items] || []).each do |item|
+    items.each do |item|
       item.place(result.inventory)
     end
   }
@@ -419,6 +420,7 @@ end
 GTK::Tests.prepend TestExtension
 
 before_each do |args|
+  $state = args.state
   GTK::Entity.strict_entities.clear
   args.state.entities = Entities.build_data
   Entities.data = args.state.entities

@@ -5,16 +5,15 @@ module SaveGame
     def save
       save_game_data = {
         game_world: $state.game_world,
-        current_floor: $state.game_world.current_floor,
         map: $state.game_map,
         entities: $state.entities,
         message_log: $state.message_log
       }
-      $gtk.write_file FILENAME, Serializer.serialize(save_game_data)
+      write_save_file Serializer.serialize(save_game_data)
     end
 
     def load
-      save_game_data = Serializer.deserialize(save_file_content)
+      save_game_data = Serializer.deserialize read_save_file
 
       $state.game_map = save_game_data[:map]
       game_map = GameMap.new($state.game_map)
@@ -39,12 +38,16 @@ module SaveGame
     end
 
     def exists?
-      save_file = save_file_content
+      save_file = read_save_file
       save_file && save_file != 'nil'
     end
 
-    def save_file_content
+    def read_save_file
       $gtk.read_file FILENAME
+    end
+
+    def write_save_file(content)
+      $gtk.write_file FILENAME, content
     end
 
     def delete
