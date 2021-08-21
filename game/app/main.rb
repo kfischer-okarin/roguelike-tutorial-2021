@@ -40,7 +40,7 @@ def tick(args)
     $message_log.add_message(text: message, fg: Colors.error)
   end
 
-  render_framerate(args)
+  render_framerate(args) unless $gtk.production
 end
 
 def setup(_args)
