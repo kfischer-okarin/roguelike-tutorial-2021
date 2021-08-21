@@ -37,3 +37,4 @@ Style/GlobalVars:
     - $game
     - $message_log
     - $before_each_blocks
+    - $keydown_frames
