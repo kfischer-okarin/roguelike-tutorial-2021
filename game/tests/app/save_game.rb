@@ -36,8 +36,11 @@ end
 def test_save_game_stores_entities(_args, assert)
   SaveGameTest.with_file_mock do
     enemy_item = build_item
+    player_weapon = build_item equippable: { slot: :weapon }
     enemy = build_actor(items: [enemy_item])
     player = Entities.player
+    player_weapon.place player.inventory
+    player.equipment.equip player_weapon
     game_map = build_game_map_with_entities(enemy, player)
     $game.game_map = game_map
     $state.game_map = game_map.data
@@ -48,14 +51,26 @@ def test_save_game_stores_entities(_args, assert)
     loaded_enemy = Entities.get(enemy.id)
     loaded_enemy_item = Entities.get(enemy_item.id)
     loaded_player = Entities.player
+    loaded_player_weapon = Entities.get(player_weapon.id)
 
     assert.not_equal! loaded_enemy, enemy
     assert.not_equal! loaded_enemy_item, enemy_item
     assert.not_equal! loaded_player, player
-    assert.contains_exactly! Entities, [loaded_enemy, loaded_player, loaded_enemy_item]
+    assert.not_equal! loaded_player_weapon, player_weapon
+
+    assert.contains_exactly! Entities, [
+      loaded_enemy,
+      loaded_player,
+      loaded_enemy_item,
+      loaded_player_weapon
+    ]
+    assert.contains_exactly! $game.game_map.entities, [loaded_enemy, loaded_player]
+
     assert.equal! loaded_enemy.inventory.items, [loaded_enemy_item]
     assert.equal! loaded_enemy_item.parent, loaded_enemy.inventory
-    assert.contains_exactly! $game.game_map.entities, [loaded_enemy, loaded_player]
+    assert.equal! loaded_player.inventory.items, [loaded_player_weapon]
+    assert.equal! loaded_player.equipment.weapon, loaded_player_weapon
+    assert.equal! loaded_player_weapon.equippable.equipped_by, loaded_player
   end
 end
 

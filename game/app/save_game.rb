@@ -21,8 +21,8 @@ module SaveGame
       $state.entities = save_game_data[:entities]
       Entities.data = $state.entities
       Entities.each do |entity|
-        parent = entity.parent || game_map
-        entity.place(parent, x: entity.x, y: entity.y)
+        restore_parent_association entity, game_map: game_map
+        restore_equipment_association entity if entity.respond_to? :equippable
       end
 
       $state.message_log = save_game_data[:message_log]
@@ -52,6 +52,23 @@ module SaveGame
 
     def delete
       $gtk.write_file FILENAME, 'nil'
+    end
+
+    private
+
+    def restore_parent_association(entity, game_map:)
+      parent = entity.parent || game_map
+      entity.place(parent, x: entity.x, y: entity.y)
+    end
+
+    def restore_equipment_association(equippable_entity)
+      equippable = equippable_entity.equippable
+      return unless equippable
+
+      equipping_entity = equippable.equipped_by
+      return unless equipping_entity
+
+      equipping_entity.equipment.set_slot equippable.slot, equippable_entity
     end
   end
 end
