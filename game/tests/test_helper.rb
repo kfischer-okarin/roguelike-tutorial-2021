@@ -233,8 +233,9 @@ def build_entity(attributes = nil)
   }
   final_attributes[:char] ||= final_attributes[:name][0]
   final_attributes.update(values)
+  unique_entity_type = :"#{final_attributes[:name]}_#{GTK::Entity.strict_entities.size}"
   Entity.build(
-    final_attributes[:name].to_sym,
+    unique_entity_type,
     final_attributes
   )
 end
