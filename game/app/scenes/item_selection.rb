@@ -6,7 +6,7 @@ module Scenes
       @title = title || 'Select item'
       @window_x = window_x
       @window_h = [@inventory.items.size + 2, 3].max
-      @window_w = @title.size + 4
+      @window_w = calc_window_w
       @window_top = 44
       @item_choice = UI::Choice.new(
         choices: inventory_items,
@@ -51,6 +51,12 @@ module Scenes
     end
 
     private
+
+    def calc_window_w
+      minimum_width_to_hold_title = @title.size + 4
+      minimum_width_to_hold_longest_item_name = inventory_items.map(&:size).max + 5
+      [minimum_width_to_hold_title, minimum_width_to_hold_longest_item_name].max
+    end
 
     def inventory_items
       equipment = @inventory.entity.equipment
