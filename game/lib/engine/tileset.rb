@@ -17,7 +17,6 @@ class String
   end
 end
 
-
 module Engine
   # Tileset in 16x16 tiles Dwarf Fortress layout
   class Tileset
@@ -73,4 +72,3 @@ module Engine
     end
   end
 end
-
