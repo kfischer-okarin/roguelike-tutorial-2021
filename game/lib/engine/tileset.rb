@@ -47,10 +47,7 @@ module Engine
     TILE_POSITIONS = {}.tap { |result|
       TILES.each_with_index { |row, y_from_top|
         row.each_with_index do |char, x|
-          result[char] = [x, 15 - y_from_top].tap { |position|
-            position.mark_as_point!
-            position.freeze
-          }
+          result[char] = { x: x, y: 15 - y_from_top }.freeze
         end
       }
     }.freeze
