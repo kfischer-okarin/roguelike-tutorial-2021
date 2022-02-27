@@ -82,7 +82,7 @@ def test_serializer_serialize_entity(args, assert)
   entity = args.state.new_entity_strict(:player, hp: 12, max_hp: 13)
   expected = <<-SERIALIZED
 {:type=>:entity}
-{:entity_id=>#{entity.entity_id}, :entity_name=>:player, :entity_type=>:player, :created_at=>-1, :global_created_at_elapsed=>-1, :entity_strict=>true, :entity_keys_by_ref=>{:entity_type=>:entity_name, :global_created_at_elapsed=>:created_at}, :hp=>12, :max_hp=>13}
+{:created_at=>-1, :entity_keys_by_ref=>{:global_created_at_elapsed=>:created_at, :entity_name=>:entity_type}, :entity_type=>:player, :max_hp=>13, :hp=>12, :entity_name=>:player, :global_created_at_elapsed=>-1, :entity_id=>#{entity.entity_id}, :entity_strict=>true}
 SERIALIZED
 
   SerializationTest.assert_serialized_value!(
