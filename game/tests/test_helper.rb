@@ -404,6 +404,15 @@ end
 
 module TestExtension
   def start
+    # mruby currently throws an error: "superclass info lost [mruby limitations]"
+    # if you define a block in a prepended module method that calls
+    # super
+    # By moving the block to a separate method, it works
+    extend_test_methods_with_before_each_blocks
+    super
+  end
+
+  def extend_test_methods_with_before_each_blocks
     (test_methods + test_methods_focused).each do |method_name|
       old_method = method(method_name)
       define_singleton_method method_name do |args, assert|
@@ -413,8 +422,6 @@ module TestExtension
         old_method.call(args, assert)
       end
     end
-
-    super
   end
 end
 
