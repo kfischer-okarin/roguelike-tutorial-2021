@@ -54,7 +54,7 @@ module Scenes
 
     def calc_window_w
       minimum_width_to_hold_title = @title.size + 4
-      minimum_width_to_hold_longest_item_name = inventory_items.map(&:size).max + 5
+      minimum_width_to_hold_longest_item_name = (inventory_items.map(&:size).max || 0) + 5
       [minimum_width_to_hold_title, minimum_width_to_hold_longest_item_name].max
     end
 

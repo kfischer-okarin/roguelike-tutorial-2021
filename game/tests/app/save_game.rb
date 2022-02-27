@@ -18,7 +18,7 @@ end
 def test_save_game_stores_game_map(_args, assert)
   SaveGameTest.with_file_mock do
     game_map_before = build_game_map(width: 25, height: 25, tiles: { [3, 3] => :wall })
-    Entities.player.place(game_map_before, x: 0, y: 0)
+    Entities.player.place(game_map_before, x: 1, y: 1)
     $game.game_map = game_map_before
     $state.game_map = game_map_before.data
 
@@ -98,7 +98,7 @@ module SaveGameTest
   def self.with_file_mock
     file_content = nil
     game_map = build_game_map
-    Entities.player.place(game_map, x: 0, y: 0)
+    Entities.player.place(game_map, x: 1, y: 1)
     $game.game_map = game_map
     $state.game_map = game_map.data
     with_replaced_method SaveGame, :read_save_file, -> { file_content } do

@@ -39,7 +39,9 @@ def add_test_directory_to_path(path)
 end
 
 def run_dragonruby_tests(path)
-  system "#{dragonruby_path} #{APP_ROOT} --test #{Pathname.new(path).relative_path_from(APP_ROOT)}"
+  envs = 'SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy'
+  relative_test_path = Pathname.new(path).relative_path_from(APP_ROOT)
+  system "#{envs} #{dragonruby_path} #{APP_ROOT} --test #{relative_test_path}"
 end
 
 def dragonruby_path
