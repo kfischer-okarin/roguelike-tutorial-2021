@@ -437,6 +437,7 @@ before_each do |args|
   $message_log = MessageLog.new args.state.message_log
   $game = Game.new
   $game.player = Entities.player
+  $game.game_map = build_game_map_with_entities(Entities.player)
   args.state.game_world = {}
   $game.game_world = GameWorld.new(args.state.game_world)
   $game.scene = Scenes::Gameplay.new(player: Entities.player)
