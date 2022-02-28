@@ -1,3 +1,4 @@
+require 'lib/builtin_extensions.rb'
 require 'lib/array_2d.rb'
 require 'lib/data_backed_object.rb'
 require 'lib/priority_queue.rb'
