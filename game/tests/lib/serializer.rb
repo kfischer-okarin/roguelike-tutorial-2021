@@ -80,17 +80,28 @@ end
 
 def test_serializer_serialize_entity(args, assert)
   entity = args.state.new_entity_strict(:player, hp: 12, max_hp: 13)
-  expected = <<-SERIALIZED
-{:type=>:entity}
-{:created_at=>-1, :entity_keys_by_ref=>{:global_created_at_elapsed=>:created_at, :entity_name=>:entity_type}, :entity_type=>:player, :max_hp=>13, :hp=>12, :entity_name=>:player, :global_created_at_elapsed=>-1, :entity_id=>#{entity.entity_id}, :entity_strict=>true}
-SERIALIZED
 
-  SerializationTest.assert_serialized_value!(
-    assert,
-    entity,
-    expected,
-    compare_by: ->(value) { value.to_hash }
-  )
+  serialized = Serializer.serialize(entity)
+  serialized_lines = serialized.strip.split("\n")
+
+  assert.equal! serialized_lines.size, 2, 'serialized entity should have 2 lines'
+  assert.equal! serialized_lines[0], '{:type=>:entity}', 'first line was different'
+
+  expected_representation = {
+    created_at: -1,
+    entity_keys_by_ref: {
+      global_created_at_elapsed: :created_at,
+      entity_name: :entity_type
+    },
+    entity_type: :player,
+    max_hp: 13,
+    hp: 12,
+    entity_name: :player,
+    global_created_at_elapsed: -1,
+    entity_id: entity.entity_id,
+    entity_strict: true
+  }
+  assert.equal! eval(serialized_lines[1]), expected_representation, 'serialized representation was different'
 end
 
 def test_serializer_serialize_array(args, assert)
