@@ -25,8 +25,11 @@ module Engine
           index += 1
           next unless char
 
+          x *= tile_w
+          y *= tile_h
+
           if bg_color
-            ffi_draw.draw_sprite_4 x * tile_w, y * tile_h, tile_w, tile_h,
+            ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
                                    'bg',
                                    nil, # angle
                                    bg_a, bg_r, bg_g, bg_b, # a, r, g, b
@@ -38,7 +41,7 @@ module Engine
           end
           next if char == ' '
 
-          ffi_draw.draw_sprite_4 x * tile_w, y * tile_h, tile_w, tile_h,
+          ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
                                  path,
                                  nil, # angle
                                  a, r, g, b, # a, r, g, b
