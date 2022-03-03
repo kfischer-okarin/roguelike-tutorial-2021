@@ -17,6 +17,7 @@ module Engine
         path = tileset.path
         tile_w = tileset.tile_w
         tile_h = tileset.tile_h
+        tiles_per_row = tileset.tiles_per_row
         index = 0
         buffer = @console.buffer_data
         buffer_size = buffer.size
@@ -27,6 +28,7 @@ module Engine
 
           x *= tile_w
           y *= tile_h
+          char_index = tileset.tile_index(char)
 
           if bg_color
             ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
@@ -41,6 +43,9 @@ module Engine
           end
           next if char == ' '
 
+          tile_x = (char_index % tiles_per_row) * tile_w
+          tile_y = char_index.idiv(tiles_per_row) * tile_h
+
           ffi_draw.draw_sprite_4 x, y, tile_w, tile_h,
                                  path,
                                  nil, # angle
@@ -48,7 +53,7 @@ module Engine
                                  nil, nil, nil, nil, # tile_x, tile_y, tile_w, tile_h
                                  nil, nil, # flip_horizontally, flip_vertically
                                  nil, nil, # angle_anchor_x, angle_anchor_y
-                                 tileset.tile_x(char), tileset.tile_y(char), tile_w, tile_h,
+                                 tile_x, tile_y, tile_w, tile_h,
                                  1 # blendmode_enum
         end
       end

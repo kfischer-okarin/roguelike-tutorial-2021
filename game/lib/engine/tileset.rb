@@ -27,6 +27,17 @@ module Engine
       calc_tile_dimensions
     end
 
+    def tiles_per_row
+      TILES_PER_ROW
+    end
+
+    def row_count
+      ROW_COUNT
+    end
+
+    TILES_PER_ROW = 16
+    ROW_COUNT = 16
+
     TILES = [
       [].freeze,
       [].freeze,
@@ -44,28 +55,24 @@ module Engine
       '╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀'.unicode_chars.freeze
     ].freeze
 
-    TILE_POSITIONS = {}.tap { |result|
+    TILE_INDEXES = {}.tap { |result|
       TILES.each_with_index { |row, y_from_top|
         row.each_with_index do |char, x|
-          result[char] = { x: x, y: 15 - y_from_top }.freeze
+          result[char] = ((ROW_COUNT - y_from_top - 1) * TILES_PER_ROW) + x
         end
       }
     }.freeze
 
-    def tile_x(string)
-      TILE_POSITIONS[string].x * @tile_w
-    end
-
-    def tile_y(string)
-      TILE_POSITIONS[string].y * @tile_h
+    def tile_index(string)
+      TILE_INDEXES[string]
     end
 
     private
 
     def calc_tile_dimensions
       w, h = $gtk.calcspritebox @path
-      @tile_w = w.idiv(16)
-      @tile_h = h.idiv(16)
+      @tile_w = w.idiv(TILES_PER_ROW)
+      @tile_h = h.idiv(ROW_COUNT)
     end
   end
 end
