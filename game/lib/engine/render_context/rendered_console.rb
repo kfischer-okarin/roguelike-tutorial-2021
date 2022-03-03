@@ -21,6 +21,7 @@ module Engine
         index = 0
         buffer = @console.buffer_data
         buffer_size = buffer.size
+        space_index = tileset.tile_index(' ')
         while index < buffer_size
           x, y, char, r, g, b, a, bg_r, bg_g, bg_b, bg_a, bg_color = buffer[index]
           index += 1
@@ -41,7 +42,7 @@ module Engine
                                    nil, nil, nil, nil, # source_x, source_y, source_w, source_h
                                    1 # blendmode_enum
           end
-          next if char == ' '
+          next if char_index == space_index
 
           tile_x = (char_index % tiles_per_row) * tile_w
           tile_y = char_index.idiv(tiles_per_row) * tile_h
