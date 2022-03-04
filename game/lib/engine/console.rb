@@ -26,7 +26,7 @@ module Engine
     end
 
     def print(x:, y:, string:, fg: nil, bg: nil)
-      string.unicode_chars.each_with_index do |char, index|
+      Tileset.tiles_from_string(string).each_with_index do |char, index|
         cell = @buffer[x + index, y]
         cell.char = char
         cell.color = fg if fg
@@ -58,7 +58,7 @@ module Engine
     end
 
     def draw_frame(x:, y:, width:, height:, decoration: nil, title: nil, fg: nil, bg: nil)
-      decoration_chars = (decoration || '┌─┐│ │└─┘').unicode_chars
+      decoration_chars = Tileset.tiles_from_string(decoration || '┌─┐│ │└─┘')
 
       right = x + width - 1
       top = y + height - 1
