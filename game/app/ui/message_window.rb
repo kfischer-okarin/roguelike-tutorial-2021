@@ -3,8 +3,8 @@ module UI
     def initialize(title:, text:, w:, h:)
       @w = w
       @h = h
-      @x = ($console.width - w).idiv(2)
-      @y = ($console.height - h).idiv(2)
+      @x = ($render_console.width - w).idiv(2)
+      @y = ($render_console.height - h).idiv(2)
       @title = title
       @lines = text.split("\n").flat_map { |line|
         line.empty? ? [''] : line.wrapped_lines(w - 2).map { |l| l.gsub("\n", '') }

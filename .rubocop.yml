@@ -33,7 +33,7 @@ Style/GlobalVars:
     - $gtk
     - $state
     - $render_context
-    - $console
+    - $render_console
     - $game
     - $message_log
     - $before_each_blocks

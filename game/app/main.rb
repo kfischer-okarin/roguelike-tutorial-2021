@@ -32,9 +32,9 @@ def tick(args)
 
   begin
     $game.cursor_position = $render_context.mouse_coordinates(args.inputs) if args.inputs.mouse.moved
-    $game.render($console)
+    $game.render($render_console)
     $game.handle_input_events(process_input(args.inputs))
-    $render_context.present($console)
+    $render_context.present($render_console)
   rescue StandardError => e
     message = e.inspect
     log_error(message)
@@ -51,7 +51,7 @@ def setup(_args)
 
   tileset = Engine::Tileset.new('Zilk-16x16.png')
   $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
-  $console = Engine::Console.new(screen_width, screen_height)
+  $render_console = Engine::Console.new(screen_width, screen_height)
 
   $game = Game.new
   $game.scene = Scenes::MainMenu.new
