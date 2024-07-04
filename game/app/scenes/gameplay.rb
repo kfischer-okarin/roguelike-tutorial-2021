@@ -31,7 +31,12 @@ module Scenes
 
     def dispatch_action_for_quit
       SaveGame.save
-      $game.quit
+
+      if $gtk.platform? :web
+        $gtk.reset seed: Time.now.to_i
+      else
+        $game.quit
+      end
     end
 
     def dispatch_action_for_up
