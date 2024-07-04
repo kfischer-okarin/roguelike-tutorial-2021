@@ -61,7 +61,6 @@ def render_framerate(args)
   args.outputs.primitives << [0, 720, $gtk.current_framerate.to_i.to_s, 255, 255, 255].label
 end
 
-KEY_REPEAT_INTERVAL = $gtk.platform?(:web) ? 3 : 10 # Web is slow
 $keydown_frames = {}
 
 def process_input(gtk_inputs)
@@ -107,7 +106,7 @@ def down_or_held(keyboard, key)
     true
   elsif keyboard.key_held.send(key)
     $keydown_frames[key] += 1
-    $keydown_frames[key].mod_zero? KEY_REPEAT_INTERVAL
+    $keydown_frames[key] > 10 && $keydown_frames[key] % 5 == 0
   end
 end
 
