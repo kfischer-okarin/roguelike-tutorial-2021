@@ -89,10 +89,7 @@ def test_serializer_serialize_entity(args, assert)
 
   expected_representation = {
     created_at: -1,
-    entity_keys_by_ref: {
-      global_created_at_elapsed: :created_at,
-      entity_name: :entity_type
-    },
+    entity_keys_by_ref: {},
     entity_type: :player,
     max_hp: 13,
     hp: 12,
