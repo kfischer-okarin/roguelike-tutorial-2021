@@ -15,6 +15,8 @@ module Scenes
     end
 
     def dispatch_action_for_main_menu_quit_game
+      return if $gtk.platform? :web
+
       $game.quit
     end
 
@@ -62,7 +64,7 @@ module Scenes
     def render_menu(console)
       render_menu_entry(console, 0, '[N] Play a new game')
       render_menu_entry(console, 1, '[C] Continue last game') if SaveGame.exists?
-      render_menu_entry(console, 2, '[Q] Quit')
+      render_menu_entry(console, 2, '[Q] Quit') unless $gtk.platform? :web
     end
 
     def render_menu_entry(console, index, text)
