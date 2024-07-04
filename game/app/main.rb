@@ -49,7 +49,7 @@ def setup(_args)
   screen_width = 80  # 80 * 16 = 1280
   screen_height = 45 # 45 * 16 = 720
 
-  tileset = Engine::Tileset.new('Zilk-16x16.png')
+  tileset = Engine::Tileset.new('zilk-16x16.png')
   $render_context = Engine::RenderContext.new(screen_width, screen_height, tileset: tileset)
   $render_console = Engine::Console.new(screen_width, screen_height)
 
