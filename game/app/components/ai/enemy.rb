@@ -13,7 +13,7 @@ module Components
           data.path = path_to(target.x, target.y)
         end
 
-        if data.path
+        if data.path && !data.path.empty?
           dest_x, dest_y = data.path.shift
           return MovementAction.new(entity, dx: dest_x - entity.x, dy: dest_y - entity.y).perform
         end
