@@ -24,12 +24,13 @@ class Game
   end
 
   def handle_input_events(input_events)
-    input_events.each do |event|
+    player_executed_action = input_events.any? { |event|
       action = @scene.handle_input_event(event)
-      next unless handle_action(action)
+      handle_action(action)
+    }
+    return unless player_executed_action
 
-      advance_turn
-    end
+    advance_turn
   end
 
   def handle_action(action)
